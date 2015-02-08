@@ -11,6 +11,7 @@ USING_NS_CC;
 #define WID 6
 #define HEI 6
 #define ANSWER_DIGIT 4
+#define LIFE 7
 
 string to_string2(int num)
 {
@@ -81,7 +82,7 @@ void HelloWorld::Touch_submit(Ref* sender, Widget::TouchEventType type)
 
 
 			// ´Ù ¸Â­Ÿ°í ÀÚ¸´¼öµµ ¸ÂÀ¸¸é Á¤´äÀÓ
-			if (nCount == 4 && (m_vQuestion.size() == m_vAnswer.size()))
+			if (nCount == ANSWER_DIGIT && (m_vQuestion.size() == m_vAnswer.size()))
 			{
 				m_bGameOver = true;
 				m_BTN_submit->setTitleText("RESTART");
@@ -90,8 +91,8 @@ void HelloWorld::Touch_submit(Ref* sender, Widget::TouchEventType type)
 			}
 
 			// list hint element setting
-			Text* txt = Text::create(strPrint, "fonts/LCDM2N_.TTF", 24.f);
-			Text* txt2 = Text::create(to_string2(nCount), "fonts/LCDM2N_.TTF", 24.f);
+			Text* txt = Text::create(strPrint, "fonts/LCDM2N_.TTF", 28.f);
+			Text* txt2 = Text::create(to_string2(nCount), "fonts/LCDM2N_.TTF", 28.f);
 			txt2->setColor(Color3B(255, 0, 0));
 
 			Layout* default_item = Layout::create();
@@ -100,7 +101,7 @@ void HelloWorld::Touch_submit(Ref* sender, Widget::TouchEventType type)
 				, txt->getContentSize().height));
 			txt->setPosition(Vec2(default_item->getContentSize().width / 2.0f,
 				default_item->getContentSize().height / 2.0f));
-			txt2->setPosition(Vec2(365,
+			txt2->setPosition(Vec2(415,
 				default_item->getContentSize().height / 2.0f));
 			default_item->addChild(txt);
 			default_item->addChild(txt2);
@@ -108,7 +109,7 @@ void HelloWorld::Touch_submit(Ref* sender, Widget::TouchEventType type)
 			lst_log->pushBackCustomItem(default_item);
 			//MessageBox(strAnswer.c_str(), "Result");
 			m_vAnswer.clear();
-			lst_log->scrollToBottom(.5f, true);
+			lst_log->scrollToBottom(.5f, false);
 
 			// life
 			--m_nLife;
@@ -141,15 +142,19 @@ void HelloWorld::Touch_submit(Ref* sender, Widget::TouchEventType type)
 
 void HelloWorld::Touch_NumPad(Ref* sender)
 {
-	MenuItemToggle* tgl = (MenuItemToggle*)sender;
+	MenuItemToggle* tgl = dynamic_cast<MenuItemToggle*>(sender);
 
 		// change button select status whether it pressed or not.
-		if (tgl->isSelected())
+		if (tgl->getSelectedIndex() == 0)
 		{
+			++m_nDigitCount;
 		}
 		else
 		{
+			--m_nDigitCount;
 		}
+
+		m_TXT_digit->setString(to_string2(m_nDigitCount)+"/"+to_string2(ANSWER_DIGIT));
 		
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 		//MessageBox(str.c_str(), "ÀÀ?");
@@ -170,7 +175,8 @@ bool HelloWorld::init()
         return false;
     }
 
-	m_nLife = 4;
+	m_nDigitCount = 0;
+	m_nLife = LIFE;
 	m_bGameOver = false;
 
 	// ANSWER_DIGITÀÚ¸® ³­¼ö·Î Á¤´äÀ» »ý¼ºÇÑ´Ù.
@@ -231,8 +237,8 @@ bool HelloWorld::init()
 	this->addChild(m_TXT_time);
 
 	// life
-	m_TXT_life = Label::create(to_string2(m_nLife), "fonts/LCDM2N_.TTF", 36.f);
-	m_TXT_life->setPosition(Vec2(600, 1050));
+	m_TXT_life = Label::create(to_string2(m_nLife), "fonts/LCDM2L_.TTF", 106.f);
+	m_TXT_life->setPosition(Vec2(600, 1000));
 	m_TXT_life->setAnchorPoint(Vec2(0, 0));
 	this->addChild(m_TXT_life);
     

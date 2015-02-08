@@ -49,7 +49,7 @@ void HelloWorld::Touch_submit(Ref* sender, Widget::TouchEventType type)
 		break;
 	case Widget::TouchEventType::ENDED:
 
-		if (btn->getTitleText() == "SUBMIT")
+		if (m_bGameOver == false)
 		{
 			for (int i = 0; i < m_vButtons.size(); ++i)
 			{
@@ -79,9 +79,6 @@ void HelloWorld::Touch_submit(Ref* sender, Widget::TouchEventType type)
 				}
 			}
 
-			strPrint += " (";
-			strPrint += to_string2(nCount);
-			strPrint += ")";
 
 			// ´Ù ¸Â­Ÿ°í ÀÚ¸´¼öµµ ¸ÂÀ¸¸é Á¤´äÀÓ
 			if (nCount == 4 && (m_vQuestion.size() == m_vAnswer.size()))
@@ -93,17 +90,20 @@ void HelloWorld::Touch_submit(Ref* sender, Widget::TouchEventType type)
 			}
 
 			// list hint element setting
-			Button* btn_1 = Button::create("common/button.png", "common/buttonHighlighted.png");
-			btn_1->setTitleText(strPrint);
-			btn_1->setScale9Enabled(true);
-			btn_1->setContentSize(Size(200, 35));
+			Text* txt = Text::create(strPrint, "fonts/LCDM2N_.TTF", 24.f);
+			Text* txt2 = Text::create(to_string2(nCount), "fonts/LCDM2N_.TTF", 24.f);
+			txt2->setColor(Color3B(255, 0, 0));
 
 			Layout* default_item = Layout::create();
 			default_item->setTouchEnabled(true);
-			default_item->setContentSize(btn_1->getContentSize());
-			btn_1->setPosition(Vec2(default_item->getContentSize().width / 2.0f,
+			default_item->setContentSize(Size(txt->getContentSize().width + txt2->getContentSize().height
+				, txt->getContentSize().height));
+			txt->setPosition(Vec2(default_item->getContentSize().width / 2.0f,
 				default_item->getContentSize().height / 2.0f));
-			default_item->addChild(btn_1);
+			txt2->setPosition(Vec2(365,
+				default_item->getContentSize().height / 2.0f));
+			default_item->addChild(txt);
+			default_item->addChild(txt2);
 
 			lst_log->pushBackCustomItem(default_item);
 			//MessageBox(strAnswer.c_str(), "Result");
@@ -112,17 +112,17 @@ void HelloWorld::Touch_submit(Ref* sender, Widget::TouchEventType type)
 
 			// life
 			--m_nLife;
-			m_TXT_life->setString("Life : " + to_string2(m_nLife));
+			m_TXT_life->setString(to_string2(m_nLife));
 
 			if (m_nLife == 0)
 			{
 				//MessageBeep(0);
-				MessageBox("Gover", "end");
+				MessageBox("Game over", "end");
 				Director::getInstance()->end();
 			}
 			break;
 		}
-		else if (btn->getTitleText() == "RESTART")
+		else
 		{
 			if (m_bGameOver == false)
 				break;
@@ -134,7 +134,6 @@ void HelloWorld::Touch_submit(Ref* sender, Widget::TouchEventType type)
 			}
 			lst_log->cleanup();
 			m_bGameOver = false;
-			btn->setTitleText("SUBMIT");
 			break;
 		}
 	}
@@ -294,41 +293,19 @@ bool HelloWorld::init()
 	lst_log->setPosition(Vec2(259, 1144));
 	lst_log->setAnchorPoint(Vec2(0.5f, 0.5f));
 
-	//Label* lbl = Label::createWithTTF("Fade", "fonts/Marker Felt.ttf", 20.0f);
-	Button* btn_1 = Button::create("common/button.png", "common/buttonHighlighted.png");
-	btn_1->setTitleText("History (hint)");
-	btn_1->setScale9Enabled(true);
-	btn_1->setTitleFontName("fonts/LCDM2N_.TTF");
-	btn_1->setContentSize(Size(200, 35));
+	Text* txt = Text::create("Be sure to match the password!", "fonts/LCDM2N_.TTF", 24.f);
 
 	Layout* default_item = Layout::create();
 	default_item->setTouchEnabled(true);
-	default_item->setContentSize(btn_1->getContentSize());
-	btn_1->setPosition(Vec2(default_item->getContentSize().width / 2.0f,
+	default_item->setContentSize(txt->getContentSize());
+	txt->setPosition(Vec2(default_item->getContentSize().width / 2.0f,
 		default_item->getContentSize().height / 2.0f));
-	default_item->addChild(btn_1);
+	default_item->addChild(txt);
 	
 	lst_log->setItemModel(default_item);
 	lst_log->pushBackDefaultItem();
 	this->addChild(lst_log);
 
-
-
-	//ÄÚÄÚ½º ½ºÆ©µð¿À ÆÄÀÏ ºÒ·¯¿À´Â ¼³Á¤
-	//auto node = CSLoader::createNode("Scene2.csb");
-	//this->addChild(node);
-
-	//_layout = static_cast<Layout*>(cocostudio::GUIReader::getInstance()->widgetFromBinaryFile("Scene2.csb"));
-	//this->addChild(_layout);
-	//Size screenSize = CCDirector::getInstance()->getWinSize();
-	//Size rootSize = _layout->getContentSize();
-	//this->setPosition(Vec2((screenSize.width - rootSize.width) / 2,
-	//	(screenSize.height - rootSize.height) / 2));
-
-    
- //   auto sprite = Sprite::create("HelloWorld.png");    // add "HelloWorld" splash screen"
- //   sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));	// position the sprite on the center of the screen
-	//this->addChild(sprite, 0);	// add the sprite as a child to this layer
     
     return true;
 }

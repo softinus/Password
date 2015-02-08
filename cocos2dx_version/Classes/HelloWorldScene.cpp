@@ -50,7 +50,7 @@ void HelloWorld::Touch_submit(Ref* sender, Widget::TouchEventType type)
 		{
 			for (int i = 0; i < m_vButtons.size(); ++i)
 			{
-				if (m_vButtons[i]->isSelected())
+				if (m_vButtons[i]->getSelectedIndex() == 1)
 				{
 					m_vAnswer.push_back(i + 1);	// 눌려져 있으면 정답에 넣고
 					//strAnswer.append(to_string2(m_vAnswer[m_vAnswer.size() - 1]));
@@ -137,28 +137,16 @@ void HelloWorld::Touch_submit(Ref* sender, Widget::TouchEventType type)
 	}
 }
 
-void HelloWorld::Touch_NumPad(Ref* sender, Widget::TouchEventType type)
+void HelloWorld::Touch_NumPad(Ref* sender)
 {
 	MenuItemToggle* tgl = (MenuItemToggle*)sender;
 
-	//터치 이벤트 실행시 프로그램 종료
-	switch (type)
-	{
-	case Widget::TouchEventType::BEGAN:
-		break;
-	case Widget::TouchEventType::MOVED:
-		break;
-	case Widget::TouchEventType::ENDED:
-
-		//Director::getInstance()->end();
 		// change button select status whether it pressed or not.
 		if (tgl->isSelected())
 		{
-			//tgl->setSelectedIndex(0);
 		}
 		else
 		{
-			//tgl->setSelectedIndex(1);
 		}
 		
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
@@ -168,13 +156,6 @@ void HelloWorld::Touch_NumPad(Ref* sender, Widget::TouchEventType type)
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 		
 #endif
-		
-		break;
-	case Widget::TouchEventType::CANCELED:
-		break;
-	default:
-		break;
-	}
 }
 
 // on "init" you need to initialize your instance
@@ -250,19 +231,9 @@ bool HelloWorld::init()
 		MenuItemToggle* button = MenuItemToggle::createWithCallback(
 			CC_CALLBACK_1(HelloWorld::Touch_NumPad, this), img1, img2, NULL);
 
-		//ButtonN* button = ButtonN::create(strBtnNormal, strBtnPressed, strBtnDisabled);
-		button->setPosition(Vec2(s.width/2.f - 100 + 113*(i%3), s.height/2.f + 100 -113*(i/3) ));
-		//button->setScale9Enabled(true);
-		//button->setSize(Size(112, 112));
-		//button->addTouchEventListener(CC_CALLBACK_2(HelloWorld::Touch_NumPad, this));
-		//button->setPressedActionEnabled(true);
-		//button->SetNumber(i);
-		//button->SetSelect(false);	//  
-		//button->setTitleColor(Color3B(255, 255, 255));		
-		//button->setZoomScale(0.0f);
-		//button->setTitleFontSize(42.f);
-		//button->setTitleText(to_string2(i+1));
-		this->addChild(button);
+		auto menu = Menu::create(button, NULL);
+		menu->setPosition(Vec2(s.width / 2.f - 100 + 113 * (i % 3), s.height / 2.f + 100 - 113 * (i / 3)));
+		this->addChild(menu);
 
 		m_vButtons.push_back(button);
 		//button->setOpacity(100);

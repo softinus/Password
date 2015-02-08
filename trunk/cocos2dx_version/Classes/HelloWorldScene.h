@@ -35,6 +35,7 @@ protected:
 	//vector<bool> m_vPressed;
 
 	ListView* lst_log;
+	//Layout* default_item;	// default layout item for hint list view.
 	vector<MenuItemToggle*> m_vButtons;
 	Button* m_BTN_submit;
 

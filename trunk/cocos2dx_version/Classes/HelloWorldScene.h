@@ -26,6 +26,8 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
 
+	
+
 protected:
 	void Touch_NumPad(Ref* sender);
 	void Touch_submit(Ref* sender, Widget::TouchEventType type);
@@ -49,6 +51,8 @@ protected:
 	Label* m_TXT_life;	// life counter
 	int m_nLife;
 	bool m_bGameOver;
+
+	int m_nDigitCount;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

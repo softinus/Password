@@ -8,6 +8,9 @@ USING_NS_CC;
 //using namespace ui;
 //using namespace cocostudio;
 
+#define WID 6
+#define HEI 6
+#define ANSWER_DIGIT 4
 
 string to_string2(int num)
 {
@@ -109,7 +112,7 @@ void HelloWorld::Touch_submit(Ref* sender, Widget::TouchEventType type)
 
 			// life
 			--m_nLife;
-			m_LBL_life->setString("Life : " + to_string2(m_nLife));
+			m_TXT_life->setString("Life : " + to_string2(m_nLife));
 
 			if (m_nLife == 0)
 			{
@@ -171,12 +174,12 @@ bool HelloWorld::init()
 	m_nLife = 4;
 	m_bGameOver = false;
 
-	// 4자리 난수로 정답을 생성한다.
+	// ANSWER_DIGIT자리 난수로 정답을 생성한다.
 	int nSum = 0;
 	srand((unsigned int)time(NULL));
-	while (m_vQuestion.size() != 4)
+	while (m_vQuestion.size() != ANSWER_DIGIT)
 	{
-		int nNumber = 1 + rand() % 9;
+		int nNumber = 1 + rand() % WID*HEI;
 		bool bAlreadyHas = false;
 		for (int i = 0; i < m_vQuestion.size(); ++i)
 		{
@@ -193,23 +196,58 @@ bool HelloWorld::init()
 		}
 	}
 	// gen answer
-	m_LBL_sum = Label::create("Sum : "+to_string2(nSum), "fonts/Marker Felt.ttf", 30.f);
-	m_LBL_sum->setPosition(Vec2(255, 725));
-	m_LBL_sum->setAnchorPoint(Vec2(0, 0));
-	this->addChild(m_LBL_sum);	
+	m_TXT_sum = Label::create(to_string2(nSum), "fonts/LCDM2N_.TTF", 54.f);
+	m_TXT_sum->setPosition(Vec2(200, 1000));
+	m_TXT_sum->setAnchorPoint(Vec2(0, 0));
+	this->addChild(m_TXT_sum);	
 
-	m_LBL_life = Label::create("Life : " + to_string2(m_nLife), "fonts/Marker Felt.ttf", 30.f);
-	m_LBL_life->setPosition(Vec2(255, 685));
-	m_LBL_life->setAnchorPoint(Vec2(0, 0));
-	this->addChild(m_LBL_life);
+	m_LBL_sum = Label::create("sum", "fonts/LCDM2N_.TTF", 24.f);
+	m_LBL_sum->setPosition(Vec2(210, 965));
+	m_LBL_sum->setAnchorPoint(Vec2(0, 0));
+	m_LBL_sum->setTextColor(Color4B(79, 147, 210, 255));
+	this->addChild(m_LBL_sum);
+
+	// digit counter
+	m_LBL_digit = Label::create("word", "fonts/LCDM2N_.TTF", 24.f);
+	m_LBL_digit->setPosition(Vec2(62, 965));
+	m_LBL_digit->setAnchorPoint(Vec2(0, 0));
+	m_LBL_digit->setTextColor(Color4B(79, 147, 210, 255));
+	this->addChild(m_LBL_digit);
+
+	m_TXT_digit = Label::create("0/" +to_string2(ANSWER_DIGIT), "fonts/LCDM2N_.TTF", 54.f);
+	m_TXT_digit->setPosition(Vec2(50, 1000));
+	m_TXT_digit->setAnchorPoint(Vec2(0, 0));
+	this->addChild(m_TXT_digit);
+
+	// time
+	m_LBL_time = Label::create("time", "fonts/LCDM2N_.TTF", 24.f);
+	m_LBL_time->setPosition(Vec2(465, 965));
+	m_LBL_time->setAnchorPoint(Vec2(1, 0));
+	m_LBL_time->setTextColor(Color4B(79, 147, 210, 255));
+	this->addChild(m_LBL_time);
+
+	m_TXT_time = Label::create("0:00", "fonts/LCDM2N_.TTF", 54.f);
+	m_TXT_time->setPosition(Vec2(465, 1000));
+	m_TXT_time->setAnchorPoint(Vec2(1, 0));
+	this->addChild(m_TXT_time);
+
+	// life
+	m_TXT_life = Label::create(to_string2(m_nLife), "fonts/LCDM2N_.TTF", 36.f);
+	m_TXT_life->setPosition(Vec2(600, 1050));
+	m_TXT_life->setAnchorPoint(Vec2(0, 0));
+	this->addChild(m_TXT_life);
     
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 		
 	Size s = this->getContentSize();
 
+	MenuItemImage* img_lifebox = MenuItemImage::create("scene4/box_life.png", "scene4/box_life.png");
+	img_lifebox->setPosition(Vec2(604, 1082));
+	this->addChild(img_lifebox);
+
 	// set number pad props.
-	for (size_t i = 0; i < 9; i++)
+	for (size_t i = 0; i < WID*HEI; i++)
 	{
 		string strBtnNormal = "scene4/pad/normal/";
 		strBtnNormal += "pad_on_";
@@ -232,38 +270,35 @@ bool HelloWorld::init()
 			CC_CALLBACK_1(HelloWorld::Touch_NumPad, this), img1, img2, NULL);
 
 		auto menu = Menu::create(button, NULL);
-		menu->setPosition(Vec2(s.width / 2.f - 100 + 113 * (i % 3), s.height / 2.f + 100 - 113 * (i / 3)));
+		menu->setPosition(Vec2(77 + 113 * (i % WID), 869 - 113 * (i / HEI)));
 		this->addChild(menu);
 
 		m_vButtons.push_back(button);
 		//button->setOpacity(100);
 	}
 
-	m_BTN_submit = Button::create("common/button.png", "common/buttonHighlighted.png");
-	m_BTN_submit->setPosition(Vec2(240, 150));
+	m_BTN_submit = Button::create("scene4/btn_enter_up.png", "scene4/btn_enter_down.png");
+	m_BTN_submit->setPosition(Vec2(359, 180));
 	m_BTN_submit->setScale9Enabled(true);
-	m_BTN_submit->setSize(Size(300, 100));
-	m_BTN_submit->setPressedActionEnabled(true);
-	m_BTN_submit->setTitleFontSize(42.f);
-	m_BTN_submit->setTitleText("SUBMIT");
-	m_BTN_submit->setTitleColor(Color3B(255, 255, 255));
+	m_BTN_submit->setSize(Size(676, 86));
+	m_BTN_submit->setPressedActionEnabled(false);
 	m_BTN_submit->addTouchEventListener(CC_CALLBACK_2(HelloWorld::Touch_submit, this));
 	this->addChild(m_BTN_submit);
 
-	int x = 1;
 	lst_log = ListView::create();
 	lst_log->setDirection(ui::ScrollView::Direction::VERTICAL);
 	lst_log->setBounceEnabled(true);
-	lst_log->setBackGroundImage("common/green_edit.png");
+	lst_log->setBackGroundImage("scene4/box_log.png");
 	lst_log->setBackGroundImageScale9Enabled(true);
-	lst_log->setContentSize(Size(200, 150));
-	lst_log->setPosition(Vec2(20, s.height-170));
-	lst_log->setTag(100);
+	lst_log->setContentSize(Size(446, 130));
+	lst_log->setPosition(Vec2(259, 1144));
+	lst_log->setAnchorPoint(Vec2(0.5f, 0.5f));
 
-	Label* lbl = Label::createWithTTF("Fade", "fonts/Marker Felt.ttf", 20.0f);
+	//Label* lbl = Label::createWithTTF("Fade", "fonts/Marker Felt.ttf", 20.0f);
 	Button* btn_1 = Button::create("common/button.png", "common/buttonHighlighted.png");
 	btn_1->setTitleText("History (hint)");
 	btn_1->setScale9Enabled(true);
+	btn_1->setTitleFontName("fonts/LCDM2N_.TTF");
 	btn_1->setContentSize(Size(200, 35));
 
 	Layout* default_item = Layout::create();

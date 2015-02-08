@@ -39,7 +39,13 @@ protected:
 	Button* m_BTN_submit;
 
 	Label* m_LBL_sum;
-	Label* m_LBL_life;
+	Label* m_LBL_digit;
+	Label* m_LBL_time;
+
+	Label* m_TXT_sum;	// sum
+	Label* m_TXT_digit;	// digit counter
+	Label* m_TXT_time;	// time
+	Label* m_TXT_life;	// life counter
 	int m_nLife;
 	bool m_bGameOver;
 };

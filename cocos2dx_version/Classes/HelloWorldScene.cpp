@@ -92,8 +92,9 @@ void HelloWorld::Touch_submit(Ref* sender, Widget::TouchEventType type)
 
 			// list hint element setting
 			Text* txt = Text::create(strPrint, "fonts/LCDM2N_.TTF", 28.f);
+			txt->setColor(Color3B(183, 183, 183));
 			Text* txt2 = Text::create(to_string2(nCount), "fonts/LCDM2N_.TTF", 28.f);
-			txt2->setColor(Color3B(255, 0, 0));
+			txt2->setColor(Color3B(227, 29, 29));
 
 			Layout* default_item = Layout::create();
 			default_item->setTouchEnabled(true);
@@ -184,7 +185,7 @@ bool HelloWorld::init()
 	srand((unsigned int)time(NULL));
 	while (m_vQuestion.size() != ANSWER_DIGIT)
 	{
-		int nNumber = 1 + rand() % WID*HEI;
+		int nNumber = 1 + random(0, WID*HEI);
 		bool bAlreadyHas = false;
 		for (int i = 0; i < m_vQuestion.size(); ++i)
 		{
@@ -200,6 +201,7 @@ bool HelloWorld::init()
 			nSum += nNumber;
 		}
 	}
+	
 	// gen answer
 	m_TXT_sum = Label::create(to_string2(nSum), "fonts/LCDM2N_.TTF", 54.f);
 	m_TXT_sum->setPosition(Vec2(200, 1000));

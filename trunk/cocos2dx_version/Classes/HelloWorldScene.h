@@ -27,7 +27,7 @@ public:
     CREATE_FUNC(HelloWorld);
 
 protected:
-	void Touch_NumPad(Ref* sender, Widget::TouchEventType type);
+	void Touch_NumPad(Ref* sender);
 	void Touch_submit(Ref* sender, Widget::TouchEventType type);
 	//Layout* _layout;
 	vector<int> m_vQuestion;

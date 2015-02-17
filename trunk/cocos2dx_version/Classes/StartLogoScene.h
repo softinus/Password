@@ -17,10 +17,12 @@ public:
 
 	EventListenerTouchOneByOne * listener;
 
-	void creatGameScene(void);
+	static Scene* createScene(void);
 	void changeScene(void);
 
 	virtual bool onTouchBegan(Touch* touch, Event* event);
+
+	void scheduleCallback(float delta);	// schedule
 
 protected:
 	MenuItemImage* m_img_Logo;

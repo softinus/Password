@@ -43,7 +43,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // create a scene. it's an autorelease object
     //auto scene = HelloWorld::createScene();
-	auto scene = StartLogoScene::scene();
+	auto scene = StartLogoScene::createScene();
 
 
     // run

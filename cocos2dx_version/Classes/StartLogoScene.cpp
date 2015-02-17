@@ -3,6 +3,22 @@
 
 
 
+Scene* StartLogoScene::createScene()
+{
+	// 'scene' is an autorelease object
+	auto scene = Scene::create();
+
+	// 'layer' is an autorelease object
+	auto layer = StartLogoScene::create();
+
+	// add layer as a child to scene
+	scene->addChild(layer);
+
+	// return the scene
+	return scene;
+}
+
+
 bool StartLogoScene::init()
 {
 	if (!Layer::init())	
@@ -13,13 +29,32 @@ bool StartLogoScene::init()
 	Size s = this->getContentSize();
 
 	m_img_Logo = MenuItemImage::create("scene1/logo_gab.png", "scene1/logo_gab.png");
-	m_img_Logo->setPosition(Vec2(s.width / 2, s.height / 2));
+	m_img_Logo->setPosition(Vec2(0, s.height / 2));
+	m_img_Logo->setOpacity(0);
 	this->addChild(m_img_Logo);
 
-	changeScene();
+	auto action1 = JumpBy::create(1.5f, Point(s.width / 2, 0), 100, 3);
+	auto *fadeIn = FadeIn::create(2.0f);
+	//auto *fadeOut = FadeOut::create(1.0f);
+	//m_img_Logo->runAction(action);
+	m_img_Logo->runAction(action1);
+	m_img_Logo->runAction(fadeIn);
+
+	this->schedule(schedule_selector(StartLogoScene::scheduleCallback), 3.0f);
+
+
+	
 
 	return true;
 }
+
+void StartLogoScene::scheduleCallback(float delta)
+{
+	CCLOG("scheduleCallback : %f", delta);
+
+	changeScene();
+}
+
 Scene* StartLogoScene::scene()
 {
 	Scene *scene = Scene::create();
@@ -34,7 +69,7 @@ void StartLogoScene::changeScene(void) {
 	Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 
 	auto hScene = HelloWorld::createScene();
-	auto pScene = TransitionFade::create(1.0f, hScene);
+	auto pScene = TransitionFlipAngular::create(1.0f, hScene);
 	Director::getInstance()->replaceScene(pScene);
 }
 

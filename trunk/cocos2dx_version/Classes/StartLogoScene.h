@@ -1,21 +1,29 @@
 #pragma once
 
 #include "cocos2d.h"
-#include "ui\CocosGUI.h"                //코코스 스튜디오 GUI 기능 추가
+#include "ui\CocosGUI.h"
+#include "HelloWorldScene.h"
 USING_NS_CC;
+
 using namespace ui;
+
 
 class StartLogoScene : public cocos2d::Layer
 {
-
-
 public:
-	static cocos2d::Scene* createScene();
+	static Scene* scene();
+	CREATE_FUNC(StartLogoScene);
 	virtual bool init();
 
-	CREATE_FUNC(StartLogoScene);
+	EventListenerTouchOneByOne * listener;
+
+	void creatGameScene(void);
+	void changeScene(void);
+
+	virtual bool onTouchBegan(Touch* touch, Event* event);
 
 protected:
 	MenuItemImage* m_img_Logo;
-};
 
+
+};

@@ -58,6 +58,7 @@ bool MainScene::init()
 
 	m_BTN_start = Button::create("scene1-1/s1_btn_start_up.png", "scene1-1/s1_btn_start_down.png");
 	m_BTN_start->setPosition(Vec2(360, 352));
+	m_BTN_start->addTouchEventListener(CC_CALLBACK_2(MainScene::Touch_start, this));
 	this->addChild(m_BTN_start);
 
 	m_BTN_charge_ad = Button::create("scene1-1/s1_btn_charge_ad.png", "scene1-1/s1_btn_charge_ad.png");
@@ -73,16 +74,28 @@ bool MainScene::init()
 	m_LBL_difficult->setAnchorPoint(Vec2(0, 0));
 	this->addChild(m_LBL_difficult);
 
-	//auto action1 = JumpBy::create(1.5f, Point(s.width / 2, 0), 100, 3);
-	//auto *fadeIn = FadeIn::create(2.0f);
-	////auto *fadeOut = FadeOut::create(1.0f);
-	////m_img_Logo->runAction(action);
-	//m_img_Logo->runAction(action1);
-	//m_img_Logo->runAction(fadeIn);
-
 
 	return true;
 }
+
+
+void MainScene::Touch_start(Ref* sender, Widget::TouchEventType type)
+{
+	Button* btn = (Button*)sender;
+
+	//터치 이벤트 실행시 프로그램 종료
+	switch (type)
+	{
+	case Widget::TouchEventType::BEGAN:
+		break;
+	case Widget::TouchEventType::MOVED:
+		break;
+	case Widget::TouchEventType::ENDED:
+		changeScene();
+		break;
+	}
+}
+
 
 Scene* MainScene::scene()
 {
@@ -97,9 +110,9 @@ void MainScene::changeScene(void)
 {
 	//Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 
-	//auto hScene = HelloWorld::createScene();
-	//auto pScene = TransitionFade::create(1.0f, hScene);
-	//Director::getInstance()->replaceScene(pScene);
+	auto hScene = SelectStageScene::createScene();
+	auto pScene = TransitionFade::create(1.0f, hScene);
+	Director::getInstance()->replaceScene(pScene);
 }
 
 bool MainScene::onTouchBegan(Touch* touch, Event* event)

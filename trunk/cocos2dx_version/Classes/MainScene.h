@@ -2,6 +2,7 @@
 
 #include "cocos2d.h"
 #include "ui\CocosGUI.h"
+#include "SelectStageScene.h"
 USING_NS_CC;
 
 using namespace ui;
@@ -22,6 +23,8 @@ public:
 	virtual bool onTouchBegan(Touch* touch, Event* event);
 
 	void scheduleCallback(float delta);	// schedule
+	
+	void Touch_start(Ref* sender, Widget::TouchEventType type);
 
 protected:
 	MenuItemImage* m_img_Logo;

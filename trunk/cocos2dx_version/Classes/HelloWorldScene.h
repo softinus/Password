@@ -11,7 +11,7 @@ USING_NS_CC;
 using namespace ui;
 using namespace std;
 
-class HelloWorld : public cocos2d::Layer
+class InGameScene : public cocos2d::Layer
 {
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
@@ -24,7 +24,7 @@ public:
     void menuCloseCallback(cocos2d::Ref* pSender);
     
     // implement the "static create()" method manually
-    CREATE_FUNC(HelloWorld);
+    CREATE_FUNC(InGameScene);
 
 	
 

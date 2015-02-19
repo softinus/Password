@@ -28,7 +28,7 @@ bool StartLogoScene::init()
 
 	Size s = this->getContentSize();
 
-	m_img_Logo = MenuItemImage::create("scene1/logo_gab.png", "scene1/logo_gab.png");
+	m_img_Logo = MenuItemImage::create("logo_gab.png", "logo_gab.png");
 	m_img_Logo->setPosition(Vec2(0, s.height / 2));
 	m_img_Logo->setOpacity(0);
 	this->addChild(m_img_Logo);
@@ -40,7 +40,7 @@ bool StartLogoScene::init()
 	m_img_Logo->runAction(action1);
 	m_img_Logo->runAction(fadeIn);
 
-	this->schedule(schedule_selector(StartLogoScene::scheduleCallback), 3.0f);
+	this->schedule(schedule_selector(StartLogoScene::scheduleCallback), 2.5f);
 
 
 	
@@ -64,12 +64,14 @@ Scene* StartLogoScene::scene()
 	return scene;
 }
 
-void StartLogoScene::changeScene(void) {
+void StartLogoScene::changeScene(void)
+{
 	//  Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
 	Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 
-	auto hScene = HelloWorld::createScene();
-	auto pScene = TransitionFlipAngular::create(1.0f, hScene);
+	auto hScene = MainScene::createScene();
+	auto pScene = TransitionFade::create(1.0f, hScene);
+	//auto pScene = TransitionFlipAngular::create(1.0f, hScene);
 	Director::getInstance()->replaceScene(pScene);
 }
 

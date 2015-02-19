@@ -2,18 +2,16 @@
 
 #include "cocos2d.h"
 #include "ui\CocosGUI.h"
-#include "HelloWorldScene.h"
-#include "MainScene.h"
 USING_NS_CC;
 
 using namespace ui;
 
 
-class StartLogoScene : public cocos2d::Layer
+class MainScene : public cocos2d::Layer
 {
 public:
 	static Scene* scene();
-	CREATE_FUNC(StartLogoScene);
+	CREATE_FUNC(MainScene);
 	virtual bool init();
 
 	EventListenerTouchOneByOne * listener;
@@ -27,6 +25,17 @@ public:
 
 protected:
 	MenuItemImage* m_img_Logo;
+	Button* m_BTN_set;
+	Button* m_BTN_sound;
+	Button* m_BTN_ranking;
+	Button* m_BTN_replay;
+	Button* m_BTN_base;
+	Button* m_BTN_charge;
+	Button* m_BTN_start;
+	Button* m_BTN_charge_ad;
+	Button* m_BTN_charge_ok;
+	Label*	m_LBL_difficult;
+
 
 
 };

@@ -22,13 +22,13 @@ string to_string2(int num)
 	return convert.str();
 }
 
-Scene* HelloWorld::createScene()
+Scene* InGameScene::createScene()
 {
     // 'scene' is an autorelease object
     auto scene = Scene::create();
     
     // 'layer' is an autorelease object
-    auto layer = HelloWorld::create();
+    auto layer = InGameScene::create();
 
     // add layer as a child to scene
     scene->addChild(layer);
@@ -37,7 +37,7 @@ Scene* HelloWorld::createScene()
     return scene;
 }
 
-void HelloWorld::Touch_submit(Ref* sender, Widget::TouchEventType type)
+void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 {
 	Button* btn = (Button*)sender;
 
@@ -141,7 +141,7 @@ void HelloWorld::Touch_submit(Ref* sender, Widget::TouchEventType type)
 	}
 }
 
-void HelloWorld::Touch_NumPad(Ref* sender)
+void InGameScene::Touch_NumPad(Ref* sender)
 {
 	MenuItemToggle* tgl = dynamic_cast<MenuItemToggle*>(sender);
 
@@ -167,7 +167,7 @@ void HelloWorld::Touch_NumPad(Ref* sender)
 }
 
 // on "init" you need to initialize your instance
-bool HelloWorld::init()
+bool InGameScene::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -274,7 +274,7 @@ bool HelloWorld::init()
 		auto img1 = MenuItemImage::create(strBtnNormal, strBtnNormal);
 		auto img2 = MenuItemImage::create(strBtnPressed, strBtnPressed);
 		MenuItemToggle* button = MenuItemToggle::createWithCallback(
-			CC_CALLBACK_1(HelloWorld::Touch_NumPad, this), img1, img2, NULL);
+			CC_CALLBACK_1(InGameScene::Touch_NumPad, this), img1, img2, NULL);
 
 		auto menu = Menu::create(button, NULL);
 		menu->setPosition(Vec2(77 + 113 * (i % WID), 869 - 113 * (i / HEI)));
@@ -289,7 +289,7 @@ bool HelloWorld::init()
 	m_BTN_submit->setScale9Enabled(true);
 	m_BTN_submit->setSize(Size(676, 86));
 	m_BTN_submit->setPressedActionEnabled(false);
-	m_BTN_submit->addTouchEventListener(CC_CALLBACK_2(HelloWorld::Touch_submit, this));
+	m_BTN_submit->addTouchEventListener(CC_CALLBACK_2(InGameScene::Touch_submit, this));
 	this->addChild(m_BTN_submit);
 
 	lst_log = ListView::create();
@@ -319,7 +319,7 @@ bool HelloWorld::init()
 }
 
 
-void HelloWorld::menuCloseCallback(Ref* pSender)
+void InGameScene::menuCloseCallback(Ref* pSender)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");

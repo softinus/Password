@@ -6,6 +6,7 @@
 #include "cocos2d.h"
 //#include "cocostudio\CocoStudio.h"        //코코스 스튜디오 사용
 #include "ui\CocosGUI.h"                //코코스 스튜디오 GUI 기능 추가
+#include "SelectStageScene.h"
 //#include "ButtonN.h"
 USING_NS_CC;
 using namespace ui;
@@ -50,12 +51,16 @@ protected:
 	Label* m_TXT_time;	// time
 	Label* m_TXT_life;	// life counter
 	int m_nLife;
+	int m_nAnswerDigit;	// word count
 	bool m_bGameOver;
 
 	int m_nDigitCount;
 
 	int m_nWid;
 	int m_nHei;
+
+	void onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event *event);
+	void changeScene(void);
 };
 
 #endif // __HELLOWORLD_SCENE_H__

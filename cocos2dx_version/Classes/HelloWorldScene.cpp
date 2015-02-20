@@ -4,13 +4,13 @@
 //#include "ui/CocosGUI.h"
 
 #include "Global.h"
+#include "DataSingleton.h"
 
 USING_NS_CC;
 //using namespace std;
 //using namespace ui;
 //using namespace cocostudio;
 
-#define ANSWER_DIGIT 4
 
 
 
@@ -74,7 +74,7 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 
 
 			// ´Ù ¸Â­Ÿ°í ÀÚ¸´¼öµµ ¸ÂÀ¸¸é Á¤´äÀÓ
-			if (nCount == ANSWER_DIGIT && (m_vQuestion.size() == m_vAnswer.size()))
+			if (nCount == m_nAnswerDigit && (m_vQuestion.size() == m_vAnswer.size()))
 			{
 				m_bGameOver = true;
 				m_BTN_submit->setTitleText("RESTART");
@@ -147,7 +147,7 @@ void InGameScene::Touch_NumPad(Ref* sender)
 			--m_nDigitCount;
 		}
 
-		m_TXT_digit->setString(to_string2(m_nDigitCount) + "/" + to_string2(ANSWER_DIGIT));
+		m_TXT_digit->setString(to_string2(m_nDigitCount) + "/" + to_string2(m_nAnswerDigit ));
 		
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 		//MessageBox(str.c_str(), "ÀÀ?");
@@ -168,19 +168,153 @@ bool InGameScene::init()
         return false;
     }
 
+
+	auto keylistener = EventListenerKeyboard::create();
+	keylistener->onKeyReleased = CC_CALLBACK_2(InGameScene::onKeyReleased, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(keylistener, this);
+
+	m_nAnswerDigit = 2;
+	m_nDigitCount = 0;
+	m_bGameOver = false;
+	int nLevel = DataSingleton::getInstance().nLevel;
+	int nButtonSize = 0;
+	int nStartX = 0;
+	int nStartY = 0;
+	int nMargin = 1;
+
+	if (nLevel == 1)
+	{
+		m_nWid = 2;
+		m_nHei = 2;
+		m_nLife = 3;
+		m_nAnswerDigit = 2;
+
+		nButtonSize = 338;
+		nStartX = 190;
+		nStartY = 757;
+	}
+	else if (nLevel == 2)
+	{
+		m_nWid = 3;
+		m_nHei = 2;
+		m_nLife = 4;
+		m_nAnswerDigit = 3;
+
+		nButtonSize = 224;
+		nStartX = 133;
+		nStartY = 700;
+	}
+	else if (nLevel == 3)
+	{
+		m_nWid = 3;
+		m_nHei = 3;
+		m_nLife = 4;
+		m_nAnswerDigit = 4;
+
+		nButtonSize = 224;
+		nStartX = 133;
+		nStartY = 814;
+	}
+	else if (nLevel == 4)
 	{
 		m_nWid = 4;
 		m_nHei = 3;
-		m_nDigitCount = 0;
+		m_nLife = 5;
+		m_nAnswerDigit = 4;
+
+		nButtonSize = 168;
+		nStartX = 105;
+		nStartY = 757;
+	}
+	else if (nLevel == 5)
+	{
+		m_nWid = 4;
+		m_nHei = 4;
+		m_nLife = 5;
+		m_nAnswerDigit = 5;
+
+		nButtonSize = 168;
+		nStartX = 105;
+		nStartY = 842;
+	}
+	else if (nLevel == 6)
+	{
+		m_nWid = 5;
+		m_nHei = 4;
+		m_nLife = 6;
+		m_nAnswerDigit = 5;
+
+		nButtonSize = 135;
+		nStartX = 88;
+		nStartY = 804;
+	}
+	else if (nLevel == 7)
+	{
+		m_nWid = 5;
+		m_nHei = 5;
+		m_nLife = 6;
+		m_nAnswerDigit = 6;
+
+		nButtonSize = 168;
+		nStartX = 88;
+		nStartY = 858;
+	}
+	else if (nLevel == 8)
+	{
+		m_nWid = 6;
+		m_nHei = 5;
 		m_nLife = 7;
-		m_bGameOver = false;
+		m_nAnswerDigit = 7;
+
+		nButtonSize = 112;
+		nStartX = 77;
+		nStartY = 870;
+	}
+	else if (nLevel == 9)
+	{
+		m_nWid = 6;
+		m_nHei = 6;
+		m_nLife = 7;
+		m_nAnswerDigit = 7;
+
+		nButtonSize = 112;
+		nStartX = 77;
+		nStartY = 870;
 	}
 	
+	for (int i = 0; i < m_nWid; ++i)
+	{
+		for (int j = 0; j < m_nHei; ++j)
+		{
+			auto img1 = MenuItemImage::create("scene4/button/btn_pad_up.png", "scene4/button/btn_pad_up.png");
+			auto img2 = MenuItemImage::create("scene4/button/btn_pad_down.png", "scene4/button/btn_pad_down.png");
+
+			MenuItemToggle* button = MenuItemToggle::createWithCallback(
+				CC_CALLBACK_1(InGameScene::Touch_NumPad, this), img1, img2, NULL);
+						
+			auto menu = Menu::create(button, NULL);
+			menu->setPosition(Vec2(nStartX + (nButtonSize + nMargin) * i, nStartY - (nButtonSize + nMargin) * j));
+			menu->setContentSize(Size(nButtonSize, nButtonSize));
+
+			auto LBL_number = Label::createWithTTF("0", "fonts/LCDM2N_.TTF", 120.f);
+			LBL_number->setPosition(Vec2(nStartX + (nButtonSize + nMargin) * i, nStartY - (nButtonSize + nMargin) * j));
+			LBL_number->setString(to_string2(j*m_nWid + (i+1)));
+			LBL_number->setTextColor(Color4B(17, 140, 24, 200));
+			LBL_number->enableOutline(Color4B::WHITE, 1);
+
+			this->addChild(menu);
+			this->addChild(LBL_number);
+
+			m_vButtons.push_back(button);
+		}
+		
+	}
+
 
 	// ANSWER_DIGITÀÚ¸® ³­¼ö·Î Á¤´äÀ» »ý¼ºÇÑ´Ù.
 	int nSum = 0;
 	srand((unsigned int)time(NULL));
-	while (m_vQuestion.size() != ANSWER_DIGIT)
+	while (m_vQuestion.size() != m_nAnswerDigit)
 	{
 		int nNumber = 1 + random(0, m_nWid*m_nHei);
 		bool bAlreadyHas = false;
@@ -218,7 +352,7 @@ bool InGameScene::init()
 	m_LBL_digit->setTextColor(Color4B(79, 147, 210, 255));
 	this->addChild(m_LBL_digit);
 
-	m_TXT_digit = Label::create("0/" + to_string2(ANSWER_DIGIT), "fonts/LCDM2N_.TTF", 54.f);
+	m_TXT_digit = Label::create("0/" + to_string2(m_nAnswerDigit), "fonts/LCDM2N_.TTF", 54.f);
 	m_TXT_digit->setPosition(Vec2(50, 1000));
 	m_TXT_digit->setAnchorPoint(Vec2(0, 0));
 	this->addChild(m_TXT_digit);
@@ -250,36 +384,6 @@ bool InGameScene::init()
 	img_lifebox->setPosition(Vec2(604, 1082));
 	this->addChild(img_lifebox);
 
-	// set number pad props.
-	for (size_t i = 0; i < m_nWid*m_nHei; i++)
-	{
-		string strBtnNormal = "scene4/pad/normal/";
-		strBtnNormal += "pad_on_";
-		strBtnNormal += to_string2(i + 1);
-		strBtnNormal += ".png";
-
-		string strBtnPressed = "scene4/pad/pressed/";
-		strBtnPressed += "pad_sel_";
-		strBtnPressed += to_string2(i + 1);
-		strBtnPressed += ".png";
-
-		string strBtnDisabled = "scene4/pad/disabled/";
-		strBtnDisabled += "pad_off_";
-		strBtnDisabled += to_string2(i + 1);
-		strBtnDisabled += ".png";
-
-		auto img1 = MenuItemImage::create(strBtnNormal, strBtnNormal);
-		auto img2 = MenuItemImage::create(strBtnPressed, strBtnPressed);
-		MenuItemToggle* button = MenuItemToggle::createWithCallback(
-			CC_CALLBACK_1(InGameScene::Touch_NumPad, this), img1, img2, NULL);
-
-		auto menu = Menu::create(button, NULL);
-		menu->setPosition(Vec2(77 + 113 * (i % m_nWid), 869 - 113 * (i / m_nHei)));
-		this->addChild(menu);
-
-		m_vButtons.push_back(button);
-		//button->setOpacity(100);
-	}
 
 	m_BTN_submit = Button::create("scene4/btn_enter_up.png", "scene4/btn_enter_down.png");
 	m_BTN_submit->setPosition(Vec2(359, 180));
@@ -315,6 +419,29 @@ bool InGameScene::init()
     return true;
 }
 
+void InGameScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event *event)
+{
+	if (keycode == EventKeyboard::KeyCode::KEY_BACK)
+	{
+		this->changeScene();
+	}
+	else if (keycode == EventKeyboard::KeyCode::KEY_ESCAPE)
+	{
+		this->changeScene();
+	}
+
+}
+
+
+
+void InGameScene::changeScene(void)
+{
+	//Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
+
+	auto hScene = SelectStageScene::createScene();
+	auto pScene = TransitionFade::create(1.0f, hScene);
+	Director::getInstance()->replaceScene(pScene);
+}
 
 void InGameScene::menuCloseCallback(Ref* pSender)
 {

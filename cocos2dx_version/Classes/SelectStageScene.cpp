@@ -1,6 +1,8 @@
 #include "SelectStageScene.h"
 #include "Global.h"
 
+#include "DataSingleton.h"
+
 #define PAGE_COUNT 4
 
 
@@ -34,6 +36,7 @@ void SelectStageScene::onButtonBack(Ref* sender, Widget::TouchEventType type)
 		break;
 	case Widget::TouchEventType::ENDED:
 	{
+
 		Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 
 		auto hScene = MainScene::createScene();
@@ -59,6 +62,9 @@ void SelectStageScene::onButtonSelect(Ref* sender, Widget::TouchEventType type)
 		break;
 	case Widget::TouchEventType::ENDED:
 	{
+		DataSingleton::getInstance().nLevel = atoi(btn->getName().c_str());
+		//nLevel = atoi(btn->getName().c_str());
+
 		Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 
 		auto hScene = InGameScene::createScene();
@@ -105,7 +111,7 @@ bool SelectStageScene::init()
 		//MenuItemImage*  IMG_page_indicator = MenuItemImage::create("scene2/page_navi_on.png", "scene2/page_navi_off.png", "scene2/page_navi_off.png");
 		MenuItemImage*  IMG_page_indicator = MenuItemImage::create("scene2/page_navi_on.png", "scene2/page_navi_off.png");
 		IMG_page_indicator->setDisabledImage(image1);
-		IMG_page_indicator->setPosition(Vec2( 360-(PAGE_COUNT*15) + (p*30), 196));
+		IMG_page_indicator->setPosition(Vec2( 360-(PAGE_COUNT*15) + (p*30), 196));	// calc page indicators
 
 		if (p == 0)
 			IMG_page_indicator->setEnabled(true);
@@ -147,7 +153,7 @@ bool SelectStageScene::init()
 				strImageDown += "_down.png";
 
 				Button* BTN_stage = Button::create(strImageUp, strImageDown);
-				BTN_stage->setName(StringUtils::format("button %d", i+1));
+				BTN_stage->setName(StringUtils::format("%d", i+1));
 				//BTN_stage->setTitleText("rank");
 				BTN_stage->setContentSize(Size(150, 150));
 				BTN_stage->addTouchEventListener(CC_CALLBACK_2(SelectStageScene::onButtonSelect, this));

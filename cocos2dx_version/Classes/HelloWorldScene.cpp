@@ -3,24 +3,16 @@
 //#include "ui\UILayout.h"
 //#include "ui/CocosGUI.h"
 
+#include "Global.h"
+
 USING_NS_CC;
 //using namespace std;
 //using namespace ui;
 //using namespace cocostudio;
 
-#define WID 6
-#define HEI 6
 #define ANSWER_DIGIT 4
-#define LIFE 7
 
-string to_string2(int num)
-{
-	ostringstream convert; // stream used for the conversion
 
-	convert << num; // insert the textual representation of ‘Number’ in the characters    in the stream
-
-	return convert.str();
-}
 
 Scene* InGameScene::createScene()
 {
@@ -155,7 +147,7 @@ void InGameScene::Touch_NumPad(Ref* sender)
 			--m_nDigitCount;
 		}
 
-		m_TXT_digit->setString(to_string2(m_nDigitCount)+"/"+to_string2(ANSWER_DIGIT));
+		m_TXT_digit->setString(to_string2(m_nDigitCount) + "/" + to_string2(ANSWER_DIGIT));
 		
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 		//MessageBox(str.c_str(), "응?");
@@ -176,16 +168,21 @@ bool InGameScene::init()
         return false;
     }
 
-	m_nDigitCount = 0;
-	m_nLife = LIFE;
-	m_bGameOver = false;
+	{
+		m_nWid = 4;
+		m_nHei = 3;
+		m_nDigitCount = 0;
+		m_nLife = 7;
+		m_bGameOver = false;
+	}
+	
 
 	// ANSWER_DIGIT자리 난수로 정답을 생성한다.
 	int nSum = 0;
 	srand((unsigned int)time(NULL));
 	while (m_vQuestion.size() != ANSWER_DIGIT)
 	{
-		int nNumber = 1 + random(0, WID*HEI);
+		int nNumber = 1 + random(0, m_nWid*m_nHei);
 		bool bAlreadyHas = false;
 		for (int i = 0; i < m_vQuestion.size(); ++i)
 		{
@@ -221,7 +218,7 @@ bool InGameScene::init()
 	m_LBL_digit->setTextColor(Color4B(79, 147, 210, 255));
 	this->addChild(m_LBL_digit);
 
-	m_TXT_digit = Label::create("0/" +to_string2(ANSWER_DIGIT), "fonts/LCDM2N_.TTF", 54.f);
+	m_TXT_digit = Label::create("0/" + to_string2(ANSWER_DIGIT), "fonts/LCDM2N_.TTF", 54.f);
 	m_TXT_digit->setPosition(Vec2(50, 1000));
 	m_TXT_digit->setAnchorPoint(Vec2(0, 0));
 	this->addChild(m_TXT_digit);
@@ -254,16 +251,16 @@ bool InGameScene::init()
 	this->addChild(img_lifebox);
 
 	// set number pad props.
-	for (size_t i = 0; i < WID*HEI; i++)
+	for (size_t i = 0; i < m_nWid*m_nHei; i++)
 	{
 		string strBtnNormal = "scene4/pad/normal/";
 		strBtnNormal += "pad_on_";
-		strBtnNormal += to_string2(i+1);
+		strBtnNormal += to_string2(i + 1);
 		strBtnNormal += ".png";
 
 		string strBtnPressed = "scene4/pad/pressed/";
 		strBtnPressed += "pad_sel_";
-		strBtnPressed += to_string2(i+1);
+		strBtnPressed += to_string2(i + 1);
 		strBtnPressed += ".png";
 
 		string strBtnDisabled = "scene4/pad/disabled/";
@@ -277,7 +274,7 @@ bool InGameScene::init()
 			CC_CALLBACK_1(InGameScene::Touch_NumPad, this), img1, img2, NULL);
 
 		auto menu = Menu::create(button, NULL);
-		menu->setPosition(Vec2(77 + 113 * (i % WID), 869 - 113 * (i / HEI)));
+		menu->setPosition(Vec2(77 + 113 * (i % m_nWid), 869 - 113 * (i / m_nHei)));
 		this->addChild(menu);
 
 		m_vButtons.push_back(button);

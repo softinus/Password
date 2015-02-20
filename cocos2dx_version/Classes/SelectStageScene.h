@@ -36,7 +36,7 @@ protected:
 	MenuItemImage* m_PAGE_right;
 	MenuItemImage* m_IMG_title;
 	MenuItemImage* m_IMG_status;
-	MenuItemImage* m_IMG_page_indicator;
+	vector<MenuItemImage*> m_vPage;
 
 	Button* m_BTN_back;
 

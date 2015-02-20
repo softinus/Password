@@ -53,6 +53,9 @@ protected:
 	bool m_bGameOver;
 
 	int m_nDigitCount;
+
+	int m_nWid;
+	int m_nHei;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

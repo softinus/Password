@@ -1,5 +1,7 @@
 #include "SelectStageScene.h"
+#include "Global.h"
 
+#define PAGE_COUNT 4
 
 
 
@@ -95,10 +97,24 @@ bool SelectStageScene::init()
 	m_IMG_title->setPosition(Vec2(377, 1025.5));
 	this->addChild(m_IMG_title);
 
-	m_IMG_page_indicator = MenuItemImage::create("scene2/page_navi_on.png", "scene2/page_navi_on.png");
-	m_IMG_page_indicator->setPosition(Vec2(360, 196));
-	this->addChild(m_IMG_page_indicator);
 
+
+	for (int p = 0; p < PAGE_COUNT; ++p)
+	{
+		auto image1 = MenuItemImage::create("scene2/page_navi_off.png", "scene2/page_navi_off.png", NULL, NULL);
+		//MenuItemImage*  IMG_page_indicator = MenuItemImage::create("scene2/page_navi_on.png", "scene2/page_navi_off.png", "scene2/page_navi_off.png");
+		MenuItemImage*  IMG_page_indicator = MenuItemImage::create("scene2/page_navi_on.png", "scene2/page_navi_off.png");
+		IMG_page_indicator->setDisabledImage(image1);
+		IMG_page_indicator->setPosition(Vec2( 360-(PAGE_COUNT*15) + (p*30), 196));
+
+		if (p == 0)
+			IMG_page_indicator->setEnabled(true);
+		else
+			IMG_page_indicator->setEnabled(false);
+
+		m_vPage.push_back(IMG_page_indicator);
+		this->addChild(IMG_page_indicator);
+	}
 	
 
 	m_BTN_back = Button::create("scene2/btn_back_up.png", "scene2/btn_back_down.png");
@@ -113,8 +129,7 @@ bool SelectStageScene::init()
 	m_PAGE_stage->setBackGroundImage("scene2/s2_box01.png");
 	m_PAGE_stage->setAnchorPoint(Vec2(0, 0));
 
-	int pageCount = 4;
-	for (int p = 0; p < pageCount; ++p)
+	for (int p = 0; p < PAGE_COUNT; ++p)
 	{
 		Layout* _frame = Layout::create();
 
@@ -126,9 +141,9 @@ bool SelectStageScene::init()
 		{
 				string strImageUp = "scene2/s2_btn_stg";
 				string strImageDown = "scene2/s2_btn_stg";
-				strImageUp += to_string(i+1);
+				strImageUp += to_string2(i + 1);
 				strImageUp += "_up.png";
-				strImageDown += to_string(i+1);
+				strImageDown += to_string2(i + 1);
 				strImageDown += "_down.png";
 
 				Button* BTN_stage = Button::create(strImageUp, strImageDown);
@@ -169,6 +184,19 @@ void SelectStageScene::pageViewEvent(Ref *pSender, PageView::EventType type)
 	case PageView::EventType::TURNING:
 	{
 		PageView* pageView = dynamic_cast<PageView*>(pSender);
+
+		for (int i = 0; i < m_vPage.size(); ++i)
+		{
+			if (pageView->getCurPageIndex() == i)
+			{
+				m_vPage[i]->setEnabled(true);
+			}
+			else
+			{
+				m_vPage[i]->setEnabled(false);
+			}
+		}
+		
 
 		//_displayValueLabel->setString(CCString::createWithFormat("page = %ld", pageView->getCurPageIndex() + 1)->getCString());
 	}

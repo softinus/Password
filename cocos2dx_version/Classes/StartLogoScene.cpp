@@ -37,8 +37,8 @@ bool StartLogoScene::init()
 	auto *fadeIn = FadeIn::create(2.0f);
 	//auto *fadeOut = FadeOut::create(1.0f);
 	//m_img_Logo->runAction(action);
-	m_img_Logo->runAction(action1);
-	m_img_Logo->runAction(fadeIn);
+	Spawn *sqawn_logo = Spawn::create(action1, fadeIn, NULL);
+	m_img_Logo->runAction(sqawn_logo);
 
 	this->schedule(schedule_selector(StartLogoScene::scheduleCallback), 2.5f);
 

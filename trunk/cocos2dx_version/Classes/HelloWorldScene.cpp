@@ -44,6 +44,8 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 
 		if (m_bGameOver == false)
 		{
+			++m_nSubmitCount;
+			DataSingleton::getInstance().nSpentCount = m_nSubmitCount;
 			for (int i = 0; i < m_vButtons.size(); ++i)
 			{
 				if (m_vButtons[i]->getSelectedIndex() == 1)
@@ -80,7 +82,7 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 				m_BTN_submit->setTitleText("RESTART");
 				MessageBox("S!", "E");
 				//Director::getInstance()->end();
-				changeScene();
+				showResult();
 			}
 
 			// list hint element setting
@@ -151,6 +153,7 @@ bool InGameScene::init()
 	keylistener->onKeyReleased = CC_CALLBACK_2(InGameScene::onKeyReleased, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keylistener, this);
 
+	m_nSubmitCount = 0;
 	m_nAnswerDigit = 2;
 	m_nDigitCount = 0;
 	m_bGameOver = false;
@@ -485,7 +488,14 @@ void InGameScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d
 
 }
 
+void InGameScene::showResult(void)
+{
+	//Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 
+	auto hScene = ResultScene::createScene();
+	auto pScene = TransitionFade::create(1.0f, hScene);
+	Director::getInstance()->pushScene(pScene);
+}
 
 void InGameScene::changeScene(void)
 {

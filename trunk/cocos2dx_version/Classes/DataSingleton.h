@@ -9,4 +9,7 @@ public:
 	static DataSingleton& getInstance() { return inst; }
 
 	int nLevel;
+
+	int nSpentTime;
+	int nSpentCount;
 };

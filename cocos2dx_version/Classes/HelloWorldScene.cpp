@@ -48,7 +48,7 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 			{
 				if (m_vButtons[i]->getSelectedIndex() == 1)
 				{
-					m_vAnswer.push_back(i + 1);	// 눌려져 있으면 정답에 넣고
+					m_vAnswer.push_back(m_vButtons[i]->getTag());	// 눌려져 있으면 정답에 넣고
 					//strAnswer.append(to_string2(m_vAnswer[m_vAnswer.size() - 1]));
 				}
 			}
@@ -79,7 +79,8 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 				m_bGameOver = true;
 				m_BTN_submit->setTitleText("RESTART");
 				MessageBox("S!", "E");
-				Director::getInstance()->end();
+				//Director::getInstance()->end();
+				changeScene();
 			}
 
 			// list hint element setting
@@ -107,12 +108,13 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 			// life
 			--m_nLife;
 			m_TXT_life->setString(to_string2(m_nLife));
-
+			
 			if (m_nLife == 0)
 			{
 				//MessageBeep(0);
 				MessageBox("Game over", "end");
-				Director::getInstance()->end();
+				//Director::getInstance()->end();
+				changeScene();
 			}
 			break;
 		}
@@ -133,30 +135,6 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 	}
 }
 
-void InGameScene::Touch_NumPad(Ref* sender)
-{
-	MenuItemToggle* tgl = dynamic_cast<MenuItemToggle*>(sender);
-
-		// change button select status whether it pressed or not.
-		if (tgl->getSelectedIndex() == 0)
-		{
-			++m_nDigitCount;
-		}
-		else
-		{
-			--m_nDigitCount;
-		}
-
-		m_TXT_digit->setString(to_string2(m_nDigitCount) + "/" + to_string2(m_nAnswerDigit ));
-		
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-		//MessageBox(str.c_str(), "응?");
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-		//exit(0);		
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-		
-#endif
-}
 
 // on "init" you need to initialize your instance
 bool InGameScene::init()
@@ -181,6 +159,7 @@ bool InGameScene::init()
 	int nStartX = 0;
 	int nStartY = 0;
 	int nMargin = 1;
+	int nFontSize = 0;
 
 	if (nLevel == 1)
 	{
@@ -192,6 +171,7 @@ bool InGameScene::init()
 		nButtonSize = 338;
 		nStartX = 190;
 		nStartY = 757;
+		nFontSize = 135;
 	}
 	else if (nLevel == 2)
 	{
@@ -203,6 +183,7 @@ bool InGameScene::init()
 		nButtonSize = 224;
 		nStartX = 133;
 		nStartY = 700;
+		nFontSize = 100;
 	}
 	else if (nLevel == 3)
 	{
@@ -214,6 +195,7 @@ bool InGameScene::init()
 		nButtonSize = 224;
 		nStartX = 133;
 		nStartY = 814;
+		nFontSize = 100;
 	}
 	else if (nLevel == 4)
 	{
@@ -225,6 +207,7 @@ bool InGameScene::init()
 		nButtonSize = 168;
 		nStartX = 105;
 		nStartY = 757;
+		nFontSize = 85;
 	}
 	else if (nLevel == 5)
 	{
@@ -236,6 +219,7 @@ bool InGameScene::init()
 		nButtonSize = 168;
 		nStartX = 105;
 		nStartY = 842;
+		nFontSize = 85;
 	}
 	else if (nLevel == 6)
 	{
@@ -247,6 +231,7 @@ bool InGameScene::init()
 		nButtonSize = 135;
 		nStartX = 88;
 		nStartY = 804;
+		nFontSize = 70;
 	}
 	else if (nLevel == 7)
 	{
@@ -258,6 +243,7 @@ bool InGameScene::init()
 		nButtonSize = 168;
 		nStartX = 88;
 		nStartY = 858;
+		nFontSize = 70;
 	}
 	else if (nLevel == 8)
 	{
@@ -269,6 +255,7 @@ bool InGameScene::init()
 		nButtonSize = 112;
 		nStartX = 77;
 		nStartY = 870;
+		nFontSize = 58;
 	}
 	else if (nLevel == 9)
 	{
@@ -280,6 +267,7 @@ bool InGameScene::init()
 		nButtonSize = 112;
 		nStartX = 77;
 		nStartY = 870;
+		nFontSize = 58;
 	}
 	
 	for (int i = 0; i < m_nWid; ++i)
@@ -291,16 +279,20 @@ bool InGameScene::init()
 
 			MenuItemToggle* button = MenuItemToggle::createWithCallback(
 				CC_CALLBACK_1(InGameScene::Touch_NumPad, this), img1, img2, NULL);
+
+			float fResizeFactor = (float)nButtonSize / (float)(button->getContentSize().height);
+			button->setScale(fResizeFactor);
+			button->setTag(j*m_nWid + (i + 1));
 						
 			auto menu = Menu::create(button, NULL);
 			menu->setPosition(Vec2(nStartX + (nButtonSize + nMargin) * i, nStartY - (nButtonSize + nMargin) * j));
-			menu->setContentSize(Size(nButtonSize, nButtonSize));
 
-			auto LBL_number = Label::createWithTTF("0", "fonts/LCDM2N_.TTF", 120.f);
+			auto LBL_number = Label::createWithTTF("0", "fonts/LCDM2N_.TTF", nFontSize);
 			LBL_number->setPosition(Vec2(nStartX + (nButtonSize + nMargin) * i, nStartY - (nButtonSize + nMargin) * j));
 			LBL_number->setString(to_string2(j*m_nWid + (i+1)));
 			LBL_number->setTextColor(Color4B(17, 140, 24, 200));
-			LBL_number->enableOutline(Color4B::WHITE, 1);
+
+			button->setUserObject(LBL_number);
 
 			this->addChild(menu);
 			this->addChild(LBL_number);
@@ -316,7 +308,7 @@ bool InGameScene::init()
 	srand((unsigned int)time(NULL));
 	while (m_vQuestion.size() != m_nAnswerDigit)
 	{
-		int nNumber = 1 + random(0, m_nWid*m_nHei);
+		int nNumber = random(1, m_nWid*m_nHei);
 		bool bAlreadyHas = false;
 		for (int i = 0; i < m_vQuestion.size(); ++i)
 		{
@@ -332,11 +324,15 @@ bool InGameScene::init()
 			nSum += nNumber;
 		}
 	}
+
+	m_sumNew = nSum;
 	
 	// gen answer
 	m_TXT_sum = Label::create(to_string2(nSum), "fonts/LCDM2N_.TTF", 54.f);
 	m_TXT_sum->setPosition(Vec2(200, 1000));
 	m_TXT_sum->setAnchorPoint(Vec2(0, 0));
+	m_TXT_sum->setVerticalAlignment(TextVAlignment::CENTER);
+	m_TXT_sum->setAlignment(TextHAlignment::CENTER);
 	this->addChild(m_TXT_sum);	
 
 	m_LBL_sum = Label::create("sum", "fonts/LCDM2N_.TTF", 24.f);
@@ -418,6 +414,63 @@ bool InGameScene::init()
     
     return true;
 }
+
+
+void InGameScene::Touch_NumPad(Ref* sender)
+{
+	MenuItemToggle* tgl = dynamic_cast<MenuItemToggle*>(sender);
+	Label* lbl = static_cast<Label*>(tgl->getUserObject());
+
+	// change button select status whether it pressed or not.
+	
+	if (tgl->getSelectedIndex() == 0)	
+	{
+		if (lbl)
+			lbl->enableOutline(Color4B::BLACK, 0);
+
+		++m_nDigitCount;
+		m_sumNew = m_sumNew + tgl->getTag();
+
+	}
+	else// if this button already selected
+	{
+		if (abs(m_nDigitCount) == m_nAnswerDigit)
+		{
+			tgl->setSelectedIndex(0);
+			return;
+		}
+
+		if (lbl)
+			lbl->enableOutline(Color4B::WHITE, 1);
+
+		--m_nDigitCount;
+		
+		m_sumNew = m_sumNew - tgl->getTag();
+
+	}
+
+	if (m_sumNew < 0)	// minus
+	{
+		m_TXT_sum->setString("E");
+		m_TXT_sum->setTextColor(Color4B::RED);
+	}
+	else
+	{
+		m_TXT_sum->setString(to_string2(m_sumNew));
+		m_TXT_sum->setTextColor(Color4B::WHITE);
+	}
+		
+	m_TXT_digit->setString(to_string2(m_nDigitCount) + "/" + to_string2(m_nAnswerDigit));
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+	//MessageBox(str.c_str(), "응?");
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	//exit(0);		
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+
+#endif
+}
+
 
 void InGameScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event *event)
 {

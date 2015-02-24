@@ -44,7 +44,7 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 
 		if (m_bGameOver == false)
 		{
-			++m_nSubmitCount;
+			
 			DataSingleton::getInstance().nSpentCount = m_nSubmitCount;
 			for (int i = 0; i < m_vButtons.size(); ++i)
 			{
@@ -54,6 +54,12 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 					//strAnswer.append(to_string2(m_vAnswer[m_vAnswer.size() - 1]));
 				}
 			}
+
+			if (m_vAnswer.empty())	// 아무것도 눌리지 않으면 동작 안 함.
+				return;
+
+			++m_nSubmitCount;
+
 			// 채점하기
 			int nCount = 0;
 			string strPrint = "";
@@ -80,8 +86,9 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 			{
 				m_bGameOver = true;
 				m_BTN_submit->setTitleText("RESTART");
-				MessageBox("S!", "E");
+				//MessageBox("S!", "E");
 				//Director::getInstance()->end();
+				UserDefault::getInstance()->setIntegerForKey("stage", DataSingleton::getInstance().nLevel);
 				showResult();
 			}
 
@@ -114,9 +121,9 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 			if (m_nLife == 0)
 			{
 				//MessageBeep(0);
-				MessageBox("Game over", "end");
+				//MessageBox("Game over", "end");
 				//Director::getInstance()->end();
-				changeScene();
+				showResultFailed();
 			}
 			break;
 		}
@@ -486,6 +493,15 @@ void InGameScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d
 		this->changeScene();
 	}
 
+}
+
+void InGameScene::showResultFailed(void)
+{
+	//Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
+
+	auto hScene = ResultFailedScene::createScene();
+	auto pScene = TransitionFade::create(1.0f, hScene);
+	Director::getInstance()->pushScene(pScene);
 }
 
 void InGameScene::showResult(void)

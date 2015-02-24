@@ -88,14 +88,17 @@ bool SelectStageScene::init()
 
 	Size s = this->getContentSize();
 
+	if (UserDefault::getInstance()->getIntegerForKey("stage") == NULL)
+	{
+		UserDefault::getInstance()->setIntegerForKey("stage", 0);
+	}
 
 
-
-	m_PAGE_left = MenuItemImage::create("scene2/s2_btn_left.png", "scene2/s2_btn_left.png");
+	m_PAGE_left = MenuItemImage::create("scene2/s2_btn_left_up.png", "scene2/s2_btn_left_down.png");
 	m_PAGE_left->setPosition(Vec2(69, 586));
 	this->addChild(m_PAGE_left);
 
-	m_PAGE_right = MenuItemImage::create("scene2/s2_btn_right.png", "scene2/s2_btn_right.png");
+	m_PAGE_right = MenuItemImage::create("scene2/s2_btn_right_up.png", "scene2/s2_btn_right_down.png");
 	m_PAGE_right->setPosition(Vec2(651, 586));
 	this->addChild(m_PAGE_right);
 
@@ -147,18 +150,25 @@ bool SelectStageScene::init()
 		{
 				string strImageUp = "scene2/s2_btn_stg";
 				string strImageDown = "scene2/s2_btn_stg";
+				string strImageDisable = "scene2/s2_btn_stg";
 				strImageUp += to_string2(i + 1);
 				strImageUp += "_up.png";
 				strImageDown += to_string2(i + 1);
 				strImageDown += "_down.png";
+				strImageDisable += to_string2(i + 1);
+				strImageDisable += "_deact.png";
 
-				Button* BTN_stage = Button::create(strImageUp, strImageDown);
+				Button* BTN_stage = Button::create(strImageUp, strImageDown, strImageDisable);
 				BTN_stage->setName(StringUtils::format("%d", i+1));
 				//BTN_stage->setTitleText("rank");
 				BTN_stage->setContentSize(Size(150, 150));
 				BTN_stage->addTouchEventListener(CC_CALLBACK_2(SelectStageScene::onButtonSelect, this));
 				BTN_stage->setZOrder(1);
 				BTN_stage->setPosition(Vec2(155 + 155*(i % 3), 555-155*(i / 3) ));
+				
+				// It depends how many stages cleared.
+				//BTN_stage->setEnabled(i + 1 < UserDefault::getInstance()->getIntegerForKey("stage") );
+				//BTN_stage->setEnabled(false);
 
 				MenuItemImage* IMG_rank = MenuItemImage::create("scene2/rank_b.png", "scene2/rank_b.png");
 				IMG_rank->setZOrder(2);

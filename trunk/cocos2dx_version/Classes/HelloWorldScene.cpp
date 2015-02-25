@@ -250,7 +250,7 @@ bool InGameScene::init()
 		m_nLife = 6;
 		m_nAnswerDigit = 6;
 
-		nButtonSize = 168;
+		nButtonSize = 135;
 		nStartX = 88;
 		nStartY = 858;
 		nFontSize = 70;
@@ -495,6 +495,8 @@ void InGameScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d
 
 }
 
+
+
 void InGameScene::showResultFailed(void)
 {
 	//Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
@@ -521,6 +523,7 @@ void InGameScene::changeScene(void)
 	auto pScene = TransitionFade::create(1.0f, hScene);
 	Director::getInstance()->replaceScene(pScene);
 }
+
 
 void InGameScene::menuCloseCallback(Ref* pSender)
 {

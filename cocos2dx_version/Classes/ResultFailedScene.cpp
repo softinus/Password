@@ -34,10 +34,12 @@ bool ResultFailedScene::init()
 
 	m_BTN_ad = Button::create("scene5-2/s5_2_btn_go_ad_up.png", "scene5-2/s5_2_btn_go_ad_down.png");
 	m_BTN_ad->setPosition(Vec2(368.5, 678));
+	m_BTN_ad->addTouchEventListener(CC_CALLBACK_2(ResultFailedScene::ShowAD, this));
 	this->addChild(m_BTN_ad);
 
 	m_BTN_main = Button::create("scene5-2/btn_main_up.png", "scene5-2/btn_main_down.png");
 	m_BTN_main->setPosition(Vec2(381.5, 192.5));
+	m_BTN_main->addTouchEventListener(CC_CALLBACK_2(ResultFailedScene::GoToMain, this));
 	this->addChild(m_BTN_main);
 
 	//auto action1 = JumpBy::create(1.5f, Point(s.width / 2, 0), 100, 3);
@@ -71,15 +73,26 @@ Scene* ResultFailedScene::scene()
 	return scene;
 }
 
-void ResultFailedScene::changeScene(void)
+
+void ResultFailedScene::ShowAD(Ref* sender, Widget::TouchEventType type)
+{
+
+}
+
+void ResultFailedScene::GoToMain(Ref* sender, Widget::TouchEventType type)
 {
 	//  Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
 	Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 
-	auto hScene = MainScene::createScene();
-	auto pScene = TransitionFade::create(1.0f, hScene);
-	//auto pScene = TransitionFlipAngular::create(1.0f, hScene);
+	auto hScene = SelectStageScene::createScene();
+	//auto pScene = TransitionFade::create(1.0f, hScene);
+	auto pScene = TransitionFlipAngular::create(1.0f, hScene);
 	Director::getInstance()->replaceScene(pScene);
+}
+
+void ResultFailedScene::changeScene(void)
+{
+
 }
 
 bool ResultFailedScene::onTouchBegan(Touch* touch, Event* event) {
@@ -89,3 +102,4 @@ bool ResultFailedScene::onTouchBegan(Touch* touch, Event* event) {
 	changeScene();
 	return true;
 }
+

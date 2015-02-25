@@ -30,6 +30,7 @@ protected:
 	Button* m_BTN_ad;
 	Button* m_BTN_main;
 	
-
+	void ResultFailedScene::ShowAD(Ref* sender, Widget::TouchEventType type);
+	void ResultFailedScene::GoToMain(Ref* sender, Widget::TouchEventType type);
 
 };

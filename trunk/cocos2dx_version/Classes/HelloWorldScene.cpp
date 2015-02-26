@@ -45,7 +45,7 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 		if (m_bGameOver == false)
 		{
 			
-			DataSingleton::getInstance().nSpentCount = m_nSubmitCount;
+			
 			for (int i = 0; i < m_vButtons.size(); ++i)
 			{
 				if (m_vButtons[i]->getSelectedIndex() == 1)
@@ -59,6 +59,7 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 				return;
 
 			++m_nSubmitCount;
+			DataSingleton::getInstance().nSpentCount = m_nSubmitCount;
 
 			// 채점하기
 			int nCount = 0;

@@ -101,7 +101,7 @@ void ResultScene::changeScene(void)
 	//  Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
 	Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 
-	auto hScene = MainScene::createScene();
+	auto hScene = SelectStageScene::createScene();
 	auto pScene = TransitionFade::create(1.0f, hScene);
 	//auto pScene = TransitionFlipAngular::create(1.0f, hScene);
 	Director::getInstance()->replaceScene(pScene);

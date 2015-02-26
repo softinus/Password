@@ -93,12 +93,12 @@ bool SelectStageScene::init()
 		UserDefault::getInstance()->setIntegerForKey("stage", 0);
 	}
 
-
-	m_PAGE_left = MenuItemImage::create("scene2/s2_btn_left_up.png", "scene2/s2_btn_left_down.png");
+	
+	m_PAGE_left = Button::create("scene2/s2_btn_left_up.png", "scene2/s2_btn_left_down.png");
 	m_PAGE_left->setPosition(Vec2(69, 586));
 	this->addChild(m_PAGE_left);
 
-	m_PAGE_right = MenuItemImage::create("scene2/s2_btn_right_up.png", "scene2/s2_btn_right_down.png");
+	m_PAGE_right = Button::create("scene2/s2_btn_right_up.png", "scene2/s2_btn_right_down.png");
 	m_PAGE_right->setPosition(Vec2(651, 586));
 	this->addChild(m_PAGE_right);
 
@@ -165,7 +165,12 @@ bool SelectStageScene::init()
 				BTN_stage->addTouchEventListener(CC_CALLBACK_2(SelectStageScene::onButtonSelect, this));
 				BTN_stage->setZOrder(1);
 				BTN_stage->setPosition(Vec2(155 + 155*(i % 3), 555-155*(i / 3) ));
-				
+				//BTN_stage->setTouchEnabled(false);
+				//BTN_stage->setEnabled(false);
+				//BTN_stage->setFocusEnabled(false);
+				//BTN_stage->setScale9Enabled(true);
+				//BTN_stage->setPressedActionEnabled(true);
+				//BTN_stage->b
 				// It depends how many stages cleared.
 				//BTN_stage->setEnabled(i + 1 < UserDefault::getInstance()->getIntegerForKey("stage") );
 				//BTN_stage->setEnabled(false);

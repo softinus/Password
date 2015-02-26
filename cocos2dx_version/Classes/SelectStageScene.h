@@ -32,8 +32,8 @@ protected:
 	PageView* m_PAGE_stage;
 	MenuItemImage* m_img_Logo;
 
-	MenuItemImage* m_PAGE_left;
-	MenuItemImage* m_PAGE_right;
+	Button* m_PAGE_left;
+	Button* m_PAGE_right;
 	MenuItemImage* m_IMG_title;
 	MenuItemImage* m_IMG_status;
 	vector<MenuItemImage*> m_vPage;

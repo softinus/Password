@@ -26,10 +26,13 @@ public:
 	
 	void Touch_start(Ref* sender, Widget::TouchEventType type);
 
+	void Touch_sound(Ref* sender);
+	void Touch_setting(Ref* sender);
+		
 protected:
 	MenuItemImage* m_img_Logo;
-	Button* m_BTN_set;
-	Button* m_BTN_sound;
+	Menu* m_BTN_set;
+	Menu* m_BTN_sound;
 	Button* m_BTN_ranking;
 	Button* m_BTN_replay;
 	Button* m_BTN_base;

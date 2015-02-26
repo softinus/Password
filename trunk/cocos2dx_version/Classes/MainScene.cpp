@@ -18,6 +18,14 @@ Scene* MainScene::createScene()
 	return scene;
 }
 
+void MainScene::Touch_sound(Ref* sender)
+{
+
+}
+void MainScene::Touch_setting(Ref* sender)
+{
+
+}
 
 bool MainScene::init()
 {
@@ -32,13 +40,31 @@ bool MainScene::init()
 	m_img_Logo->setPosition(Vec2(360, 990));
 	this->addChild(m_img_Logo);
 
-	m_BTN_set = Button::create("scene1-1/s1_btn_set.png", "scene1-1/s1_btn_set.png");
-	m_BTN_set->setPosition(Vec2(596, 1178));
-	this->addChild(m_BTN_set);
+	{
+		auto img_set1 = MenuItemImage::create("scene1-1/s1_btn_set_up.png", "scene1-1/s1_btn_set_up.png");
+		auto img_set2 = MenuItemImage::create("scene1-1/s1_btn_set_down.png", "scene1-1/s1_btn_set_down.png");
 
-	m_BTN_sound = Button::create("scene1-1/s1_btn_sound.png", "scene1-1/s1_btn_sound.png");
-	m_BTN_sound->setPosition(Vec2(637, 1178));
-	this->addChild(m_BTN_sound);
+		MenuItemToggle* button = MenuItemToggle::createWithCallback(
+			CC_CALLBACK_1(MainScene::Touch_setting, this), img_set1, img_set2, NULL);
+
+		m_BTN_set = Menu::create(button, NULL);
+		m_BTN_set->setPosition(Vec2(64, 1178));
+		this->addChild(m_BTN_set);
+	}
+
+	{
+		auto img_sound1 = MenuItemImage::create("scene1-1/s1_btn_sound.png", "scene1-1/s1_btn_sound.png");
+		auto img_sound2 = MenuItemImage::create("scene1-1/s1_btn_sound_off.png", "scene1-1/s1_btn_sound_off.png");
+
+		MenuItemToggle* button2 = MenuItemToggle::createWithCallback(
+			CC_CALLBACK_1(MainScene::Touch_sound, this), img_sound1, img_sound2, NULL);
+
+		m_BTN_sound = Menu::create(button2, NULL);
+		m_BTN_sound->setPosition(Vec2(637, 1178));
+		this->addChild(m_BTN_sound);
+	}
+
+
 
 	m_BTN_ranking = Button::create("scene1-1/s1_btn_ranking_up.png", "scene1-1/s1_btn_ranking_down.png");
 	m_BTN_ranking->setPosition(Vec2(197, 835));
@@ -69,7 +95,7 @@ bool MainScene::init()
 	m_BTN_charge_ok->setPosition(Vec2(310.5, 1159));
 	this->addChild(m_BTN_charge_ok);
 
-	m_LBL_difficult = Label::create("Current stage", "fonts/LCDM2N_.TTF", 30.f);
+	m_LBL_difficult = Label::create("Current stage", "fonts/LCDM2N_.TTF", 30);
 	m_LBL_difficult->setPosition(Vec2(50, 470));
 	m_LBL_difficult->setAnchorPoint(Vec2(0, 0));
 	this->addChild(m_LBL_difficult);

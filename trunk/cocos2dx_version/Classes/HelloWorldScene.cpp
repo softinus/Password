@@ -89,7 +89,11 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 				m_BTN_submit->setTitleText("RESTART");
 				//MessageBox("S!", "E");
 				//Director::getInstance()->end();
-				UserDefault::getInstance()->setIntegerForKey("stage", DataSingleton::getInstance().nLevel);
+
+				int nSavedStage= UserDefault::getInstance()->getIntegerForKey("stage", 0);
+				if (nSavedStage < DataSingleton::getInstance().nLevel)	// if this level is highest level...
+					UserDefault::getInstance()->setIntegerForKey("stage", DataSingleton::getInstance().nLevel);	// update save data.
+
 				showResult();
 			}
 

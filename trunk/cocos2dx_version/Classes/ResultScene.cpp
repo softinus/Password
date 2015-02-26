@@ -34,22 +34,35 @@ bool ResultScene::init()
 	m_IMG_result->setPosition(Vec2(260,1144));
 	this->addChild(m_IMG_result);
 
+
+	string str_rank = "rank_normal_";
+	str_rank += to_string2(DataSingleton::getInstance().nLevel);
+	int nSavedRank= UserDefault::getInstance()->getIntegerForKey(str_rank.c_str(), 0);
+
 	string strRankImagePath = "";
 	if (nTotalCount == 1)
 	{
 		strRankImagePath = "scene5-1/s5_rank_s.png";
+		if (nSavedRank!=3)
+		UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 3);
 	}
 	else if (nTotalCount == 2)
 	{
 		strRankImagePath = "scene5-1/s5_rank_a.png";
+		if (nSavedRank<2)
+		UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 2);
 	}
-	else if (nTotalCount == 2)
+	else if (nTotalCount == 3)
 	{
 		strRankImagePath = "scene5-1/s5_rank_b.png";
+		if (nSavedRank<1)
+		UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 1);
 	}
 	else
 	{
 		strRankImagePath = "scene5-1/s5_rank_c.png";
+		if (nSavedRank<0)
+		UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 0);
 	}
 	m_IMG_rank = MenuItemImage::create(strRankImagePath, strRankImagePath);
 	m_IMG_rank->setPosition(Vec2(495, 891.5));

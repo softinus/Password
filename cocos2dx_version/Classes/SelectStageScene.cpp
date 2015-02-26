@@ -175,12 +175,32 @@ bool SelectStageScene::init()
 				
 				// It depends how many stages cleared.
 				int nClearedStage = UserDefault::getInstance()->getIntegerForKey("stage");
-				//string str = ""; str += to_string2(i); str += "<"; str += to_string2(nClearedStage);
-				//MessageBox(str.c_str(), "t");
 				BTN_stage->setBright(i < nClearedStage+1);
 				BTN_stage->setEnabled(i < nClearedStage + 1);
 
-				MenuItemImage* IMG_rank = MenuItemImage::create("scene2/rank_b.png", "scene2/rank_b.png");
+				string str = "rank_normal_";
+				str += to_string2(i + 1);
+				int nCurrRank= UserDefault::getInstance()->getIntegerForKey(str.c_str(), 0);	// restore each level's rank.
+
+				string strIMGrank = "scene2/rank_";
+				if (nCurrRank == 0)	// c rank
+				{
+					strIMGrank += "c.png";
+				}
+				else if (nCurrRank == 1)	// b rank
+				{
+					strIMGrank += "b.png";
+				}
+				else if (nCurrRank == 2)	// a rank
+				{
+					strIMGrank += "a.png";
+				}
+				else if (nCurrRank == 3)	// s rank
+				{
+					strIMGrank += "s.png";
+				}
+
+				MenuItemImage* IMG_rank = MenuItemImage::create(strIMGrank, strIMGrank);
 				IMG_rank->setZOrder(2);
 				IMG_rank->setPosition(Vec2(170 + 155 * (i % 3), 505 - 155 * (i / 3)));
 

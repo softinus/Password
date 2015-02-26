@@ -29,7 +29,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
     if(!glview) {
         //glview = GLViewImpl::create("My Game");
-		const float fScreenSizefactor = 0.3f;
+		const float fScreenSizefactor = 0.7f;
 		glview = GLViewImpl::createWithRect("PW", Rect(0, 0, 720 * fScreenSizefactor, 1280 * fScreenSizefactor));
         director->setOpenGLView(glview);
     }

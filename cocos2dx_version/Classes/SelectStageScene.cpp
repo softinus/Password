@@ -3,8 +3,8 @@
 
 #include "DataSingleton.h"
 
-#define PAGE_COUNT 4
-
+#define PAGE_COUNT 1
+#define STAGE_COUNT 9
 
 
 Scene* SelectStageScene::createScene()
@@ -91,6 +91,13 @@ bool SelectStageScene::init()
 	if (UserDefault::getInstance()->getIntegerForKey("stage") == NULL)
 	{
 		UserDefault::getInstance()->setIntegerForKey("stage", 0);
+
+		for (int i = 0; i < STAGE_COUNT; ++i)
+		{
+			string str = "rank_normal_";
+			str += to_string2(i + 1);
+			UserDefault::getInstance()->setIntegerForKey(str.c_str(), 0);	// save each level's rank.
+		}
 	}
 
 	
@@ -146,7 +153,7 @@ bool SelectStageScene::init()
 		m_IMG_status->setPosition(Vec2(m_PAGE_stage->getContentSize().width/2, 750));
 		_frame->addChild(m_IMG_status);
 
-		for (int i = 0; i < 9; ++i)
+		for (int i = 0; i < STAGE_COUNT; ++i)
 		{
 				string strImageUp = "scene2/s2_btn_stg";
 				string strImageDown = "scene2/s2_btn_stg";
@@ -165,15 +172,13 @@ bool SelectStageScene::init()
 				BTN_stage->addTouchEventListener(CC_CALLBACK_2(SelectStageScene::onButtonSelect, this));
 				BTN_stage->setZOrder(1);
 				BTN_stage->setPosition(Vec2(155 + 155*(i % 3), 555-155*(i / 3) ));
-				//BTN_stage->setTouchEnabled(false);
-				//BTN_stage->setEnabled(false);
-				//BTN_stage->setFocusEnabled(false);
-				//BTN_stage->setScale9Enabled(true);
-				//BTN_stage->setPressedActionEnabled(true);
-				//BTN_stage->b
+				
 				// It depends how many stages cleared.
-				//BTN_stage->setEnabled(i + 1 < UserDefault::getInstance()->getIntegerForKey("stage") );
-				//BTN_stage->setEnabled(false);
+				int nClearedStage = UserDefault::getInstance()->getIntegerForKey("stage");
+				//string str = ""; str += to_string2(i); str += "<"; str += to_string2(nClearedStage);
+				//MessageBox(str.c_str(), "t");
+				BTN_stage->setBright(i < nClearedStage+1);
+				BTN_stage->setEnabled(i < nClearedStage + 1);
 
 				MenuItemImage* IMG_rank = MenuItemImage::create("scene2/rank_b.png", "scene2/rank_b.png");
 				IMG_rank->setZOrder(2);

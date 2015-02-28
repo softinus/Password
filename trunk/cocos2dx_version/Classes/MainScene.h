@@ -26,8 +26,12 @@ public:
 	
 	void Touch_start(Ref* sender, Widget::TouchEventType type);
 
+	void Touch_ranking(Ref* sender, Widget::TouchEventType type);
+	void Touch_replay(Ref* sender, Widget::TouchEventType type);
+
 	void Touch_sound(Ref* sender);
 	void Touch_setting(Ref* sender);
+
 		
 protected:
 	MenuItemImage* m_img_Logo;

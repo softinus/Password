@@ -1,6 +1,6 @@
 #include "MainScene.h"
 
-
+#include "GameSharing.h"
 
 
 Scene* MainScene::createScene()
@@ -18,14 +18,6 @@ Scene* MainScene::createScene()
 	return scene;
 }
 
-void MainScene::Touch_sound(Ref* sender)
-{
-
-}
-void MainScene::Touch_setting(Ref* sender)
-{
-
-}
 
 bool MainScene::init()
 {
@@ -33,6 +25,8 @@ bool MainScene::init()
 	{
 		return false;
 	}
+
+	//GameSharing::initGameSharing();
 
 	Size s = this->getContentSize();
 
@@ -68,10 +62,12 @@ bool MainScene::init()
 
 	m_BTN_ranking = Button::create("scene1-1/s1_btn_ranking_up.png", "scene1-1/s1_btn_ranking_down.png");
 	m_BTN_ranking->setPosition(Vec2(197, 835));
+	m_BTN_ranking->addTouchEventListener(CC_CALLBACK_2(MainScene::Touch_ranking, this));
 	this->addChild(m_BTN_ranking);
 
 	m_BTN_replay = Button::create("scene1-1/s1_btn_replay_up.png", "scene1-1/s1_btn_replay_down.png");
 	m_BTN_replay->setPosition(Vec2(512, 835));
+	m_BTN_replay->addTouchEventListener(CC_CALLBACK_2(MainScene::Touch_replay, this));
 	this->addChild(m_BTN_replay);
 
 	m_BTN_base = Button::create("scene1-1/s1_btry_base_off.png", "scene1-1/s1_btry_base_off.png");
@@ -105,23 +101,6 @@ bool MainScene::init()
 }
 
 
-void MainScene::Touch_start(Ref* sender, Widget::TouchEventType type)
-{
-	Button* btn = (Button*)sender;
-
-	//터치 이벤트 실행시 프로그램 종료
-	switch (type)
-	{
-	case Widget::TouchEventType::BEGAN:
-		break;
-	case Widget::TouchEventType::MOVED:
-		break;
-	case Widget::TouchEventType::ENDED:
-		changeScene();
-		break;
-	}
-}
-
 
 Scene* MainScene::scene()
 {
@@ -140,6 +119,44 @@ void MainScene::changeScene(void)
 	auto pScene = TransitionFade::create(1.0f, hScene);
 	Director::getInstance()->replaceScene(pScene);
 }
+
+
+void MainScene::Touch_sound(Ref* sender)
+{
+
+}
+void MainScene::Touch_setting(Ref* sender)
+{
+
+}
+
+void MainScene::Touch_ranking(Ref* sender, Widget::TouchEventType type)
+{
+	GameSharing::ShowLeaderboards(0);
+}
+void MainScene::Touch_replay(Ref* sender, Widget::TouchEventType type)
+{
+
+}
+
+void MainScene::Touch_start(Ref* sender, Widget::TouchEventType type)
+{
+	Button* btn = (Button*)sender;
+
+	//터치 이벤트 실행시 프로그램 종료
+	switch (type)
+	{
+	case Widget::TouchEventType::BEGAN:
+		break;
+	case Widget::TouchEventType::MOVED:
+		break;
+	case Widget::TouchEventType::ENDED:
+		changeScene();
+		break;
+	}
+}
+
+
 
 bool MainScene::onTouchBegan(Touch* touch, Event* event)
 {

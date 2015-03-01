@@ -1,6 +1,4 @@
-#ifndef __HELLOWORLD_SCENE_H__
-#define __HELLOWORLD_SCENE_H__
-
+#pragma once
 
 #include <vector>
 #include "cocos2d.h"
@@ -68,5 +66,3 @@ protected:
 	void showResult(void);
 	void showResultFailed(void);
 };
-
-#endif // __HELLOWORLD_SCENE_H__

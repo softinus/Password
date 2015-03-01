@@ -31,7 +31,9 @@ public:
 
 	void Touch_sound(Ref* sender);
 	void Touch_setting(Ref* sender);
-
+	void onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event *event);
+	void ShowPopup();
+	void Callback_popup_ok(Ref* pSender);
 		
 protected:
 	MenuItemImage* m_img_Logo;

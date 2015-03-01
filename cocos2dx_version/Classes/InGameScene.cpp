@@ -1,10 +1,10 @@
-#include "HelloWorldScene.h"
+#include "InGameScene.h"
 //#include "cocostudio\CocoStudio.h"
 //#include "ui\UILayout.h"
 //#include "ui/CocosGUI.h"
 
-#include "Global.h"
-#include "DataSingleton.h"
+#include "Util/Global.h"
+#include "Util/DataSingleton.h"
 
 USING_NS_CC;
 //using namespace std;
@@ -44,8 +44,6 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 
 		if (m_bGameOver == false)
 		{
-			
-			
 			for (int i = 0; i < m_vButtons.size(); ++i)
 			{
 				if (m_vButtons[i]->getSelectedIndex() == 1)
@@ -95,6 +93,7 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 					UserDefault::getInstance()->setIntegerForKey("stage", DataSingleton::getInstance().nLevel);	// update save data.
 
 				showResult();
+				return;
 			}
 
 			// list hint element setting
@@ -507,8 +506,9 @@ void InGameScene::showResultFailed(void)
 	//Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 
 	auto hScene = ResultFailedScene::createScene();
-	auto pScene = TransitionFade::create(1.0f, hScene);
-	Director::getInstance()->pushScene(pScene);
+	//auto pScene = TransitionFade::create(1.0f, hScene);
+	//Director::getInstance()->pushScene(pScene);
+	this->addChild(hScene);
 }
 
 void InGameScene::showResult(void)

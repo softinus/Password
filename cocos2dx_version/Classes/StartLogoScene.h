@@ -2,7 +2,7 @@
 
 #include "cocos2d.h"
 #include "ui\CocosGUI.h"
-#include "HelloWorldScene.h"
+#include "InGameScene.h"
 #include "MainScene.h"
 USING_NS_CC;
 

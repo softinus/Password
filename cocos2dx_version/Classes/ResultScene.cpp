@@ -28,6 +28,7 @@ bool ResultScene::init()
 
 	Size s = this->getContentSize();
 
+
 	int nTotalCount = DataSingleton::getInstance().nSpentCount;
 
 	m_IMG_result = MenuItemImage::create("scene5-1/s5_result.png", "scene5-1/s5_result.png");

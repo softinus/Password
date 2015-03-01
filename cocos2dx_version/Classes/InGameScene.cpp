@@ -6,7 +6,8 @@
 #include "Util/Global.h"
 #include "Util/DataSingleton.h"
 #include "GPGS/GameSharing.h"
-
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 USING_NS_CC;
 //using namespace std;
 //using namespace ui;

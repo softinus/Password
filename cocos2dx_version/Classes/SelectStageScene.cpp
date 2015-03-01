@@ -1,7 +1,9 @@
 #include "SelectStageScene.h"
 #include "Util/Global.h"
-
 #include "Util/DataSingleton.h"
+
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 
 #define PAGE_COUNT 1
 #define STAGE_COUNT 9
@@ -62,6 +64,10 @@ void SelectStageScene::onButtonSelect(Ref* sender, Widget::TouchEventType type)
 		break;
 	case Widget::TouchEventType::ENDED:
 	{
+
+		auto audio = SimpleAudioEngine::getInstance();
+		audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
+
 		DataSingleton::getInstance().nLevel = atoi(btn->getName().c_str());
 		//nLevel = atoi(btn->getName().c_str());
 

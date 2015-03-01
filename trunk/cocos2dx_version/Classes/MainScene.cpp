@@ -1,7 +1,7 @@
 #include "MainScene.h"
 
-#include "GameSharing.h"
-
+#include "GPGS/GameSharing.h"
+#include "CustomUI/UIPopupWindow.h"
 
 Scene* MainScene::createScene()
 {
@@ -26,6 +26,9 @@ bool MainScene::init()
 		return false;
 	}
 
+	auto keylistener = EventListenerKeyboard::create();
+	keylistener->onKeyReleased = CC_CALLBACK_2(MainScene::onKeyReleased, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(keylistener, this);
 	//GameSharing::initGameSharing();
 
 	Size s = this->getContentSize();
@@ -164,4 +167,44 @@ bool MainScene::onTouchBegan(Touch* touch, Event* event)
 	Point location = target->convertToNodeSpace(touch->getLocation());
 
 	return true;
+}
+
+void MainScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event *event)
+{
+	if (keycode == EventKeyboard::KeyCode::KEY_BACK)
+	{
+		ShowPopup();
+	}
+	else if (keycode == EventKeyboard::KeyCode::KEY_ESCAPE)
+	{
+		ShowPopup();
+	}
+
+}
+
+void MainScene::Callback_popup_ok(Ref* pSender)
+{
+	UIPopupWindow *pPopup = (UIPopupWindow *)pSender;
+	int nTag = pPopup->getResult();
+
+	if (nTag == 1)
+	{
+		pPopup->closePopup();
+	}
+	if (nTag == 2)
+	{
+		pPopup->closePopup();
+	}
+}
+
+
+void MainScene::ShowPopup()
+{
+	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL, Sprite::create("quit/pup_quit.png"));
+	pPopupOK->setBackgroundBorard(Sprite::create("common/bg_black_80.png"));
+	pPopupOK->setCallBackFunc(CC_CALLBACK_1(MainScene::Callback_popup_ok, this));
+	pPopupOK->addButton("quit/pup_quit_btn_ok.png", "quit/pup_quit_btn_ok.png", "", TextureResType::LOCAL, Point(-120, -51), "", 1);
+	pPopupOK->addButton("quit/pup_quit_btn_resume.png", "quit/pup_quit_btn_resume.png", "", TextureResType::LOCAL, Point(120, -51), "", 2);
+	//pPopupOK->setMessageString("test_ popup");
+	pPopupOK->showPopup(this);
 }

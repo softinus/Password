@@ -1,5 +1,5 @@
 #include "AppDelegate.h"
-#include "HelloWorldScene.h"
+#include "InGameScene.h"
 #include "StartLogoScene.h"
 
 USING_NS_CC;

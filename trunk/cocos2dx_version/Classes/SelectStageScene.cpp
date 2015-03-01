@@ -1,7 +1,7 @@
 #include "SelectStageScene.h"
-#include "Global.h"
+#include "Util/Global.h"
 
-#include "DataSingleton.h"
+#include "Util/DataSingleton.h"
 
 #define PAGE_COUNT 1
 #define STAGE_COUNT 9

@@ -4,8 +4,8 @@
 #include "ui\CocosGUI.h"
 #include "SelectStageScene.h"
 #include "MainScene.h"
-#include "DataSingleton.h"
-#include "Global.h"
+#include "Util/DataSingleton.h"
+#include "Util/Global.h"
 USING_NS_CC;
 
 using namespace ui;

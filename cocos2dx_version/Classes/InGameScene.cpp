@@ -34,6 +34,9 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 {
 	Button* btn = (Button*)sender;
 
+	auto audio = SimpleAudioEngine::getInstance();
+	audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
+
 	//터치 이벤트 실행시 프로그램 종료
 	switch (type)
 	{
@@ -437,6 +440,9 @@ void InGameScene::Touch_NumPad(Ref* sender)
 {
 	MenuItemToggle* tgl = dynamic_cast<MenuItemToggle*>(sender);
 	Label* lbl = static_cast<Label*>(tgl->getUserObject());
+
+	auto audio = SimpleAudioEngine::getInstance();
+	audio->playEffect("raw/number.wav", false, 1.0f, 1.0f, 1.0f);
 
 	// change button select status whether it pressed or not.
 	

@@ -3,6 +3,7 @@ Copyright (c) 2008-2010 Ricardo Quesada
 Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2011      Zynga Inc.
 Copyright (c) 2013-2014 Chukong Technologies Inc.
+Copyright (c) 2014 Adrian Dawid
  
 http://www.cocos2d-x.org
 
@@ -26,7 +27,105 @@ THE SOFTWARE.
 ****************************************************************************/
 package org.cocos2dx.cpp;
 
-import org.cocos2dx.lib.Cocos2dxActivity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 
-public class AppActivity extends Cocos2dxActivity {
+import com.google.android.gms.games.Games;
+import com.softinus.pw.R;
+
+public class AppActivity extends BaseGameActivity {
+    static int currentID;
+    static int currentAchievementID;
+    static boolean gpgAvailable;
+    
+    static String[] leaderboardIDs;
+    static String[] achievementIDs;
+    static Context currentContext;
+    
+    @Override
+    public void onSignInSucceeded(){
+        gpgAvailable = true;
+    }
+    
+    @Override
+    public void onSignInFailed(){
+        gpgAvailable = false;
+    }
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        String leaderboardIdsRaw = getString(R.string.leaderboards);
+        String achievementIdsRaw = getString(R.string.achievements);
+        
+        leaderboardIDs = leaderboardIdsRaw.split(";");
+        achievementIDs =  achievementIdsRaw.split(";");
+        
+        currentContext = this;
+        
+        super.onCreate(savedInstanceState);
+    }
+    
+    /*@brief Changes the actvie leaderboard
+      @param The index of the leaderboard
+    */
+    static public void openLeaderboard(int leaderboardID){
+         currentID = leaderboardID;
+    }
+    
+    /*@brief This function opens the leaderboards ui for an leaderboard id*/
+    static public void openLeaderboardUI(){
+        if(gpgAvailable){
+                ((AppActivity)currentContext).runOnUiThread(new Runnable() {
+            public void run() {
+                ((AppActivity)currentContext).startActivityForResult(Games.Leaderboards.getLeaderboardIntent(((AppActivity)currentContext).getGameHelper().getApiClient(), leaderboardIDs[currentID]),2);
+            }
+                });
+        }
+    }
+    
+    static public boolean isGPGSupported(){
+        return gpgAvailable;
+    }
+    
+    /*@brief Submits a score to the leaderboard that is currently actvie*/
+    static public void submitScoreToLeaderboard(int score)
+    {
+        if(gpgAvailable){
+        Games.Leaderboards.submitScore(((AppActivity)currentContext).getGameHelper().getApiClient(),leaderboardIDs[currentID],score);
+        updateAchievement(100);
+        }
+    }
+    
+     /*@brief Shows the achievements ui*/
+    static public void showAchievements() {
+        if(gpgAvailable){
+        ((AppActivity)currentContext).runOnUiThread(new Runnable() {
+            public void run() {
+                ((AppActivity)currentContext).startActivityForResult(Games.Achievements.getAchievementsIntent(((AppActivity)currentContext).getGameHelper().getApiClient()), 5);
+            }
+        });
+        }
+    }
+    
+    /*@brief Changes the actvie Achievement
+      @param The index of the achievement in the list*/
+    static public void openAchievement(int achievementID){
+        currentAchievementID = achievementID;
+    }
+    
+    static public void updateAchievement(int percentage){
+        if(gpgAvailable){
+       Games.Achievements.unlock(((AppActivity)currentContext).getGameHelper().getApiClient(), achievementIDs[currentAchievementID]);
+        }
+    }
+    
+    static public void exitGame()
+    {
+        Intent intent = new Intent(currentContext, MainActivity.class);
+        MainActivity.exiting=true;
+        currentContext.startActivity(intent);
+    }
 }
+
+

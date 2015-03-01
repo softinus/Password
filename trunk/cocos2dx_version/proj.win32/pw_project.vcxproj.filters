@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="win32">
+      <UniqueIdentifier>{84a8ebd7-7cf0-47f6-b75e-d441df67da40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resource">
+      <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\GPGS">
+      <UniqueIdentifier>{189c4bce-8baf-473b-9597-9a33d9e1ce7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Util">
+      <UniqueIdentifier>{63b265df-867a-4481-a9b6-970b48d1ab65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\CustomUI">
+      <UniqueIdentifier>{46f14ff2-ce90-4a4c-8513-84e78ad895e8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AppDelegate.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MainScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ResultFailedScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ResultScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SelectStageScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\StartLogoScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GPGS\GameSharing.cpp">
+      <Filter>src\GPGS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CustomUI\ButtonN.cpp">
+      <Filter>src\CustomUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CustomUI\UIPopupWindow.cpp">
+      <Filter>src\CustomUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CustomUI\UIPopupWindowBase.cpp">
+      <Filter>src\CustomUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Util\DataSingleton.cpp">
+      <Filter>src\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\InGameScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppDelegate.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MainScene.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ResultFailedScene.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ResultScene.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SelectStageScene.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\StartLogoScene.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GPGS\GameSharing.h">
+      <Filter>src\GPGS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CustomUI\ButtonN.h">
+      <Filter>src\CustomUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CustomUI\UIPopupWindow.h">
+      <Filter>src\CustomUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CustomUI\UIPopupWindowBase.h">
+      <Filter>src\CustomUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Util\DataSingleton.h">
+      <Filter>src\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Util\Global.h">
+      <Filter>src\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\InGameScene.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="game.rc">
+      <Filter>resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

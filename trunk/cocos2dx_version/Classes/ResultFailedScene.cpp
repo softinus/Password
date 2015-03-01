@@ -1,6 +1,7 @@
 #include "ResultFailedScene.h"
+#include "SimpleAudioEngine.h"
 
-
+using namespace CocosDenshion;
 
 
 Scene* ResultFailedScene::createScene()

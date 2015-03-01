@@ -5,6 +5,7 @@
 
 #include "Util/Global.h"
 #include "Util/DataSingleton.h"
+#include "GPGS/GameSharing.h"
 
 USING_NS_CC;
 //using namespace std;
@@ -92,6 +93,8 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 				if (nSavedStage < DataSingleton::getInstance().nLevel)	// if this level is highest level...
 					UserDefault::getInstance()->setIntegerForKey("stage", DataSingleton::getInstance().nLevel);	// update save data.
 
+				//submit score to Google play store game service...
+				GameSharing::SubmitScore(DataSingleton::getInstance().nLevel, 0);
 				showResult();
 				return;
 			}

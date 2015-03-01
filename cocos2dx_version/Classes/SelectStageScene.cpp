@@ -38,6 +38,8 @@ void SelectStageScene::onButtonBack(Ref* sender, Widget::TouchEventType type)
 		break;
 	case Widget::TouchEventType::ENDED:
 	{
+		auto audio = SimpleAudioEngine::getInstance();
+		audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
 
 		Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 

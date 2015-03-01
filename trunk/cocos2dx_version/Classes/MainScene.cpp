@@ -135,16 +135,44 @@ void MainScene::Touch_setting(Ref* sender)
 
 void MainScene::Touch_ranking(Ref* sender, Widget::TouchEventType type)
 {
+	//터치 이벤트 실행시 프로그램 종료
+	switch (type)
+	{
+	case Widget::TouchEventType::BEGAN:
+		break;
+	case Widget::TouchEventType::MOVED:
+		break;
+	case Widget::TouchEventType::ENDED:
+
+		auto audio = SimpleAudioEngine::getInstance();
+		audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
+		break;
+	}
+
 	GameSharing::ShowLeaderboards(0);
 }
 void MainScene::Touch_replay(Ref* sender, Widget::TouchEventType type)
 {
+	//터치 이벤트 실행시 프로그램 종료
+	switch (type)
+	{
+	case Widget::TouchEventType::BEGAN:
+		break;
+	case Widget::TouchEventType::MOVED:
+		break;
+	case Widget::TouchEventType::ENDED:
 
+		auto audio = SimpleAudioEngine::getInstance();
+		audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
+		break;
+	}
 }
 
 void MainScene::Touch_start(Ref* sender, Widget::TouchEventType type)
 {
 	Button* btn = (Button*)sender;
+
+
 
 	//터치 이벤트 실행시 프로그램 종료
 	switch (type)
@@ -154,6 +182,8 @@ void MainScene::Touch_start(Ref* sender, Widget::TouchEventType type)
 	case Widget::TouchEventType::MOVED:
 		break;
 	case Widget::TouchEventType::ENDED:
+		auto audio = SimpleAudioEngine::getInstance();
+		audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
 		changeScene();
 		break;
 	}

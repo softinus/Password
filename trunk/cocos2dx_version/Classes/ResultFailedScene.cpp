@@ -81,6 +81,9 @@ void ResultFailedScene::ShowAD(Ref* sender, Widget::TouchEventType type)
 
 void ResultFailedScene::GoToMain(Ref* sender, Widget::TouchEventType type)
 {
+	auto audio = SimpleAudioEngine::getInstance();
+	audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
+
 	//  Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
 	Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 

@@ -33,6 +33,14 @@ bool MainScene::init()
 
 	Size s = this->getContentSize();
 
+
+
+	m_img_BG = MenuItemImage::create("scene1-1/ani_bg.png", "scene1-1/ani_bg.png");
+	m_img_BG->setPosition(Vec2(0, 0));
+	m_img_BG->setAnchorPoint(Vec2(0, 0));
+	m_img_BG->setOpacity(20);
+	this->addChild(m_img_BG);
+
 	m_img_Logo = MenuItemImage::create("scene1-1/s1_title.png", "scene1-1/s1_title.png");
 	m_img_Logo->setPosition(Vec2(360, 990));
 	this->addChild(m_img_Logo);
@@ -230,11 +238,11 @@ void MainScene::Callback_popup_ok(Ref* pSender)
 
 void MainScene::ShowPopup()
 {
-	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL, Sprite::create("quit/pup_quit.png"));
-	pPopupOK->setBackgroundBorard(Sprite::create("common/bg_black_80.png"));
-	pPopupOK->setCallBackFunc(CC_CALLBACK_1(MainScene::Callback_popup_ok, this));
-	pPopupOK->addButton("quit/pup_quit_btn_ok.png", "quit/pup_quit_btn_ok.png", "", TextureResType::LOCAL, Point(-120, -51), "", 1);
-	pPopupOK->addButton("quit/pup_quit_btn_resume.png", "quit/pup_quit_btn_resume.png", "", TextureResType::LOCAL, Point(120, -51), "", 2);
-	//pPopupOK->setMessageString("test_ popup");
-	pPopupOK->showPopup(this);
+	//UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL, Sprite::create("quit/pup_quit.png"));
+	//pPopupOK->setBackgroundBorard(Sprite::create("common/bg_black_80.png"));
+	//pPopupOK->setCallBackFunc(CC_CALLBACK_1(MainScene::Callback_popup_ok, this));
+	//pPopupOK->addButton("quit/pup_quit_btn_ok.png", "quit/pup_quit_btn_ok.png", "", TextureResType::LOCAL, Point(-120, -51), "", 1);
+	//pPopupOK->addButton("quit/pup_quit_btn_resume.png", "quit/pup_quit_btn_resume.png", "", TextureResType::LOCAL, Point(120, -51), "", 2);
+	////pPopupOK->setMessageString("test_ popup");
+	//pPopupOK->showPopup(this);
 }

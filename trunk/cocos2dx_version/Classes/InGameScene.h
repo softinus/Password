@@ -32,6 +32,9 @@ public:
 protected:
 	void Touch_NumPad(Ref* sender);
 	void Touch_submit(Ref* sender, Widget::TouchEventType type);
+
+	void FinishStage();
+
 	//Layout* _layout;
 	vector<int> m_vQuestion;
 	vector<int> m_vAnswer;
@@ -52,11 +55,15 @@ protected:
 	Label* m_TXT_life;	// life counter
 	int m_nLife;
 	int m_nAnswerDigit;	// word count
-	bool m_bGameOver;
+	//bool m_bGameOver;
+	int m_nCurrStageRepeatCount; // 현재 스테이지 반복 횟수
 
 	int m_nSubmitCount;	// total submit count
-	int m_nDigitCount;
-	int m_sumNew;
+	int m_nDigitCount;	// 답변 자리수
+	int m_sumNew;	// 
+	int m_nRepeatStage_MAX;	// 스테이지 반복 횟수
+	int m_nRecoverLife;	// 성공했을 때 회복 라이프 개수
+	int m_nTime;	// time (unit:sec)
 
 	int m_nWid;
 	int m_nHei;

@@ -36,6 +36,7 @@ public:
 	void Callback_popup_ok(Ref* pSender);
 		
 protected:
+	MenuItemImage* m_img_BG;
 	MenuItemImage* m_img_Logo;
 	Menu* m_BTN_set;
 	Menu* m_BTN_sound;

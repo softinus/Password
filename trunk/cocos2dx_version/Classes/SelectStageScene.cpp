@@ -190,7 +190,11 @@ bool SelectStageScene::init()
 				str += to_string2(i + 1);
 				int nCurrRank= UserDefault::getInstance()->getIntegerForKey(str.c_str(), 0);	// restore each level's rank.
 
-				string strIMGrank = "scene2/rank_";
+				string strIMGrank = "scene2/s2_rank_";
+				if (nCurrRank == -1)	// c rank
+				{
+					strIMGrank += "d.png";
+				}
 				if (nCurrRank == 0)	// c rank
 				{
 					strIMGrank += "c.png";
@@ -210,7 +214,7 @@ bool SelectStageScene::init()
 
 				MenuItemImage* IMG_rank = MenuItemImage::create(strIMGrank, strIMGrank);
 				IMG_rank->setZOrder(2);
-				IMG_rank->setPosition(Vec2(170 + 155 * (i % 3), 505 - 155 * (i / 3)));
+				IMG_rank->setPosition(Vec2(200 + 155 * (i % 3), 505 - 155 * (i / 3)));
 
 				_frame->addChild(IMG_rank);
 				_frame->addChild(BTN_stage);

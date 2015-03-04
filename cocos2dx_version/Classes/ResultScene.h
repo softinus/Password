@@ -17,7 +17,7 @@ public:
 	static Scene* scene();
 	CREATE_FUNC(ResultScene);
 	virtual bool init();
-
+	
 	EventListenerTouchOneByOne * listener;
 
 	static Scene* createScene(void);
@@ -27,6 +27,12 @@ public:
 
 	void scheduleCallback(float delta);	// schedule
 
+
+	//void SetResult(bool);
+	//ResultScene() : bSuccess(true) {};
+	//ResultScene(bool bSuccess);
+
+
 protected:
 	MenuItemImage* m_IMG_result;
 	MenuItemImage* m_IMG_rank;
@@ -35,6 +41,8 @@ protected:
 	Button* m_BTN_main;
 	Button* m_BTN_next;
 	MenuItemImage* m_IMG_line;
+
+	bool m_bSuccess;
 
 
 };

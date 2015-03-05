@@ -7,6 +7,7 @@
 #include "Util/DataSingleton.h"
 #include "GPGS/GameSharing.h"
 #include "SimpleAudioEngine.h"
+#include "network/HttpRequest.h"
 using namespace CocosDenshion;
 USING_NS_CC;
 //using namespace std;
@@ -31,141 +32,8 @@ Scene* InGameScene::createScene()
     return scene;
 }
 
-void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
+void InGameScene::InitStage()
 {
-	Button* btn = (Button*)sender;
-
-	auto audio = SimpleAudioEngine::getInstance();
-	audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
-
-	//≈Õƒ° ¿Ã∫•∆Æ Ω««‡Ω√ «¡∑Œ±◊∑• ¡æ∑·
-	switch (type)
-	{
-	case Widget::TouchEventType::BEGAN:
-		break;
-	case Widget::TouchEventType::MOVED:
-		break;
-	case Widget::TouchEventType::ENDED:
-
-		for (int i = 0; i < m_vButtons.size(); ++i)
-		{
-			if (m_vButtons[i]->getSelectedIndex() == 1)
-			{
-				m_vAnswer.push_back(m_vButtons[i]->getTag());	// ¥≠∑¡¡Æ ¿÷¿∏∏È ¡§¥‰ø° ≥÷∞Ì
-				//strAnswer.append(to_string2(m_vAnswer[m_vAnswer.size() - 1]));
-			}
-		}
-
-		if (m_vAnswer.empty())	// æ∆π´∞Õµµ ¥≠∏Æ¡ˆ æ ¿∏∏È µø¿€ æ» «‘.
-			return;
-
-		++m_nSubmitCount;
-		DataSingleton::getInstance().nSpentCount = m_nSubmitCount;
-
-		// √§¡°«œ±‚
-		int nCount = 0;
-		string strPrint = "";
-
-		for (int j = 0; j < m_vAnswer.size(); ++j)
-		{
-			strPrint += to_string2(m_vAnswer[j]);
-			if (j != m_vAnswer.size() - 1)
-				strPrint += ", ";
-
-			for (int i = 0; i < m_vQuestion.size(); ++i)
-			{
-				if (m_vQuestion[i] == m_vAnswer[j])
-				{
-					++nCount;
-					break;
-				}
-			}
-		}
-
-
-		// ¥Ÿ ∏¬≠ü∞Ì ¿⁄∏¥ºˆµµ ∏¬¿∏∏È ¡§¥‰¿”
-		if (nCount == m_nAnswerDigit && (m_vQuestion.size() == m_vAnswer.size()))
-		{
-			if (m_nCurrStageRepeatCount == m_nRepeatStage_MAX)
-			{
-				FinishStage();
-			}
-			else
-			{
-				// TODO : ¿Ã¬ ø° «ˆ¿Á ¥≠∏∞ πˆ∆∞ √ ±‚»≠, ¡§¥‰ √ ±‚»≠, ∏≈ƒ™ºÆººΩ∫ ∂ÁøÏ±‚, ∂Û¿Ã«¡ »∏∫π
-				FinishStage();
-				//Text* txt = Text::create("   =====SUCCESS! =====   ", "fonts/LCDM2N_.TTF", 30.f);
-
-				//Layout* default_item = Layout::create();
-				//default_item->setTouchEnabled(true);
-				//default_item->setContentSize(txt->getContentSize());
-				//txt->setPosition(Vec2(default_item->getContentSize().width / 2.0f,
-				//	default_item->getContentSize().height / 2.0f));
-				//default_item->addChild(txt);
-
-				//lst_log->setItemModel(default_item);
-				//lst_log->pushBackDefaultItem();
-				//this->addChild(lst_log);
-
-				++m_nCurrStageRepeatCount;
-			}
-
-			return;
-		}
-
-		// list hint element setting
-		Text* txt = Text::create(strPrint, "fonts/LCDM2N_.TTF", 28.f);
-		txt->setColor(Color3B(183, 183, 183));
-		Text* txt2 = Text::create(to_string2(nCount), "fonts/LCDM2N_.TTF", 28.f);
-		txt2->setColor(Color3B(227, 29, 29));
-
-		Layout* default_item = Layout::create();
-		default_item->setTouchEnabled(true);
-		default_item->setContentSize(Size(txt->getContentSize().width + txt2->getContentSize().height
-			, txt->getContentSize().height));
-		txt->setPosition(Vec2(default_item->getContentSize().width / 2.0f,
-			default_item->getContentSize().height / 2.0f));
-		txt2->setPosition(Vec2(415,
-			default_item->getContentSize().height / 2.0f));
-		default_item->addChild(txt);
-		default_item->addChild(txt2);
-
-		lst_log->pushBackCustomItem(default_item);
-		//MessageBox(strAnswer.c_str(), "Result");
-		m_vAnswer.clear();
-		lst_log->scrollToBottom(.5f, false);
-
-		// life
-		--m_nLife;
-		m_TXT_life->setString(to_string2(m_nLife));
-			
-		if (m_nLife == 0)
-		{
-			//MessageBeep(0);
-			//MessageBox("Game over", "end");
-			//Director::getInstance()->end();
-			showResultFailed();
-		}
-		break;
-	}
-}
-
-
-// on "init" you need to initialize your instance
-bool InGameScene::init()
-{
-    //////////////////////////////
-    // 1. super init first
-    if ( !Layer::init() )
-    {
-        return false;
-    }
-
-
-	auto keylistener = EventListenerKeyboard::create();
-	keylistener->onKeyReleased = CC_CALLBACK_2(InGameScene::onKeyReleased, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(keylistener, this);
-
 	m_nCurrStageRepeatCount = 0;
 	m_nSubmitCount = 0;
 	m_nAnswerDigit = 2;
@@ -324,6 +192,7 @@ bool InGameScene::init()
 		nFontSize = 58;
 	}
 
+	// pad setting
 	for (int i = 0; i < m_nWid; ++i)
 	{
 		for (int j = 0; j < m_nHei; ++j)
@@ -337,13 +206,13 @@ bool InGameScene::init()
 			float fResizeFactor = (float)nButtonSize / (float)(button->getContentSize().height);
 			button->setScale(fResizeFactor);
 			button->setTag(j*m_nWid + (i + 1));
-						
+
 			auto menu = Menu::create(button, NULL);
 			menu->setPosition(Vec2(nStartX + (nButtonSize + nMargin) * i, nStartY - (nButtonSize + nMargin) * j));
 
 			auto LBL_number = Label::createWithTTF("0", "fonts/LCDM2N_.TTF", nFontSize);
 			LBL_number->setPosition(Vec2(nStartX + (nButtonSize + nMargin) * i, nStartY - (nButtonSize + nMargin) * j));
-			LBL_number->setString(to_string2(j*m_nWid + (i+1)));
+			LBL_number->setString(to_string2(j*m_nWid + (i + 1)));
 			LBL_number->setTextColor(Color4B(17, 140, 24, 200));
 
 			button->setUserObject(LBL_number);
@@ -353,8 +222,27 @@ bool InGameScene::init()
 
 			m_vButtons.push_back(button);
 		}
-		
 	}
+}
+
+// on "init" you need to initialize your instance
+bool InGameScene::init()
+{
+	//////////////////////////////
+	// 1. super init first
+	if (!Layer::init())
+	{
+		return false;
+	}
+
+
+	auto keylistener = EventListenerKeyboard::create();
+	keylistener->onKeyReleased = CC_CALLBACK_2(InGameScene::onKeyReleased, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(keylistener, this);
+
+	InitStage();
+
+
 
 
 	// ANSWER_DIGIT¿⁄∏Æ ≥≠ºˆ∑Œ ¡§¥‰¿ª ª˝º∫«—¥Ÿ.
@@ -370,7 +258,7 @@ bool InGameScene::init()
 			{
 				bAlreadyHas = true;
 				break;
-			}				
+			}
 		}
 		if (bAlreadyHas == false)
 		{
@@ -380,14 +268,14 @@ bool InGameScene::init()
 	}
 
 	m_sumNew = nSum;
-	
+
 	// gen answer
 	m_TXT_sum = Label::create(to_string2(nSum), "fonts/LCDM2N_.TTF", 54.f);
 	m_TXT_sum->setPosition(Vec2(200, 1000));
 	m_TXT_sum->setAnchorPoint(Vec2(0, 0));
 	m_TXT_sum->setVerticalAlignment(TextVAlignment::CENTER);
 	m_TXT_sum->setAlignment(TextHAlignment::CENTER);
-	this->addChild(m_TXT_sum);	
+	this->addChild(m_TXT_sum);
 
 	m_LBL_sum = Label::create("sum", "fonts/LCDM2N_.TTF", 24.f);
 	m_LBL_sum->setPosition(Vec2(210, 965));
@@ -425,10 +313,10 @@ bool InGameScene::init()
 	m_TXT_life->setAnchorPoint(Vec2(0, 0));
 	m_TXT_life->setAlignment(TextHAlignment::CENTER);
 	this->addChild(m_TXT_life);
-    
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
-		
+
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
 	Size s = this->getContentSize();
 
 	MenuItemImage* img_lifebox = MenuItemImage::create("scene4/box_life.png", "scene4/box_life.png");
@@ -463,14 +351,142 @@ bool InGameScene::init()
 	txt->setPosition(Vec2(default_item->getContentSize().width / 2.0f,
 		default_item->getContentSize().height / 2.0f));
 	default_item->addChild(txt);
-	
+
 	lst_log->setItemModel(default_item);
 	lst_log->pushBackDefaultItem();
 	this->addChild(lst_log);
 
-    
-    return true;
+
+	return true;
 }
+
+
+void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
+{
+	Button* btn = (Button*)sender;
+
+	auto audio = SimpleAudioEngine::getInstance();
+	audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
+
+	//≈Õƒ° ¿Ã∫•∆Æ Ω««‡Ω√ «¡∑Œ±◊∑• ¡æ∑·
+	switch (type)
+	{
+	case Widget::TouchEventType::BEGAN:
+		break;
+	case Widget::TouchEventType::MOVED:
+		break;
+	case Widget::TouchEventType::ENDED:
+
+		for (int i = 0; i < m_vButtons.size(); ++i)
+		{
+			if (m_vButtons[i]->getSelectedIndex() == 1)
+			{
+				m_vAnswer.push_back(m_vButtons[i]->getTag());	// ¥≠∑¡¡Æ ¿÷¿∏∏È ¡§¥‰ø° ≥÷∞Ì
+				//strAnswer.append(to_string2(m_vAnswer[m_vAnswer.size() - 1]));
+			}
+		}
+
+		if (m_vAnswer.empty())	// æ∆π´∞Õµµ ¥≠∏Æ¡ˆ æ ¿∏∏È µø¿€ æ» «‘.
+			return;
+
+		++m_nSubmitCount;
+		DataSingleton::getInstance().nSpentCount = m_nSubmitCount;
+
+		// √§¡°«œ±‚
+		int nCount = 0;
+		string strPrint = "";
+
+		for (int j = 0; j < m_vAnswer.size(); ++j)
+		{
+			strPrint += to_string2(m_vAnswer[j]);
+			if (j != m_vAnswer.size() - 1)
+				strPrint += ", ";
+
+			for (int i = 0; i < m_vQuestion.size(); ++i)
+			{
+				if (m_vQuestion[i] == m_vAnswer[j])
+				{
+					++nCount;
+					break;
+				}
+			}
+		}
+
+
+		// ¥Ÿ ∏¬≠ü∞Ì ¿⁄∏¥ºˆµµ ∏¬¿∏∏È ¡§¥‰¿”
+		if (nCount == m_nAnswerDigit && (m_vQuestion.size() == m_vAnswer.size()))
+		{
+			if (m_nCurrStageRepeatCount == m_nRepeatStage_MAX)
+			{
+				FinishStage();
+			}
+			else
+			{
+				// TODO : ¿Ã¬ ø° «ˆ¿Á ¥≠∏∞ πˆ∆∞ √ ±‚»≠, ¡§¥‰ √ ±‚»≠, ∏≈ƒ™ºÆººΩ∫ ∂ÁøÏ±‚, ∂Û¿Ã«¡ »∏∫π
+				//FinishStage();
+				Sprite* SPR_match = Sprite::create("scene4/s4_pup_success.png");
+				SPR_match->setPosition(this->getContentSize().width / 2, this->getContentSize().height / 2);
+				this->addChild(SPR_match);
+				this->setTouchEnabled(false);
+
+				
+
+				//Text* txt = Text::create("   =====SUCCESS! =====   ", "fonts/LCDM2N_.TTF", 30.f);
+
+				//Layout* default_item = Layout::create();
+				//default_item->setTouchEnabled(true);
+				//default_item->setContentSize(txt->getContentSize());
+				//txt->setPosition(Vec2(default_item->getContentSize().width / 2.0f,
+				//	default_item->getContentSize().height / 2.0f));
+				//default_item->addChild(txt);
+
+				//lst_log->setItemModel(default_item);
+				//lst_log->pushBackDefaultItem();
+				//this->addChild(lst_log);
+
+				++m_nCurrStageRepeatCount;
+			}
+
+			return;
+		}
+
+		// list hint element setting
+		Text* txt = Text::create(strPrint, "fonts/LCDM2N_.TTF", 28.f);
+		txt->setColor(Color3B(183, 183, 183));
+		Text* txt2 = Text::create(to_string2(nCount), "fonts/LCDM2N_.TTF", 28.f);
+		txt2->setColor(Color3B(227, 29, 29));
+
+		Layout* default_item = Layout::create();
+		default_item->setTouchEnabled(true);
+		default_item->setContentSize(Size(txt->getContentSize().width + txt2->getContentSize().height
+			, txt->getContentSize().height));
+		txt->setPosition(Vec2(default_item->getContentSize().width / 2.0f,
+			default_item->getContentSize().height / 2.0f));
+		txt2->setPosition(Vec2(415,
+			default_item->getContentSize().height / 2.0f));
+		default_item->addChild(txt);
+		default_item->addChild(txt2);
+
+		lst_log->pushBackCustomItem(default_item);
+		//MessageBox(strAnswer.c_str(), "Result");
+		m_vAnswer.clear();
+		lst_log->scrollToBottom(.5f, false);
+
+		// life
+		--m_nLife;
+		m_TXT_life->setString(to_string2(m_nLife));
+			
+		if (m_nLife == 0)
+		{
+			//MessageBeep(0);
+			//MessageBox("Game over", "end");
+			//Director::getInstance()->end();
+			showResultFailed();
+		}
+		break;
+	}
+}
+
 
 
 void InGameScene::Touch_NumPad(Ref* sender)

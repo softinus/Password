@@ -27,12 +27,13 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(InGameScene);
 
-	
+	EventListenerTouchOneByOne * listener;
 
 protected:
 	void Touch_NumPad(Ref* sender);
 	void Touch_submit(Ref* sender, Widget::TouchEventType type);
 
+	void InitStage();
 	void FinishStage();
 
 	//Layout* _layout;

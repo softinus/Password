@@ -245,32 +245,13 @@ bool InGameScene::init()
 
 
 
-	// ANSWER_DIGIT자리 난수로 정답을 생성한다.
-	int nSum = 0;
-	srand((unsigned int)time(NULL));
-	while (m_vQuestion.size() != m_nAnswerDigit)
-	{
-		int nNumber = random(1, m_nWid*m_nHei);
-		bool bAlreadyHas = false;
-		for (int i = 0; i < m_vQuestion.size(); ++i)
-		{
-			if (m_vQuestion[i] == nNumber)
-			{
-				bAlreadyHas = true;
-				break;
-			}
-		}
-		if (bAlreadyHas == false)
-		{
-			m_vQuestion.push_back(nNumber);
-			nSum += nNumber;
-		}
-	}
+	MakeAnswer();
 
-	m_sumNew = nSum;
+
+
 
 	// gen answer
-	m_TXT_sum = Label::create(to_string2(nSum), "fonts/LCDM2N_.TTF", 54.f);
+	m_TXT_sum = Label::create(to_string2(m_sumNew), "fonts/LCDM2N_.TTF", 54.f);
 	m_TXT_sum->setPosition(Vec2(200, 1000));
 	m_TXT_sum->setAnchorPoint(Vec2(0, 0));
 	m_TXT_sum->setVerticalAlignment(TextVAlignment::CENTER);
@@ -365,8 +346,6 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 {
 	Button* btn = (Button*)sender;
 
-	auto audio = SimpleAudioEngine::getInstance();
-	audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
 
 	//터치 이벤트 실행시 프로그램 종료
 	switch (type)
@@ -377,12 +356,17 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 		break;
 	case Widget::TouchEventType::ENDED:
 
+
+		auto audio = SimpleAudioEngine::getInstance();
+		audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
+
 		for (int i = 0; i < m_vButtons.size(); ++i)
 		{
 			if (m_vButtons[i]->getSelectedIndex() == 1)
 			{
 				m_vAnswer.push_back(m_vButtons[i]->getTag());	// 눌려져 있으면 정답에 넣고
 				//strAnswer.append(to_string2(m_vAnswer[m_vAnswer.size() - 1]));
+
 			}
 		}
 
@@ -427,24 +411,49 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 				Sprite* SPR_match = Sprite::create("scene4/s4_pup_success.png");
 				SPR_match->setPosition(this->getContentSize().width / 2, this->getContentSize().height / 2);
 				this->addChild(SPR_match);
-				this->setTouchEnabled(false);
+
+				auto *fadein = FadeOut::create(1.5f);    // 시간
+				auto *delay = DelayTime::create(1.5f);    // 시간
+				auto *fadeout = FadeOut::create(2.5f);    // 시간
+
+				Sequence *action_2 = Sequence::create(fadein, delay, fadeout, NULL);
+
+				SPR_match->runAction(action_2);
 
 				
+				//this->setTouchEnabled(false);
 
-				//Text* txt = Text::create("   =====SUCCESS! =====   ", "fonts/LCDM2N_.TTF", 30.f);
+				MakeAnswer();
+				m_nDigitCount = 0;
+				m_nLife += m_nRecoverLife;
+				for (size_t i = 0; i < m_vButtons.size(); ++i)
+				{
+					m_vButtons[i]->setSelectedIndex(0);
+					Label* lbl = static_cast<Label*>(m_vButtons[i]->getUserObject());
+					lbl->enableOutline(Color4B::BLACK, 0);
+				}
 
-				//Layout* default_item = Layout::create();
-				//default_item->setTouchEnabled(true);
-				//default_item->setContentSize(txt->getContentSize());
-				//txt->setPosition(Vec2(default_item->getContentSize().width / 2.0f,
-				//	default_item->getContentSize().height / 2.0f));
-				//default_item->addChild(txt);
+				// UI refresh
+				m_TXT_life->setString(to_string2(m_nLife));
+				m_TXT_digit->setString(to_string2(m_nDigitCount) + "/" + to_string2(m_nAnswerDigit));
+				m_TXT_sum->setString(to_string2(m_sumNew));
+				m_BTN_submit->setBright(false);
 
-				//lst_log->setItemModel(default_item);
-				//lst_log->pushBackDefaultItem();
+				string str = "   ===== SUCCESS! (" + to_string2(m_nCurrStageRepeatCount) + "/" + to_string2(m_nRepeatStage_MAX) + ") =====   ";
+				Text* txt = Text::create(str, "fonts/LCDM2N_.TTF", 30.f);
+
+				Layout* default_item = Layout::create();
+				default_item->setTouchEnabled(true);
+				default_item->setContentSize(txt->getContentSize());
+				txt->setPosition(Vec2(default_item->getContentSize().width / 2.0f,
+					default_item->getContentSize().height / 2.0f));
+				default_item->addChild(txt);
+
+				lst_log->setItemModel(default_item);
+				lst_log->pushBackDefaultItem();
 				//this->addChild(lst_log);
 
-				++m_nCurrStageRepeatCount;
+				++m_nCurrStageRepeatCount;	//  repeat stage
 			}
 
 			return;
@@ -628,4 +637,32 @@ void InGameScene::FinishStage()
 		GameSharing::SubmitScore(DataSingleton::getInstance().nLevel, 0);
 }
 	showResult();
+}
+
+void InGameScene::MakeAnswer()
+{
+	// ANSWER_DIGIT자리 난수로 정답을 생성한다.
+	m_vAnswer.clear();
+	m_vQuestion.clear();
+	int nSum = 0;
+	srand((unsigned int)time(NULL));
+	while (m_vQuestion.size() != m_nAnswerDigit)
+	{
+		int nNumber = random(1, m_nWid*m_nHei);
+		bool bAlreadyHas = false;
+		for (int i = 0; i < m_vQuestion.size(); ++i)
+		{
+			if (m_vQuestion[i] == nNumber)
+			{
+				bAlreadyHas = true;
+				break;
+			}
+		}
+		if (bAlreadyHas == false)
+		{
+			m_vQuestion.push_back(nNumber);
+			nSum += nNumber;
+		}
+	}
+	m_sumNew = nSum;
 }

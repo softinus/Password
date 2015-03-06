@@ -26,7 +26,9 @@ public:
 	virtual bool onTouchBegan(Touch* touch, Event* event);
 
 	void scheduleCallback(float delta);	// schedule
-
+	int m_nCriterionOfDrank;
+	int m_nCriterionOfArank;
+	int m_nCriterionOfBrank;
 
 	//void SetResult(bool);
 	//ResultScene() : bSuccess(true) {};

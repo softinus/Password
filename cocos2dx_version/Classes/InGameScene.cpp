@@ -401,7 +401,7 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 		{
 			if (m_nCurrStageRepeatCount == m_nRepeatStage_MAX)
 			{
-				FinishStage();
+				ClearStage();
 			}
 			else
 			{
@@ -439,9 +439,10 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 			
 		if (m_nLife == 0)
 		{
-			//MessageBeep(0);
-			//MessageBox("Game over", "end");
-			//Director::getInstance()->end();
+			DataSingleton::getInstance().bClear = false;
+			DataSingleton::getInstance().nStageRepeatCount = m_nCurrStageRepeatCount;
+			DataSingleton::getInstance().nLeftLife = m_nLife;
+
 			showResultFailed();
 		}
 		break;
@@ -578,18 +579,27 @@ void InGameScene::menuCloseCallback(Ref* pSender)
 #endif
 }
 
-void InGameScene::FinishStage()
+void InGameScene::ClearStage()
 {
-	int nSavedStage = UserDefault::getInstance()->getIntegerForKey("stage", 0);
+	int nSavedStage = UserDefault::getInstance()->getIntegerForKey("stage", 0);	// get current highest stage level.
 	if (nSavedStage < DataSingleton::getInstance().nLevel)	// if this level is highest level...
 	{
 		UserDefault::getInstance()->setIntegerForKey("stage", DataSingleton::getInstance().nLevel);	// update save data.
 
 		//submit score to Google play store game service...
 		GameSharing::SubmitScore(DataSingleton::getInstance().nLevel, 0);
-}
+		GameSharing::UnlockAchivement(DataSingleton::getInstance().nLevel);
+	}
+
+	DataSingleton::getInstance().bClear = true;
+	DataSingleton::getInstance().nStageRepeatCount = m_nRepeatStage_MAX;
+	DataSingleton::getInstance().nLeftLife = m_nLife;
+	
 	showResult();
 }
+
+
+
 
 void InGameScene::MakeAnswer()
 {
@@ -713,5 +723,8 @@ void InGameScene::ChangeLife(bool bIncrease, int nAmount)
 	//}
 	m_TXT_life->setString(to_string2(m_nLife));
 
-	m_nLife += nAmount;
+	if (bIncrease)
+		m_nLife += nAmount;
+	else
+		m_nLife -= nAmount;
 }

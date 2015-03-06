@@ -29,7 +29,7 @@ bool StartLogoScene::init()
 	Size s = this->getContentSize();
 
 	m_img_Logo = MenuItemImage::create("logo_gab.png", "logo_gab.png");
-	m_img_Logo->setPosition(Vec2(0, s.height / 2));
+	m_img_Logo->setPosition(Vec2(s.width / 2, s.height / 2));
 	m_img_Logo->setOpacity(0);
 	this->addChild(m_img_Logo);
 

@@ -74,7 +74,7 @@ bool ResultScene::init()
 	}
 	else
 	{
-		MessageBox("D","D");
+		//MessageBox("D","D");
 		strRankImagePath = "scene5-1/s5_rank_d.png";
 		if (nSavedRank < -1)
 			UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 0);

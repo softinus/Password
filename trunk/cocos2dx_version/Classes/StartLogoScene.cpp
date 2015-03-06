@@ -33,12 +33,12 @@ bool StartLogoScene::init()
 	m_img_Logo->setOpacity(0);
 	this->addChild(m_img_Logo);
 
-	auto action1 = JumpBy::create(1.5f, Point(s.width / 2, 0), 100, 3);
+	//auto action1 = JumpBy::create(1.5f, Point(s.width / 2, 0), 100, 3);
 	auto *fadeIn = FadeIn::create(2.0f);
 	//auto *fadeOut = FadeOut::create(1.0f);
 	//m_img_Logo->runAction(action);
-	Spawn *sqawn_logo = Spawn::create(action1, fadeIn, NULL);
-	m_img_Logo->runAction(sqawn_logo);
+	//Spawn *sqawn_logo = Spawn::create(action1, fadeIn, NULL);
+	m_img_Logo->runAction(fadeIn);
 
 	this->schedule(schedule_selector(StartLogoScene::scheduleCallback), 2.5f);
 

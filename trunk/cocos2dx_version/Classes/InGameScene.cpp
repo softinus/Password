@@ -54,7 +54,7 @@ void InGameScene::InitStage()
 		m_nAnswerDigit = 2;
 
 		m_nRepeatStage_MAX = 10;
-		m_nRecoverLife = 1;
+		m_nRecoverLifeAmount = 1;
 		m_nTime = 600;
 
 		nButtonSize = 338;
@@ -70,7 +70,7 @@ void InGameScene::InitStage()
 		m_nAnswerDigit = 3;
 
 		m_nRepeatStage_MAX = 12;
-		m_nRecoverLife = 1;
+		m_nRecoverLifeAmount = 1;
 		m_nTime = 660;
 
 		nButtonSize = 224;
@@ -86,7 +86,7 @@ void InGameScene::InitStage()
 		m_nAnswerDigit = 4;
 
 		m_nRepeatStage_MAX = 14;
-		m_nRecoverLife = 1;
+		m_nRecoverLifeAmount = 1;
 		m_nTime = 600;
 
 		nButtonSize = 224;
@@ -102,7 +102,7 @@ void InGameScene::InitStage()
 		m_nAnswerDigit = 4;
 
 		m_nRepeatStage_MAX = 16;
-		m_nRecoverLife = 2;
+		m_nRecoverLifeAmount = 2;
 		m_nTime = 780;
 
 		nButtonSize = 168;
@@ -118,7 +118,7 @@ void InGameScene::InitStage()
 		m_nAnswerDigit = 4;
 
 		m_nRepeatStage_MAX = 18;
-		m_nRecoverLife = 2;
+		m_nRecoverLifeAmount = 2;
 		m_nTime = 840;
 
 		nButtonSize = 168;
@@ -134,7 +134,7 @@ void InGameScene::InitStage()
 		m_nAnswerDigit = 4;
 
 		m_nRepeatStage_MAX = 20;
-		m_nRecoverLife = 2;
+		m_nRecoverLifeAmount = 2;
 		m_nTime = 900;
 
 		nButtonSize = 135;
@@ -150,7 +150,7 @@ void InGameScene::InitStage()
 		m_nAnswerDigit = 5;
 
 		m_nRepeatStage_MAX = 23;
-		m_nRecoverLife = 3;
+		m_nRecoverLifeAmount = 3;
 		m_nTime = 1020;
 
 		nButtonSize = 135;
@@ -166,7 +166,7 @@ void InGameScene::InitStage()
 		m_nAnswerDigit = 5;
 
 		m_nRepeatStage_MAX = 26;
-		m_nRecoverLife = 3;
+		m_nRecoverLifeAmount = 3;
 		m_nTime = 1140;
 
 		nButtonSize = 112;
@@ -182,7 +182,7 @@ void InGameScene::InitStage()
 		m_nAnswerDigit = 5;
 
 		m_nRepeatStage_MAX = 30;
-		m_nRecoverLife = 3;
+		m_nRecoverLifeAmount = 3;
 		m_nTime = 1200;
 
 
@@ -290,9 +290,9 @@ bool InGameScene::init()
 
 	// life
 	m_TXT_life = Label::create(to_string2(m_nLife), "fonts/LCDM2L_.TTF", 106.f);
-	m_TXT_life->setPosition(Vec2(580, 1000));
+	m_TXT_life->setPosition(Vec2(575, 1000));
 	m_TXT_life->setAnchorPoint(Vec2(0, 0));
-	m_TXT_life->setAlignment(TextHAlignment::CENTER);
+	m_TXT_life->setAlignment(TextHAlignment::RIGHT);
 	this->addChild(m_TXT_life);
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -366,7 +366,6 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 			{
 				m_vAnswer.push_back(m_vButtons[i]->getTag());	// 눌려져 있으면 정답에 넣고
 				//strAnswer.append(to_string2(m_vAnswer[m_vAnswer.size() - 1]));
-
 			}
 		}
 
@@ -406,54 +405,7 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 			}
 			else
 			{
-				// TODO : 이쪽에 현재 눌린 버튼 초기화, 정답 초기화, 매칭석세스 띄우기, 라이프 회복
-				//FinishStage();
-				Sprite* SPR_match = Sprite::create("scene4/s4_pup_success.png");
-				SPR_match->setPosition(this->getContentSize().width / 2, this->getContentSize().height / 2);
-				this->addChild(SPR_match);
-
-				auto *fadein = FadeOut::create(1.5f);    // 시간
-				auto *delay = DelayTime::create(1.5f);    // 시간
-				auto *fadeout = FadeOut::create(2.5f);    // 시간
-
-				Sequence *action_2 = Sequence::create(fadein, delay, fadeout, NULL);
-
-				SPR_match->runAction(action_2);
-
-				
-				//this->setTouchEnabled(false);
-
-				MakeAnswer();
-				m_nDigitCount = 0;
-				m_nLife += m_nRecoverLife;
-				for (size_t i = 0; i < m_vButtons.size(); ++i)
-				{
-					m_vButtons[i]->setSelectedIndex(0);
-					Label* lbl = static_cast<Label*>(m_vButtons[i]->getUserObject());
-					lbl->enableOutline(Color4B::BLACK, 0);
-				}
-
-				// UI refresh
-				m_TXT_life->setString(to_string2(m_nLife));
-				m_TXT_digit->setString(to_string2(m_nDigitCount) + "/" + to_string2(m_nAnswerDigit));
-				m_TXT_sum->setString(to_string2(m_sumNew));
-				m_BTN_submit->setBright(false);
-
-				string str = "   ===== SUCCESS! (" + to_string2(m_nCurrStageRepeatCount) + "/" + to_string2(m_nRepeatStage_MAX) + ") =====   ";
-				Text* txt = Text::create(str, "fonts/LCDM2N_.TTF", 30.f);
-
-				Layout* default_item = Layout::create();
-				default_item->setTouchEnabled(true);
-				default_item->setContentSize(txt->getContentSize());
-				txt->setPosition(Vec2(default_item->getContentSize().width / 2.0f,
-					default_item->getContentSize().height / 2.0f));
-				default_item->addChild(txt);
-
-				lst_log->setItemModel(default_item);
-				lst_log->pushBackDefaultItem();
-				//this->addChild(lst_log);
-
-				++m_nCurrStageRepeatCount;	//  repeat stage
+				RepeatStage();
 			}
 
 			return;
@@ -482,8 +434,8 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 		lst_log->scrollToBottom(.5f, false);
 
 		// life
-		--m_nLife;
-		m_TXT_life->setString(to_string2(m_nLife));
+		this->ChangeLife(false, 1);
+		
 			
 		if (m_nLife == 0)
 		{
@@ -556,7 +508,7 @@ void InGameScene::Touch_NumPad(Ref* sender)
 		m_BTN_submit->setEnabled(false);
 	}
 		
-	m_TXT_digit->setString(to_string2(m_nDigitCount) + "/" + to_string2(m_nAnswerDigit));
+	m_TXT_digit->setString(to_string2(abs(m_nDigitCount)) + "/" + to_string2(m_nAnswerDigit));
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 	//MessageBox(str.c_str(), "응?");
@@ -665,4 +617,101 @@ void InGameScene::MakeAnswer()
 		}
 	}
 	m_sumNew = nSum;
+}
+
+void InGameScene::RepeatStage()
+{
+	// TODO : 이쪽에 현재 눌린 버튼 초기화, 정답 초기화, 매칭석세스 띄우기, 라이프 회복
+	//FinishStage();
+	{
+		Sprite* SPR_match = Sprite::create("scene4/s4_pup_success.png");
+		SPR_match->setPosition(this->getContentSize().width / 2, this->getContentSize().height / 2);
+		this->addChild(SPR_match);
+
+		auto *fadein = FadeOut::create(1.5f);    // 시간
+		auto *delay = DelayTime::create(1.5f);    // 시간
+		auto *fadeout = FadeOut::create(2.5f);    // 시간
+
+		Sequence *action_2 = Sequence::create(fadein, delay, fadeout, NULL);
+		SPR_match->runAction(action_2);
+	}
+
+	ChangeLife(true, m_nRecoverLifeAmount);
+
+
+
+
+	//this->setTouchEnabled(false);
+
+	MakeAnswer();
+	m_nDigitCount = 0;
+	for (size_t i = 0; i < m_vButtons.size(); ++i)
+	{
+		m_vButtons[i]->setSelectedIndex(0);
+		Label* lbl = static_cast<Label*>(m_vButtons[i]->getUserObject());
+		lbl->enableOutline(Color4B::BLACK, 0);
+	}
+
+	// UI refresh
+	m_TXT_digit->setString(to_string2(m_nDigitCount) + "/" + to_string2(m_nAnswerDigit));
+	m_TXT_sum->setString(to_string2(m_sumNew));
+	m_BTN_submit->setBright(false);
+
+	// append listbox
+	string str = " ===== SUCCESS! (" + to_string2(m_nCurrStageRepeatCount) + "/" + to_string2(m_nRepeatStage_MAX) + ") ===== ";
+	Text* txt = Text::create(str, "fonts/LCDM2N_.TTF", 30.f);
+
+	Layout* default_item = Layout::create();
+	default_item->setTouchEnabled(true);
+	default_item->setContentSize(txt->getContentSize());
+	txt->setPosition(Vec2(default_item->getContentSize().width / 2.0f,
+		default_item->getContentSize().height / 2.0f));
+	default_item->addChild(txt);
+
+	lst_log->setItemModel(default_item);
+	lst_log->pushBackDefaultItem();
+	lst_log->scrollToBottom(0.5f, true);
+	//this->addChild(lst_log);
+
+	++m_nCurrStageRepeatCount;	//  repeat stage
+}
+
+void InGameScene::ChangeLife(bool bIncrease, int nAmount)
+{
+	Vec2 vec(m_TXT_life->getPosition().x, m_TXT_life->getPosition().y);
+	Label* LBL_lifechange = Label::create("", "fonts/LCDM2N_.TTF", 70.f);
+	LBL_lifechange->setPosition(Vec2(vec.x + 100, vec.y+50));
+
+	string str = "";
+	if (bIncrease)	// when increase
+	{
+		str += "+";
+		str += to_string2(nAmount);
+		LBL_lifechange->setTextColor(Color4B(0, 255, 0, 255));
+	}
+	else
+	{
+		str += "-";
+		str += to_string2(nAmount);
+		LBL_lifechange->setTextColor(Color4B(255, 0, 0, 255));
+	}
+	LBL_lifechange->setString(str);
+	this->addChild(LBL_lifechange);
+
+	auto fadeout = FadeOut::create(1.5f);
+	auto move1 = MoveBy::create(1.5f, Vec2(0,200));
+	auto spawn1 = Spawn::create(fadeout, move1, NULL);
+	LBL_lifechange->runAction(spawn1);
+	
+	//if (m_nLife / 10 != 0)	// if life is one digit
+	//{
+	//	m_TXT_life->size
+	//}
+	//else
+	//{
+	//	m_TXT_life->setSystemFontSize(100.f);
+	//}
+	m_TXT_life->setString(to_string2(m_nLife));
+
+	m_nLife += nAmount;
 }

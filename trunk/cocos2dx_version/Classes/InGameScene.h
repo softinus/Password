@@ -36,6 +36,10 @@ protected:
 	void Touch_NumPad(Ref* sender);
 	void Touch_submit(Ref* sender, Widget::TouchEventType type);
 
+	void RepeatStage();
+
+	void  ChangeLife(bool bIncrease, int nAmount);
+
 	void InitStage();
 	void FinishStage();
 
@@ -66,7 +70,7 @@ protected:
 	int m_nDigitCount;	// 답변 자리수
 	int m_sumNew;	// 
 	int m_nRepeatStage_MAX;	// 스테이지 반복 횟수
-	int m_nRecoverLife;	// 성공했을 때 회복 라이프 개수
+	int m_nRecoverLifeAmount;	// 성공했을 때 회복 라이프 개수
 	int m_nTime;	// time (unit:sec)
 
 	int m_nWid;

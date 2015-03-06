@@ -41,7 +41,7 @@ protected:
 	void  ChangeLife(bool bIncrease, int nAmount);
 
 	void InitStage();
-	void FinishStage();
+	void ClearStage();
 
 	//Layout* _layout;
 	vector<int> m_vQuestion;

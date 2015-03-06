@@ -12,4 +12,8 @@ public:
 
 	int nSpentTime;
 	int nSpentCount;
+
+	bool bClear;
+	int nStageRepeatCount;
+	int nLeftLife;
 };

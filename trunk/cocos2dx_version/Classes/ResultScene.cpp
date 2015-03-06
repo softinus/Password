@@ -30,6 +30,61 @@ bool ResultScene::init()
 		return false;
 	}
 
+	if (DataSingleton::getInstance().nLevel == 1)
+	{
+		m_nCriterionOfDrank = 1;
+	}
+	else
+	{
+		m_nCriterionOfDrank = 3;
+	}
+
+	// TODO: A,B 랭크 기준을 정해야함. [3/6/2015 ChoiJunHyeok]
+	switch (DataSingleton::getInstance().nLevel)
+	{
+	case 1:
+		m_nCriterionOfArank = 1;
+		m_nCriterionOfBrank = 1;
+		break;
+	case 2:
+		m_nCriterionOfArank = 1;
+		m_nCriterionOfBrank = 1;
+		break;
+	case 3:
+		m_nCriterionOfArank = 1;
+		m_nCriterionOfBrank = 1;
+		break;
+	case 4:
+		m_nCriterionOfArank = 1;
+		m_nCriterionOfBrank = 1;
+		break;
+	case 5:
+		m_nCriterionOfArank = 1;
+		m_nCriterionOfBrank = 1;
+		break;
+	case 6:
+		m_nCriterionOfArank = 1;
+		m_nCriterionOfBrank = 1;
+		break;
+	case 7:
+		m_nCriterionOfArank = 1;
+		m_nCriterionOfBrank = 1;
+		break;
+	case 8:
+		m_nCriterionOfArank = 1;
+		m_nCriterionOfBrank = 1;
+		break;
+	case 9:
+		m_nCriterionOfArank = 1;
+		m_nCriterionOfBrank = 1;
+		break;
+
+	default:
+		m_nCriterionOfArank = 0;
+		m_nCriterionOfBrank = 0;
+		break;
+	}
+
 	Size s = this->getContentSize();
 
 
@@ -45,7 +100,7 @@ bool ResultScene::init()
 	int nSavedRank= UserDefault::getInstance()->getIntegerForKey(str_rank.c_str(), 0);
 
 	string strRankImagePath = "";
-	if (m_bSuccess)
+	if ( DataSingleton::getInstance().bClear)
 	{
 		if (nTotalCount == 1)
 		{
@@ -65,19 +120,22 @@ bool ResultScene::init()
 			if (nSavedRank < 1)
 				UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 1);
 		}
+	}
+	else
+	{
+		if (m_nCriterionOfDrank > DataSingleton::getInstance().nStageRepeatCount)	// criterion of D rank
+		{
+			strRankImagePath = "scene5-1/s5_rank_d.png";
+			if (nSavedRank < 1)
+				UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 0);
+		}
 		else
 		{
 			strRankImagePath = "scene5-1/s5_rank_c.png";
 			if (nSavedRank < 0)
 				UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 0);
 		}
-	}
-	else
-	{
-		//MessageBox("D","D");
-		strRankImagePath = "scene5-1/s5_rank_d.png";
-		if (nSavedRank < -1)
-			UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 0);
+		
 	}
 	
 

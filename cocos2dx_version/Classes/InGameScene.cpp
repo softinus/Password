@@ -339,7 +339,31 @@ bool InGameScene::init()
 	this->addChild(lst_log);
 
 
+
 	return true;
+}
+
+void InGameScene::scheduleCallback(float delta)
+{
+	CCLOG("scheduleCallback : %f", delta);
+
+	--m_nTime;
+
+
+	int nMinute = m_nTime / 60;
+	int nSec = m_nTime % 60;
+
+	string time = to_string2(nMinute) + ":" + to_string2(nSec);
+	m_TXT_time->setString(time);
+	DataSingleton::getInstance().strSpentTime = time;	// 총 소모한 시간 저장.
+
+	if (m_nTime == 0)	// 시간 내에 전부 못 풀면 실패.
+	{
+		showResultFailed();
+	}
+
+	
+	
 }
 
 
@@ -519,6 +543,9 @@ void InGameScene::Touch_NumPad(Ref* sender)
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 
 #endif
+
+	// 버튼 하나 누르면 타이머 시작함.
+	this->schedule(schedule_selector(InGameScene::scheduleCallback), 0.85f);
 }
 
 

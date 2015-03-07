@@ -80,4 +80,6 @@ protected:
 	void changeScene(void);
 	void showResult(void);
 	void showResultFailed(void);
+
+	void scheduleCallback(float delta);
 };

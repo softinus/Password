@@ -254,6 +254,7 @@ bool InGameScene::init()
 	m_TXT_sum = Label::create(to_string2(m_sumNew), "fonts/LCDM2N_.TTF", 54.f);
 	m_TXT_sum->setPosition(Vec2(200, 1000));
 	m_TXT_sum->setAnchorPoint(Vec2(0, 0));
+	m_TXT_sum->setContentSize(Size(200, 100));
 	m_TXT_sum->setVerticalAlignment(TextVAlignment::CENTER);
 	m_TXT_sum->setAlignment(TextHAlignment::CENTER);
 	this->addChild(m_TXT_sum);
@@ -317,9 +318,9 @@ bool InGameScene::init()
 
 	lst_log = ListView::create();
 	lst_log->setDirection(ui::ScrollView::Direction::VERTICAL);
-	lst_log->setBounceEnabled(true);
+	//lst_log->setBounceEnabled(true);
 	lst_log->setBackGroundImage("scene4/box_log.png");
-	lst_log->setBackGroundImageScale9Enabled(true);
+	//lst_log->setBackGroundImageScale9Enabled(true);
 	lst_log->setContentSize(Size(446, 130));
 	lst_log->setPosition(Vec2(259, 1144));
 	lst_log->setAnchorPoint(Vec2(0.5f, 0.5f));
@@ -721,10 +722,12 @@ void InGameScene::ChangeLife(bool bIncrease, int nAmount)
 	//{
 	//	m_TXT_life->setSystemFontSize(100.f);
 	//}
-	m_TXT_life->setString(to_string2(m_nLife));
-
 	if (bIncrease)
 		m_nLife += nAmount;
 	else
 		m_nLife -= nAmount;
+
+	m_TXT_life->setString(to_string2(m_nLife));
+
+
 }

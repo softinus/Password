@@ -188,33 +188,39 @@ bool SelectStageScene::init()
 
 				string str = "rank_normal_";
 				str += to_string2(i + 1);
-				int nCurrRank= UserDefault::getInstance()->getIntegerForKey(str.c_str(), 0);	// restore each level's rank.
+				int nCurrRank= UserDefault::getInstance()->getIntegerForKey(str.c_str(), -1);	// restore each level's rank.
+				bool bUnranked = false;
 
 				string strIMGrank = "scene2/s2_rank_";
-				if (nCurrRank == -1)	// c rank
+				if (nCurrRank == 0)	// c rank
 				{
 					strIMGrank += "d.png";
 				}
-				if (nCurrRank == 0)	// c rank
+				if (nCurrRank == 1)	// c rank
 				{
 					strIMGrank += "c.png";
 				}
-				else if (nCurrRank == 1)	// b rank
+				else if (nCurrRank == 2)	// b rank
 				{
 					strIMGrank += "b.png";
 				}
-				else if (nCurrRank == 2)	// a rank
+				else if (nCurrRank == 3)	// a rank
 				{
 					strIMGrank += "a.png";
 				}
-				else if (nCurrRank == 3)	// s rank
+				else if (nCurrRank == 4)	// s rank
 				{
 					strIMGrank += "s.png";
+				}
+				else
+				{
+					bUnranked = true;
 				}
 
 				MenuItemImage* IMG_rank = MenuItemImage::create(strIMGrank, strIMGrank);
 				IMG_rank->setZOrder(2);
 				IMG_rank->setPosition(Vec2(200 + 155 * (i % 3), 505 - 155 * (i / 3)));
+				IMG_rank->setVisible(!bUnranked);	// 언랭크이면 표시 안함.
 
 				_frame->addChild(IMG_rank);
 				_frame->addChild(BTN_stage);

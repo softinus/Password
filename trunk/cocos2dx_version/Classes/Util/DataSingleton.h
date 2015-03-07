@@ -1,4 +1,5 @@
 #pragma once
+#include "cocos2d.h"
 class DataSingleton {
 private:
 	DataSingleton();
@@ -10,7 +11,9 @@ public:
 
 	int nLevel;
 
-	int nSpentTime;
+	//int nSpentTime;
+	std::string strSpentTime;
+	
 	int nSpentCount;
 
 	bool bClear;

@@ -49,7 +49,7 @@ bool MainScene::init()
 	//LBL_title->enableOutline(Color4B(255, 255, 255, 100), 1);
 	//this->addChild(LBL_title);
 
-	m_img_Logo = MenuItemImage::create("scene1-1/s1_title_normal.png", "scene1-1/s1_title_normal.png");
+	m_img_Logo = MenuItemImage::create("scene1-1/s1_title.png", "scene1-1/s1_title.png");
 	m_img_Logo->setPosition(Vec2(360, 990));
 	this->addChild(m_img_Logo);
 

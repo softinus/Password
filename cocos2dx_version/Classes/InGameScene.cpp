@@ -248,6 +248,8 @@ bool InGameScene::init()
 	MakeAnswer();
 
 
+	// 버튼 하나 누르면 타이머 시작함.
+	this->schedule(schedule_selector(InGameScene::scheduleCallback), 0.85f);
 
 
 	// gen answer
@@ -357,7 +359,7 @@ bool InGameScene::init()
 
 void InGameScene::scheduleCallback(float delta)
 {
-	CCLOG("scheduleCallback : %f", delta);
+	//CCLOG("scheduleCallback : %f", delta);
 
 	--m_nTime;
 
@@ -576,8 +578,6 @@ void InGameScene::Touch_NumPad(Ref* sender)
 
 #endif
 
-	// 버튼 하나 누르면 타이머 시작함.
-	this->schedule(schedule_selector(InGameScene::scheduleCallback), 0.85f);
 }
 
 

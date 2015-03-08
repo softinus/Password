@@ -16,7 +16,12 @@ public:
 	
 	int nSpentCount;
 
+	// 인게임 -> 결과창 
 	bool bClear;
 	int nStageRepeatCount;
 	int nLeftLife;
+
+	// 결과창 -> 스테이지 선택
+	int nCleardStage;
+	bool bNewRanked;
 };

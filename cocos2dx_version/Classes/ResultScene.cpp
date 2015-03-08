@@ -49,8 +49,6 @@ bool ResultScene::init()
 
 
 
-	Size s = this->getContentSize();
-
 
 	int nTotalCount = DataSingleton::getInstance().nSpentCount;
 //	int nTotalTime = DataSingleton::getInstance().nSpentTime;
@@ -64,6 +62,7 @@ bool ResultScene::init()
 	string str_rank = "rank_normal_";
 	str_rank += to_string2(DataSingleton::getInstance().nLevel);
 	int nSavedRank= UserDefault::getInstance()->getIntegerForKey(str_rank.c_str(), 0);
+	bool bNewRanked = false;
 
 	string strRankImagePath = "";
 	if ( DataSingleton::getInstance().bClear)	// Å¬¸®¾î ÇßÀ¸¸é S, A,B Áß ÇÏ³ª
@@ -72,19 +71,31 @@ bool ResultScene::init()
 		{
 			strRankImagePath = "scene5-1/s5_rank_b.png";
 			if (nSavedRank < 2)	// ÇöÀç ·©Å©°¡ b·©Å©º¸´Ù ³·À¸¸é
+			{
 				UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 2);
+				bNewRanked = true;
+			}
+				
 		}
 		else if (DataSingleton::getInstance().nLeftLife < m_nCriterionOfArank)
 		{
 			strRankImagePath = "scene5-1/s5_rank_a.png";
 			if (nSavedRank < 3)	// ÇöÀç ·©Å©°¡ a·©Å©º¸´Ù ³·À¸¸é
+			{
 				UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 3);
+				bNewRanked = true;
+			}
+				
 		}
 		else
 		{
 			strRankImagePath = "scene5-1/s5_rank_s.png";
 			if (nSavedRank != 4)	// ÇöÀç ·©Å©°¡ s·©Å©°¡ ¾Æ´Ï¸é
+			{
 				UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 4);
+				bNewRanked = true;
+			}
+				
 		}
 	}
 	else
@@ -93,17 +104,26 @@ bool ResultScene::init()
 		{
 			strRankImagePath = "scene5-1/s5_rank_d.png";
 			if (nSavedRank == -1)	// ÇöÀç ·©Å©°¡ ¾øÀ¸¸é
+			{
 				UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 0);
+				bNewRanked = true;
+			}
+				
 		}
 		else
 		{
 			strRankImagePath = "scene5-1/s5_rank_c.png";
 			if (nSavedRank < 1)	// ÇöÀç ·©Å©°¡ c·©Å©º¸´Ù ³·À¸¸é
+			{
 				UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 1);
+				bNewRanked = true;
+			}
+				
 		}
 		
 	}
-	
+	DataSingleton::getInstance().nCleardStage = DataSingleton::getInstance().nLevel;
+	DataSingleton::getInstance().bNewRanked = bNewRanked;
 
 
 	m_IMG_rank = MenuItemImage::create(strRankImagePath, strRankImagePath);
@@ -169,6 +189,7 @@ bool ResultScene::init()
 
 		m_LBL_time->runAction(seq);
 	}
+
 	
 
 	return true;

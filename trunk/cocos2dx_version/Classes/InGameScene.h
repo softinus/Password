@@ -56,11 +56,14 @@ protected:
 	Label* m_LBL_sum;
 	Label* m_LBL_digit;
 	Label* m_LBL_time;
-
+		
 	Label* m_TXT_sum;	// sum
 	Label* m_TXT_digit;	// digit counter
 	Label* m_TXT_time;	// time
 	Label* m_TXT_life;	// life counter
+
+	LoadingBar* m_LDB_progress;	// stage progress
+
 	int m_nLife;
 	int m_nAnswerDigit;	// word count
 	//bool m_bGameOver;
@@ -69,6 +72,7 @@ protected:
 	int m_nSubmitCount;	// total submit count
 	int m_nDigitCount;	// 답변 자리수
 	int m_sumNew;	// 
+	int m_nSumFixed;	// sum (정답 다시 만들기 전까지는 그대로)
 	int m_nRepeatStage_MAX;	// 스테이지 반복 횟수
 	int m_nRecoverLifeAmount;	// 성공했을 때 회복 라이프 개수
 	int m_nTime;	// time (unit:sec)

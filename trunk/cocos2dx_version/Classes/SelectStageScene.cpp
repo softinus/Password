@@ -217,13 +217,34 @@ bool SelectStageScene::init()
 					bUnranked = true;
 				}
 
+
 				MenuItemImage* IMG_rank = MenuItemImage::create(strIMGrank, strIMGrank);
 				IMG_rank->setZOrder(2);
 				IMG_rank->setPosition(Vec2(200 + 155 * (i % 3), 505 - 155 * (i / 3)));
 				IMG_rank->setVisible(!bUnranked);	// 언랭크이면 표시 안함.
 
+				// 새로 깨면 연출 동작
+				if (DataSingleton::getInstance().nCleardStage == i + 1 && DataSingleton::getInstance().bNewRanked)
+				{
+					auto fadeout = FadeIn::create(0.1f);
+					auto scale1 = ScaleTo::create(0.1f, 2.2f);
+					auto sq1 = Spawn::create(fadeout, scale1, NULL);
+
+					auto fadein = FadeOut::create(1.0f);
+					auto delay = DelayTime::create(0.3f);
+
+					auto scale2 = ScaleTo::create(1.0f, 1.0f);
+					auto roate = RotateBy::create(1.0f, 35, 0);
+					auto sq2 = Spawn::create(scale2, roate, NULL);
+
+					auto seq = Sequence::create(sq1, fadein, delay, sq2, NULL);
+					IMG_rank->runAction(seq);
+				}
+
 				_frame->addChild(IMG_rank);
 				_frame->addChild(BTN_stage);
+
+
 		}
 
 		m_PAGE_stage->insertPage(_frame, p);

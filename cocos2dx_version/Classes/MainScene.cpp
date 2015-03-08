@@ -41,6 +41,13 @@ bool MainScene::init()
 	m_img_BG->setOpacity(20);
 	this->addChild(m_img_BG);
 
+
+
+	ParticleSystemQuad *particle = ParticleSystemQuad::create("particle/particle4.plist");
+	particle->setTexture(CCTextureCache::sharedTextureCache()->addImage("particle/particle_texture.png"));
+	particle->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+	this->addChild(particle);
+
 	//Label* LBL_title = Label::create("password", "fonts/LCDM2L_.TTF", 85);
 	//LBL_title->setPosition(Vec2(360, 990));
 	//LBL_title->setTextColor(Color4B(25, 185, 35, 255));
@@ -48,6 +55,7 @@ bool MainScene::init()
 	//LBL_title->enableShadow(Color4B(25, 185, 35, 120), Size(3, 10), 10);
 	//LBL_title->enableOutline(Color4B(255, 255, 255, 100), 1);
 	//this->addChild(LBL_title);
+
 
 	m_img_Logo = MenuItemImage::create("scene1-1/s1_title.png", "scene1-1/s1_title.png");
 	m_img_Logo->setPosition(Vec2(360, 990));

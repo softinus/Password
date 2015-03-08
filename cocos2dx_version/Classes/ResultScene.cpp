@@ -107,19 +107,19 @@ bool ResultScene::init()
 
 
 	m_IMG_rank = MenuItemImage::create(strRankImagePath, strRankImagePath);
-	m_IMG_rank->setPosition(Vec2(990, 891.5));
+	m_IMG_rank->setPosition(Vec2(1150, 891.5));
 	this->addChild(m_IMG_rank);
 
 
 	string strCount = "count : " + to_string2(nTotalCount);
 	m_LBL_count = Label::createWithTTF(strCount, "fonts/LCDM2N_.TTF", 45.f);
-	m_LBL_count->setPosition(Vec2(580, 740));
+	m_LBL_count->setPosition(Vec2(750, 740));
 	m_LBL_count->setAnchorPoint(Vec2(0, 0));
 	this->addChild(m_LBL_count);
 
 	string strTime = "time : " + DataSingleton::getInstance().strSpentTime;
 	m_LBL_time = Label::createWithTTF(strTime, "fonts/LCDM2N_.TTF", 45.f);
-	m_LBL_time->setPosition(Vec2(580, 690));
+	m_LBL_time->setPosition(Vec2(750, 690));
 	m_LBL_time->setAnchorPoint(Vec2(0, 0));
 	this->addChild(m_LBL_time);
 
@@ -132,12 +132,13 @@ bool ResultScene::init()
 	m_BTN_next = Button::create("scene5-1/btn_main_up.png", "scene5-1/btn_main_down.png");
 	m_BTN_next->setPosition(Vec2(43.5, 396.5));
 	m_BTN_next->setAnchorPoint(Vec2(0, 0));
+	m_BTN_next->setVisible(false);
 	this->addChild(m_BTN_next);
 
 	
 
 
-	this->schedule(schedule_selector(ResultScene::scheduleCallback), 2.5f);
+	this->schedule(schedule_selector(ResultScene::scheduleCallback), 3.f);
 
 	{
 		MoveTo *action_0 = MoveTo::create(2.0f, Point(260, 1144));

@@ -69,7 +69,7 @@ void InGameScene::InitStage()
 		m_nLife = 7;
 		m_nAnswerDigit = 3;
 
-		m_nRepeatStage_MAX = 12;
+		m_nRepeatStage_MAX = 8;
 		m_nRecoverLifeAmount = 1;
 		m_nTime = 660;
 
@@ -85,7 +85,7 @@ void InGameScene::InitStage()
 		m_nLife = 8;
 		m_nAnswerDigit = 4;
 
-		m_nRepeatStage_MAX = 14;
+		m_nRepeatStage_MAX = 6;
 		m_nRecoverLifeAmount = 1;
 		m_nTime = 600;
 
@@ -101,7 +101,7 @@ void InGameScene::InitStage()
 		m_nLife = 9;
 		m_nAnswerDigit = 4;
 
-		m_nRepeatStage_MAX = 16;
+		m_nRepeatStage_MAX = 5;
 		m_nRecoverLifeAmount = 2;
 		m_nTime = 780;
 
@@ -117,7 +117,7 @@ void InGameScene::InitStage()
 		m_nLife = 10;
 		m_nAnswerDigit = 4;
 
-		m_nRepeatStage_MAX = 18;
+		m_nRepeatStage_MAX = 4;
 		m_nRecoverLifeAmount = 2;
 		m_nTime = 840;
 
@@ -133,7 +133,7 @@ void InGameScene::InitStage()
 		m_nLife = 11;
 		m_nAnswerDigit = 4;
 
-		m_nRepeatStage_MAX = 20;
+		m_nRepeatStage_MAX = 3;
 		m_nRecoverLifeAmount = 2;
 		m_nTime = 900;
 
@@ -149,7 +149,7 @@ void InGameScene::InitStage()
 		m_nLife = 12;
 		m_nAnswerDigit = 5;
 
-		m_nRepeatStage_MAX = 23;
+		m_nRepeatStage_MAX = 2;
 		m_nRecoverLifeAmount = 3;
 		m_nTime = 1020;
 
@@ -165,7 +165,7 @@ void InGameScene::InitStage()
 		m_nLife = 13;
 		m_nAnswerDigit = 5;
 
-		m_nRepeatStage_MAX = 26;
+		m_nRepeatStage_MAX = 1;
 		m_nRecoverLifeAmount = 3;
 		m_nTime = 1140;
 
@@ -181,7 +181,7 @@ void InGameScene::InitStage()
 		m_nLife = 14;
 		m_nAnswerDigit = 5;
 
-		m_nRepeatStage_MAX = 30;
+		m_nRepeatStage_MAX = 1;
 		m_nRecoverLifeAmount = 3;
 		m_nTime = 1200;
 
@@ -317,8 +317,8 @@ bool InGameScene::init()
 	this->addChild(m_BTN_submit);
 
 	lst_log = ListView::create();
-	lst_log->setDirection(ui::ScrollView::Direction::VERTICAL);
-	//lst_log->setBounceEnabled(true);
+	lst_log->setDirection(ui::ListView::Direction::VERTICAL);
+	lst_log->setBounceEnabled(true);
 	lst_log->setBackGroundImage("scene4/box_log.png");
 	//lst_log->setBackGroundImageScale9Enabled(true);
 	lst_log->setContentSize(Size(446, 130));
@@ -334,9 +334,21 @@ bool InGameScene::init()
 		default_item->getContentSize().height / 2.0f));
 	default_item->addChild(txt);
 
-	lst_log->setItemModel(default_item);
-	lst_log->pushBackDefaultItem();
+	lst_log->pushBackCustomItem(default_item);
+	//lst_log->setItemModel(default_item);
+	//lst_log->pushBackDefaultItem();
 	this->addChild(lst_log);
+
+
+	m_LDB_progress = LoadingBar::create("common/slider_bar_active_9patch.png");
+	m_LDB_progress->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height-5));
+	m_LDB_progress->setDirection(LoadingBar::Direction::LEFT);
+	m_LDB_progress->setScale9Enabled(true);
+	m_LDB_progress->setCapInsets(Rect(0, 0, 0, 0));
+	m_LDB_progress->setContentSize(Size(750, 12));
+	m_LDB_progress->setPercent(0.f);
+	this->addChild(m_LDB_progress);
+
 
 
 
@@ -381,9 +393,12 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 		break;
 	case Widget::TouchEventType::ENDED:
 
+		if (btn->isBright() == true)
+		{
+			auto audio = SimpleAudioEngine::getInstance();
+			audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
+		}
 
-		auto audio = SimpleAudioEngine::getInstance();
-		audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
 
 		for (int i = 0; i < m_vButtons.size(); ++i)
 		{
@@ -424,7 +439,7 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 		// ´Ù ¸Â­Ÿ°í ÀÚ¸´¼öµµ ¸ÂÀ¸¸é Á¤´äÀÓ
 		if (nCount == m_nAnswerDigit && (m_vQuestion.size() == m_vAnswer.size()))
 		{
-			if (m_nCurrStageRepeatCount == m_nRepeatStage_MAX)
+			if (m_nCurrStageRepeatCount == m_nRepeatStage_MAX-1)
 			{
 				ClearStage();
 			}
@@ -435,6 +450,23 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 
 			return;
 		}
+
+		m_BTN_submit->setBright(false);
+
+		m_nDigitCount = 0;
+		m_sumNew = m_nSumFixed;
+		for (size_t i = 0; i < m_vButtons.size(); ++i)
+		{
+			m_vButtons[i]->setSelectedIndex(0);
+			Label* lbl = static_cast<Label*>(m_vButtons[i]->getUserObject());
+			lbl->enableOutline(Color4B::BLACK, 0);
+		}
+
+		// UI refresh
+		m_TXT_digit->setString(to_string2(m_nDigitCount) + "/" + to_string2(m_nAnswerDigit));
+		m_TXT_sum->setString(to_string2(m_sumNew));
+		m_BTN_submit->setBright(false);
+		m_vAnswer.clear();
 
 		// list hint element setting
 		Text* txt = Text::create(strPrint, "fonts/LCDM2N_.TTF", 28.f);
@@ -454,14 +486,14 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 		default_item->addChild(txt2);
 
 		lst_log->pushBackCustomItem(default_item);
-		//MessageBox(strAnswer.c_str(), "Result");
-		m_vAnswer.clear();
+		lst_log->refreshView();
 		lst_log->scrollToBottom(.5f, false);
 
 		// life
 		this->ChangeLife(false, 1);
 		
-			
+		
+		//stage  over
 		if (m_nLife == 0)
 		{
 			DataSingleton::getInstance().bClear = false;
@@ -655,6 +687,7 @@ void InGameScene::MakeAnswer()
 		}
 	}
 	m_sumNew = nSum;
+	m_nSumFixed = nSum;
 }
 
 void InGameScene::RepeatStage()
@@ -695,8 +728,11 @@ void InGameScene::RepeatStage()
 	m_TXT_sum->setString(to_string2(m_sumNew));
 	m_BTN_submit->setBright(false);
 
+	float f = (((float)m_nCurrStageRepeatCount + 1) / (float)m_nRepeatStage_MAX) * 100.f;
+	m_LDB_progress->setPercent(f);
+
 	// append listbox
-	string str = " ===== SUCCESS! (" + to_string2(m_nCurrStageRepeatCount) + "/" + to_string2(m_nRepeatStage_MAX) + ") ===== ";
+	string str = " ===== SUCCESS! (" + to_string2(m_nCurrStageRepeatCount+1) + "/" + to_string2(m_nRepeatStage_MAX) + ") ===== ";
 	Text* txt = Text::create(str, "fonts/LCDM2N_.TTF", 30.f);
 
 	Layout* default_item = Layout::create();
@@ -706,8 +742,10 @@ void InGameScene::RepeatStage()
 		default_item->getContentSize().height / 2.0f));
 	default_item->addChild(txt);
 
-	lst_log->setItemModel(default_item);
-	lst_log->pushBackDefaultItem();
+	//lst_log->setItemModel(default_item);
+	//lst_log->pushBackDefaultItem();
+	lst_log->pushBackCustomItem(default_item);
+	lst_log->refreshView();
 	lst_log->scrollToBottom(0.5f, true);
 	//this->addChild(lst_log);
 

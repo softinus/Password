@@ -226,11 +226,11 @@ bool SelectStageScene::init()
 				// 새로 깨면 연출 동작
 				if (DataSingleton::getInstance().nCleardStage == i + 1 && DataSingleton::getInstance().bNewRanked)
 				{
-					auto fadeout = FadeIn::create(0.1f);
+					auto fadeout = FadeOut::create(0.1f);
 					auto scale1 = ScaleTo::create(0.1f, 2.2f);
 					auto sq1 = Spawn::create(fadeout, scale1, NULL);
 
-					auto fadein = FadeOut::create(1.0f);
+					auto fadein = FadeIn::create(1.0f);
 					auto delay = DelayTime::create(0.3f);
 
 					auto scale2 = ScaleTo::create(1.0f, 1.0f);

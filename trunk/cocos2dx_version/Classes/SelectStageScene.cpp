@@ -5,7 +5,7 @@
 #include "SimpleAudioEngine.h"
 using namespace CocosDenshion;
 
-#define PAGE_COUNT 1
+#define PAGE_COUNT 2
 #define STAGE_COUNT 9
 
 
@@ -157,7 +157,14 @@ bool SelectStageScene::init()
 	{
 		Layout* _frame = Layout::create();
 
-		m_IMG_status = MenuItemImage::create("scene2/s2_pnl_normal.png", "scene2/s2_pnl_normal.png");
+		if (p == 0)
+		{
+			m_IMG_status = MenuItemImage::create("scene2/s2_pnl_normal.png", "scene2/s2_pnl_normal.png");
+		}
+		else if (p == 1)
+		{
+			m_IMG_status = MenuItemImage::create("scene2/s2_pnl_cha.png", "scene2/s2_pnl_cha.png");
+		}
 		m_IMG_status->setPosition(Vec2(m_PAGE_stage->getContentSize().width/2, 750));
 		_frame->addChild(m_IMG_status);
 
@@ -167,11 +174,24 @@ bool SelectStageScene::init()
 				string strImageDown = "scene2/s2_btn_stg";
 				string strImageDisable = "scene2/s2_btn_stg";
 				strImageUp += to_string2(i + 1);
-				strImageUp += "_up.png";
-				strImageDown += to_string2(i + 1);
-				strImageDown += "_down.png";
-				strImageDisable += to_string2(i + 1);
-				strImageDisable += "_deact.png";
+				if (p == 0)
+				{
+					strImageUp += "_up.png";
+					strImageDown += to_string2(i + 1);
+					strImageDown += "_down.png";
+					strImageDisable += to_string2(i + 1);
+					strImageDisable += "_deact.png";
+				}
+				else if (p == 1)
+				{
+					strImageUp += "_up2.png";
+					strImageDown += to_string2(i + 1);
+					strImageDown += "_down2.png";
+					strImageDisable += to_string2(i + 1);
+					strImageDisable += "_deact.png";
+				}
+
+				
 
 				Button* BTN_stage = Button::create(strImageUp, strImageDown, strImageDisable);
 				BTN_stage->setName(StringUtils::format("%d", i+1));
@@ -227,18 +247,22 @@ bool SelectStageScene::init()
 				if (DataSingleton::getInstance().nCleardStage == i + 1 && DataSingleton::getInstance().bNewRanked)
 				{
 					auto fadeout = FadeOut::create(0.1f);
-					auto scale1 = ScaleTo::create(0.1f, 2.2f);
-					auto sq1 = Spawn::create(fadeout, scale1, NULL);
+					auto scale1 = ScaleTo::create(0.1f, 2.5f);
+					auto roate1 = RotateBy::create(0.1f, 35);
+					auto sq1 = Spawn::create(fadeout, scale1, roate1, NULL);
 
-					auto fadein = FadeIn::create(1.0f);
+					auto fadein = FadeIn::create(0.8f);
 					auto delay = DelayTime::create(0.3f);
 
-					auto scale2 = ScaleTo::create(1.0f, 1.0f);
-					auto roate = RotateBy::create(1.0f, 35, 0);
-					auto sq2 = Spawn::create(scale2, roate, NULL);
+					auto scale2 = ScaleTo::create(0.7f, 1.0f);
+					auto roate2 = RotateBy::create(0.7f, -35);
+					auto sq2 = Spawn::create(scale2, roate2, NULL);
+					auto easeEinout = EaseElasticInOut::create(sq2);
 
-					auto seq = Sequence::create(sq1, fadein, delay, sq2, NULL);
+					auto seq = Sequence::create(sq1, fadein, delay, easeEinout, NULL);
 					IMG_rank->runAction(seq);
+
+					DataSingleton::getInstance().nCleardStage = -1;	// 한번 플레이 하면 끝 [3/9/2015 ChoiJunHyeok]
 				}
 
 				_frame->addChild(IMG_rank);

@@ -235,22 +235,18 @@ bool InGameScene::init()
 		return false;
 	}
 
-
 	auto keylistener = EventListenerKeyboard::create();
 	keylistener->onKeyReleased = CC_CALLBACK_2(InGameScene::onKeyReleased, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keylistener, this);
 
 	InitStage();
-
-
-
+	
 
 	MakeAnswer();
 
 
 	// 버튼 하나 누르면 타이머 시작함.
 	this->schedule(schedule_selector(InGameScene::scheduleCallback), 0.85f);
-
 
 	// gen answer
 	m_TXT_sum = Label::create(to_string2(m_sumNew), "fonts/LCDM2N_.TTF", 54.f);
@@ -298,10 +294,9 @@ bool InGameScene::init()
 	m_TXT_life->setAlignment(TextHAlignment::RIGHT);
 	this->addChild(m_TXT_life);
 
-	Size visibleSize = Director::getInstance()->getVisibleSize();
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-	Size s = this->getContentSize();
+	//Size visibleSize = Director::getInstance()->getVisibleSize();
+	//Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	//Size s = this->getContentSize();
 
 	MenuItemImage* img_lifebox = MenuItemImage::create("scene4/box_life.png", "scene4/box_life.png");
 	img_lifebox->setPosition(Vec2(604, 1082));
@@ -367,9 +362,11 @@ void InGameScene::scheduleCallback(float delta)
 	int nMinute = m_nTime / 60;
 	int nSec = m_nTime % 60;
 
-	string time = to_string2(nMinute) + ":" + to_string2(nSec);
-	m_TXT_time->setString(time);
-	DataSingleton::getInstance().strSpentTime = time;	// 총 소모한 시간 저장.
+	char szTime[32] = { NULL, };
+	sprintf(szTime, "%d:%02d", nMinute, nSec);
+	m_TXT_time->setString(szTime);
+	//DataSingleton::getInstance().strSpentTime = time;	// 총 소모한 시간 저장.
+	DataSingleton::getInstance().nSpentTime = m_nTime;	// 총 소모한 시간 저장.
 
 	if (m_nTime == 0)	// 시간 내에 전부 못 풀면 실패.
 	{
@@ -384,6 +381,7 @@ void InGameScene::scheduleCallback(float delta)
 void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 {
 	Button* btn = (Button*)sender;
+
 
 
 	//터치 이벤트 실행시 프로그램 종료
@@ -467,6 +465,7 @@ void InGameScene::Touch_submit(Ref* sender, Widget::TouchEventType type)
 		// UI refresh
 		m_TXT_digit->setString(to_string2(m_nDigitCount) + "/" + to_string2(m_nAnswerDigit));
 		m_TXT_sum->setString(to_string2(m_sumNew));
+		m_TXT_sum->setTextColor(Color4B(255, 255, 255, 255));
 		m_BTN_submit->setBright(false);
 		m_vAnswer.clear();
 
@@ -648,7 +647,7 @@ void InGameScene::ClearStage()
 
 		//submit score to Google play store game service...
 		GameSharing::SubmitScore(DataSingleton::getInstance().nLevel, 0);
-		GameSharing::UnlockAchivement(DataSingleton::getInstance().nLevel);
+		GameSharing::UnlockAchivement(DataSingleton::getInstance().nLevel-1);
 	}
 
 	DataSingleton::getInstance().bClear = true;
@@ -788,9 +787,17 @@ void InGameScene::ChangeLife(bool bIncrease, int nAmount)
 	//	m_TXT_life->setSystemFontSize(100.f);
 	//}
 	if (bIncrease)
+	{
 		m_nLife += nAmount;
+		auto blink = Blink::create(1.0f, 1);
+	}
 	else
+	{
 		m_nLife -= nAmount;
+		auto blink = Blink::create(1.5f, 2);
+		m_TXT_life->runAction(blink);
+	}
+		
 
 	m_TXT_life->setString(to_string2(m_nLife));
 

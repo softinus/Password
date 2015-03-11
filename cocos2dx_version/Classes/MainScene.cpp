@@ -35,18 +35,103 @@ bool MainScene::init()
 
 
 
-	m_img_BG = MenuItemImage::create("scene1-1/ani_bg.png", "scene1-1/ani_bg.png");
-	m_img_BG->setPosition(Vec2(0, 0));
-	m_img_BG->setAnchorPoint(Vec2(0, 0));
-	m_img_BG->setOpacity(20);
-	this->addChild(m_img_BG);
+	m_IMG_ani_BG = MenuItemImage::create("scene1-1/ani_bg.png", "scene1-1/ani_bg.png");
+	m_IMG_ani_BG->setPosition(Vec2(0, 0));
+	m_IMG_ani_BG->setAnchorPoint(Vec2(0, 0));
+	m_IMG_ani_BG->setOpacity(76.5);
+	this->addChild(m_IMG_ani_BG);
+
+	{
+		auto m_img_eff = MenuItemImage::create("scene1-1/s1_effct_blackg.png", "scene1-1/s1_effct_blackg.png");
+		m_img_eff->setPosition(Vec2(0, s.height*0.66));
+		m_img_eff->setAnchorPoint(Vec2(0, 0));
+		this->addChild(m_img_eff);
+
+		auto move1 = MoveTo::create(1.0f, Vec2(0, -s.height));
+		auto move2 = MoveTo::create(0.0f, Vec2(0, s.height*0.6));
+		auto delay = DelayTime::create(2.0f);
+		auto seq = Sequence::create(move1, delay, move2, NULL);
+		RepeatForever *action_3 = RepeatForever::create(seq);
+		m_img_eff->runAction(action_3);
+	};// 연출1
+
+	{
+		auto m_img_eff = MenuItemImage::create("scene1-1/s1_effct_blackg.png", "scene1-1/s1_effct_blackg.png");
+		m_img_eff->setPosition(Vec2(0, s.height*0.9));
+		m_img_eff->setAnchorPoint(Vec2(0, 0));
+		this->addChild(m_img_eff);
+
+		auto move1 = MoveTo::create(2.0f, Vec2(0, -s.height));
+		auto move2 = MoveTo::create(0.0f, Vec2(0, s.height*0.9));
+		auto delay = DelayTime::create(1.0f);
+		auto seq = Sequence::create(move1, delay, move2, NULL);
+		RepeatForever *action_3 = RepeatForever::create(seq);
+		m_img_eff->runAction(action_3);
+	};// 연출2
+
+	{
+		auto m_img_eff = MenuItemImage::create("scene1-1/s1_effct_blackg.png", "scene1-1/s1_effct_blackg.png");
+		m_img_eff->setPosition(Vec2(0, s.height*1.2));
+		m_img_eff->setAnchorPoint(Vec2(0, 0));
+		this->addChild(m_img_eff);
+
+		auto move1 = MoveTo::create(2.0f, Vec2(0, -s.height));
+		auto move2 = MoveTo::create(0.0f, Vec2(0, s.height*1.2));
+		auto delay = DelayTime::create(1.0f);
+		auto seq = Sequence::create(move1, delay, move2, NULL);
+		RepeatForever *action_3 = RepeatForever::create(seq);
+		m_img_eff->runAction(action_3);
+	};// 연출3
 
 
 
-	ParticleSystemQuad *particle = ParticleSystemQuad::create("particle/particle4.plist");
-	particle->setTexture(CCTextureCache::sharedTextureCache()->addImage("particle/particle_texture.png"));
-	particle->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
-	this->addChild(particle);
+	
+	
+	//SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/logo_eff.plist");
+
+	
+
+	{	// 배경연출
+		Size s = Director::sharedDirector()->getWinSize();
+
+		Sprite *sprite = Sprite::create("scene1-1/sprite2_title.png");
+		sprite->setPosition(Vec2(360, 990));
+
+		Texture2D * texture = TextureCache::sharedTextureCache()->addImage("scene1-1/sprite2_title.png");
+
+		vector<SpriteFrame*> animFrames;
+		for (int i = 0; i < 8; ++i)
+		{
+			auto frame = SpriteFrame::create("scene1-1/sprite2_title.png", Rect(0, 180 * i, 720, 180));
+			animFrames.push_back(frame);
+		}
+		for (int i = 7; i > 0; --i)
+		{
+			auto frame = SpriteFrame::create("scene1-1/sprite2_title.png", Rect(0, 180 * i, 720, 180));
+			animFrames.push_back(frame);
+		}
+
+		Animation * animation = Animation::create();
+		animation->setDelayPerUnit(0.1f);
+		for (size_t i = 0; i<animFrames.size(); ++i)
+		{
+			animation->addSpriteFrame(animFrames[i]);
+		}
+
+
+		sprite->runAction(RepeatForever::create(Animate::create(animation)));
+		this->addChild(sprite);
+	}
+
+	//m_img_Logo = MenuItemImage::create("scene1-1/s1_title.png", "scene1-1/s1_title.png");
+	//m_img_Logo->setPosition(Vec2(360, 990));
+	//this->addChild(m_img_Logo);
+
+
+	//ParticleSystemQuad *particle = ParticleSystemQuad::create("particle/particle4.plist");
+	//particle->setTexture(CCTextureCache::sharedTextureCache()->addImage("particle/particle_texture.png"));
+	//particle->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+	//this->addChild(particle);
 
 	//Label* LBL_title = Label::create("password", "fonts/LCDM2L_.TTF", 85);
 	//LBL_title->setPosition(Vec2(360, 990));
@@ -57,9 +142,6 @@ bool MainScene::init()
 	//this->addChild(LBL_title);
 
 
-	m_img_Logo = MenuItemImage::create("scene1-1/s1_title.png", "scene1-1/s1_title.png");
-	m_img_Logo->setPosition(Vec2(360, 990));
-	this->addChild(m_img_Logo);
 
 	{
 		auto img_set1 = MenuItemImage::create("scene1-1/s1_btn_set_up.png", "scene1-1/s1_btn_set_up.png");
@@ -70,6 +152,7 @@ bool MainScene::init()
 
 		m_BTN_set = Menu::create(button, NULL);
 		m_BTN_set->setPosition(Vec2(64, 1178));
+		m_BTN_set->setVisible(false);
 		this->addChild(m_BTN_set);
 	}
 
@@ -82,6 +165,7 @@ bool MainScene::init()
 
 		m_BTN_sound = Menu::create(button2, NULL);
 		m_BTN_sound->setPosition(Vec2(637, 1178));
+		m_BTN_sound->setVisible(false);
 		this->addChild(m_BTN_sound);
 	}
 
@@ -92,10 +176,15 @@ bool MainScene::init()
 	m_BTN_ranking->addTouchEventListener(CC_CALLBACK_2(MainScene::Touch_ranking, this));
 	this->addChild(m_BTN_ranking);
 
-	m_BTN_replay = Button::create("scene1-1/s1_btn_replay_up.png", "scene1-1/s1_btn_replay_down.png");
-	m_BTN_replay->setPosition(Vec2(512, 835));
-	m_BTN_replay->addTouchEventListener(CC_CALLBACK_2(MainScene::Touch_replay, this));
-	this->addChild(m_BTN_replay);
+	m_BTN_credits = Button::create("scene1-1/s1_btn_credits_up.png", "scene1-1/s1_btn_credits_down.png");
+	m_BTN_credits->setPosition(Vec2(512, 835));
+	m_BTN_credits->addTouchEventListener(CC_CALLBACK_2(MainScene::Touch_credits, this));
+	this->addChild(m_BTN_credits);
+
+	//m_BTN_replay = Button::create("scene1-1/s1_btn_replay_up.png", "scene1-1/s1_btn_replay_down.png");
+	//m_BTN_replay->setPosition(Vec2(512, 835));
+	//m_BTN_replay->addTouchEventListener(CC_CALLBACK_2(MainScene::Touch_replay, this));
+	//this->addChild(m_BTN_replay);
 
 	m_BTN_base = Button::create("scene1-1/s1_btry_base_off.png", "scene1-1/s1_btry_base_off.png");
 	m_BTN_base->setPosition(Vec2(543, 480));
@@ -123,6 +212,19 @@ bool MainScene::init()
 	m_LBL_difficult->setAnchorPoint(Vec2(0, 0));
 	this->addChild(m_LBL_difficult);
 
+
+	m_IMG_popup_BG = MenuItemImage::create("common/bg_black_80.png", "common/bg_black_80.png");
+	m_IMG_popup_BG->setPosition(Vec2(s.width / 2, s.height / 2));
+	//m_IMG_BG->setOpacity(76.5);
+	m_IMG_popup_BG->setVisible(false);
+	//m_img_BG->setAnchorPoint(Vec2(0, 0));
+	this->addChild(m_IMG_popup_BG);
+
+	m_IMG_popup_credits = MenuItemImage::create("scene1-1/s1_pup_credits.png", "scene1-1/s1_pup_credits.png");
+	m_IMG_popup_credits->setPosition(Vec2(s.width / 2, s.height / 2));
+	m_IMG_popup_credits->setVisible(false);
+	//m_img_BG->setAnchorPoint(Vec2(0, 0));
+	this->addChild(m_IMG_popup_credits);
 
 	return true;
 }
@@ -170,12 +272,17 @@ void MainScene::Touch_ranking(Ref* sender, Widget::TouchEventType type)
 
 		auto audio = SimpleAudioEngine::getInstance();
 		audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
+
+
+		GameSharing::ShowLeaderboards(0);
+
 		break;
+	
 	}
 
-	GameSharing::ShowLeaderboards(0);
+
 }
-void MainScene::Touch_replay(Ref* sender, Widget::TouchEventType type)
+void MainScene::Touch_credits(Ref* sender, Widget::TouchEventType type)
 {
 	//터치 이벤트 실행시 프로그램 종료
 	switch (type)
@@ -186,8 +293,14 @@ void MainScene::Touch_replay(Ref* sender, Widget::TouchEventType type)
 		break;
 	case Widget::TouchEventType::ENDED:
 
+
+
 		auto audio = SimpleAudioEngine::getInstance();
 		audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
+
+		m_IMG_popup_BG->setVisible(true);
+		m_IMG_popup_credits->setVisible(true);
+
 		break;
 	}
 }

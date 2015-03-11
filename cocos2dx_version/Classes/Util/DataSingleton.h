@@ -11,8 +11,8 @@ public:
 
 	int nLevel;
 
-	//int nSpentTime;
-	std::string strSpentTime;
+	int nSpentTime;
+	//std::string strSpentTime;
 	
 	int nSpentCount;
 

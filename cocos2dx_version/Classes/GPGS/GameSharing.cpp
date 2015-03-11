@@ -211,3 +211,20 @@ void GameSharing::ActivateStdErrorHandler(){
 void GameSharing::SetErrorHandler(std::function<void ()> handler){
     errorHandler = handler;
 }
+
+
+void GameSharing::ShowFullAd()
+{
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID	
+	JniMethodInfo t;
+	if (JniHelper::getStaticMethodInfo(t
+		, "org/cocos2dx/cpp.AppActivity"
+		, "showInterstitial"
+		, "()V"))
+	{
+		t.env->CallStaticVoidMethod(t.classID, t.methodID);
+	}
+#endif
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#endif
+}

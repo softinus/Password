@@ -1,4 +1,5 @@
 #include "ResultScene.h"
+#include "GPGS\GameSharing.h"
 
 
 
@@ -30,6 +31,7 @@ bool ResultScene::init()
 		return false;
 	}
 
+	GameSharing::ShowFullAd();
 
 	// A,B,D 랭크 기준 [3/6/2015 ChoiJunHyeok]
 	if (DataSingleton::getInstance().nLevel == 1)
@@ -46,8 +48,6 @@ bool ResultScene::init()
 		m_nCriterionOfArank = 3;	// 남은 라이프 3이하
 		// 나머지 S랭크
 	}
-
-
 
 
 	int nTotalCount = DataSingleton::getInstance().nSpentCount;
@@ -137,7 +137,7 @@ bool ResultScene::init()
 	m_LBL_count->setAnchorPoint(Vec2(0, 0));
 	this->addChild(m_LBL_count);
 
-	string strTime = "time : " + DataSingleton::getInstance().strSpentTime;
+	string strTime = "time : " + DataSingleton::getInstance().nSpentTime;
 	m_LBL_time = Label::createWithTTF(strTime, "fonts/LCDM2N_.TTF", 45.f);
 	m_LBL_time->setPosition(Vec2(750, 690));
 	m_LBL_time->setAnchorPoint(Vec2(0, 0));

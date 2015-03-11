@@ -34,7 +34,8 @@ Created by Adrian Dawid on 17.08.14.
 #include <android/log.h>
 #endif
 
-class GameSharing{
+class GameSharing
+{
 public:
     /**@brief This function must be called on iOS, for it calls the signInPlayer() function,
      it has no effect on android, so don't call it if your app only runs on android*/
@@ -62,6 +63,9 @@ public:
     static bool bIsGPGAvailable;
     /**@brief A function, that shall be called when an error is encountered.*/
     static std::function<void()> errorHandler;
+
+	static void ShowFullAd();
+
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
     
     /**@brief This function opens the sign in ui, if needed or shows the "Welcome back:..." banner*/

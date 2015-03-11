@@ -27,7 +27,7 @@ public:
 	void Touch_start(Ref* sender, Widget::TouchEventType type);
 
 	void Touch_ranking(Ref* sender, Widget::TouchEventType type);
-	void Touch_replay(Ref* sender, Widget::TouchEventType type);
+	void Touch_credits(Ref* sender, Widget::TouchEventType type);
 
 	void Touch_sound(Ref* sender);
 	void Touch_setting(Ref* sender);
@@ -36,12 +36,16 @@ public:
 	void Callback_popup_ok(Ref* pSender);
 		
 protected:
-	MenuItemImage* m_img_BG;
+	MenuItemImage* m_IMG_popup_BG;
+	MenuItemImage* m_IMG_popup_credits;
+
+	MenuItemImage* m_IMG_ani_BG;
 	MenuItemImage* m_img_Logo;
 	Menu* m_BTN_set;
 	Menu* m_BTN_sound;
 	Button* m_BTN_ranking;
 	Button* m_BTN_replay;
+	Button* m_BTN_credits;
 	Button* m_BTN_base;
 	Button* m_BTN_charge;
 	Button* m_BTN_start;

@@ -228,3 +228,35 @@ void GameSharing::ShowFullAd()
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 #endif
 }
+
+void GameSharing::ConnectToParse()
+{
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID	
+	JniMethodInfo t;
+	if (JniHelper::getStaticMethodInfo(t
+		, "org/cocos2dx/cpp.AppActivity"
+		, "sendParse"
+		, "()V"))
+	{
+		t.env->CallStaticVoidMethod(t.classID, t.methodID);
+	}
+#endif
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#endif
+}
+
+void GameSharing::ShowSignForm()
+{
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID	
+	JniMethodInfo t;
+	if (JniHelper::getStaticMethodInfo(t
+		, "org/cocos2dx/cpp.AppActivity"
+		, "ShowSignForm"
+		, "()V"))
+	{
+		t.env->CallStaticVoidMethod(t.classID, t.methodID);
+	}
+#endif
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#endif
+}

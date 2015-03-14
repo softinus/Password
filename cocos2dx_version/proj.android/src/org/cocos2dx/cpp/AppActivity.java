@@ -29,11 +29,25 @@ package org.cocos2dx.cpp;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.ads.AdListener;
@@ -42,6 +56,11 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.games.Games;
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 import com.softinus.pw.R;
 
 public class AppActivity extends BaseGameActivity {
@@ -60,19 +79,28 @@ public class AppActivity extends BaseGameActivity {
  	LinearLayout mainLayout;
  	boolean isAdmobInited = false;
  	static InterstitialAd interstitial;
+ 	
+ 	/* Your ad unit id. Replace with your actual ad unit id. */
+ 	private static final String AD_UNIT_ID_FOR_FULL = "ca-app-pub-5164818819958072/3969069148";
+ 	private static final String AD_UNIT_ID = "ca-app-pub-5164818819958072/4026114746";
+ 	
  	// For Admob [-]
-	
-	/* Your ad unit id. Replace with your actual ad unit id. */
-	private static final String AD_UNIT_ID_FOR_FULL = "ca-app-pub-5164818819958072/3969069148";
-	private static final String AD_UNIT_ID = "ca-app-pub-5164818819958072/4026114746";
+ 	
+ 	// for parse
+ 	private ProgressDialog LoadingDL;
+	AccountManager mgr;
+    Account[] accts;
+    // for parse 
     
     @Override
-    public void onSignInSucceeded(){
+    public void onSignInSucceeded()
+    {
         gpgAvailable = true;
     }
     
     @Override
-    public void onSignInFailed(){
+    public void onSignInFailed()
+    {
         gpgAvailable = false;
     }
     
@@ -82,9 +110,11 @@ public class AppActivity extends BaseGameActivity {
         
     	mActivity = this;
     	
-
-
-    	
+        mgr= AccountManager.get(getApplicationContext());
+        accts= mgr.getAccounts();
+        
+        LoadingDL = new ProgressDialog(this);
+    	    	
     	// Create an ad.
     	admobView = new AdView(this);
     	admobView.setAdSize(AdSize.BANNER);
@@ -107,26 +137,119 @@ public class AppActivity extends BaseGameActivity {
 			interstitial = new InterstitialAd(this);
 			interstitial.setAdUnitId(AD_UNIT_ID_FOR_FULL);
 			
-			// Create ad request.
-			AdRequest adRequest = new AdRequest.Builder().build();
-			
-			// Begin loading your interstitial.
-			interstitial.loadAd(adRequest);
-			interstitial.setAdListener(new AdListener()
-			{
-				@Override
-		        public void onAdLoaded()
-				{
-		            // TODO Auto-generated method stub
-		            super.onAdLoaded();
-		            showInterstitial();
-		        }
-			});
+
     	}
-        
+    	
+    	//sendParse();
+    	//ShowSignForm();
+    	
         
         super.onCreate(savedInstanceState);
     }
+
+	static public void sendParse() 
+	{
+		{	// for parse
+    		ParseObject testObject = new ParseObject("TestObject");
+    		testObject.put("foo", "bar");
+    		testObject.saveInBackground();
+    	}
+	}
+	
+	static public void ShowSignForm()
+	{
+		mActivity.runOnUiThread(new Runnable() 
+        {
+	           
+	        @Override
+	        public void run()
+	        {
+	        	((AppActivity)currentContext).showDialog(R.layout.login_dialog);
+	        }
+        });
+		
+	}
+	
+	
+	private void SignIn(final String strID, final String strPW)
+	{
+		ParseUser.logInInBackground(strID, strPW
+				,new LogInCallback()
+		{
+		  public void done(ParseUser user, ParseException e)
+		  {
+		    if (user != null)
+		    {
+		    	LoadingHandler.sendEmptyMessage(3);
+		    	
+		    	SPUtil.putString(currentContext, "login_id", strID);
+				SPUtil.putString(currentContext, "login_pw", strPW);    	        			
+				
+				
+		    	//SPUtil.putBoolean(getApplicationContext(), Global.SP_LOGIN_SUCCESS, true);	
+		    	
+				ShowAlertDialog("[Connected]", "end", "Ok");        	        			
+				
+		    } else {
+		    	LoadingHandler.sendEmptyMessage(999);
+		    	ShowAlertDialog("[Failed]", "check.", "Ok");
+		    	
+		    	SPUtil.putString(currentContext, "login_id", null);
+		    	SPUtil.putString(currentContext, "login_pw", null);
+		    	// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+		    	
+		        return;
+		    }
+		  }
+		});
+	}
+	
+
+    public Handler LoadingHandler = new Handler()
+	{
+		public void handleMessage(Message msg)
+		{			
+			if(msg.what==0)	// Play ï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½!
+			{
+				LoadingDL.hide();
+				
+				final String strID= SPUtil.getString(currentContext, "login_id");
+				final String strPW= SPUtil.getString(currentContext, "login_pw"); 
+				if( (strID!=null) && (strPW!=null) )	// ï¿½ï¿½ï¿½ï¿½ï¿½ IDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+				{
+					LoadingHandler.sendEmptyMessage(1);
+					            		
+            		SignIn(strID, strPW);
+					
+				}
+				else
+				{
+					showDialog(R.layout.login_dialog);
+				}
+			}
+			if(msg.what==1)
+			{
+				LoadingDL.setMessage("Sign in...");
+		        LoadingDL.show();
+			}
+			if(msg.what==2)
+			{
+				LoadingDL.setMessage("Sign up...");
+		        LoadingDL.show();
+			}
+			if(msg.what==3)
+			{
+				LoadingDL.setMessage("Getting information...");
+		        LoadingDL.show();
+			}
+			if(msg.what==999)
+			{
+				LoadingDL.hide();
+			}
+		}
+	};
+	
+	
     
     
     public void showAdmob ()
@@ -135,8 +258,8 @@ public class AppActivity extends BaseGameActivity {
     		return;
     	}
 
-    	// OnCreate ¿¡¼­ È£ÃâÇÒ¶§´Â ¾×Æ¼ºñÆ¼ ½ÇÇà »çÀÌÅ¬ÀÌ ¸ðµå ³¡³ª±â Àü¿¡ È£ÃâÇÏ¹Ç·Î post ÇÔ¼ö·Î ½ÃÀÛ »çÀÌÅ¬ÀÌ ³¡³ª°í Runable À» ½ÇÇàÇÔ.
-    	// Runnable ³»ÀÇ ÄÚµåµéÀº UI ½º·¹µå¿¡¼­ ½ÇÇà.
+    	// OnCreate ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½ï¿½Ò¶ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼ï¿½ï¿½Æ¼ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½ï¿½Ï¹Ç·ï¿½ post ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Runable ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+    	// Runnable ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ï¿½ï¿½ï¿½ UI ï¿½ï¿½ï¿½ï¿½ï¿½å¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
     		
     	//	mActivity.runOnUiThread (new Runnable () {
     	mainLayout = new LinearLayout (mActivity);
@@ -166,32 +289,196 @@ public class AppActivity extends BaseGameActivity {
     	});
     }
     
-    static private void showInterstitial()
+    
+    private void ShowAlertDialog(String strTitle, String strContent, String strButton)
+	{
+		new AlertDialog.Builder(this)
+		.setTitle( strTitle )
+		.setMessage( strContent )
+		.setPositiveButton( strButton , null)
+		.setCancelable(false)
+		.create()
+		.show();
+	}
+	
+	
+	
+	@Override
+	protected Dialog onCreateDialog(int id, Bundle args)
+	{
+		LayoutInflater factory = LayoutInflater.from(this);
+	    final View LoginDialogView = factory.inflate(id, (ViewGroup) findViewById(R.layout.login_dialog));
+	    
+	    final EditText EDT_ID= (EditText) LoginDialogView.findViewById(R.id.edt_username);
+    	final EditText EDT_PW= (EditText) LoginDialogView.findViewById(R.id.edt_password);
+    	
+    	for(Account acct : accts)	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½é¼­ ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»ï¿½Ô·ï¿½ï¿½ï¿½ï¿½ï¿½
+    	{
+	    	if(acct.name.contains("@"))
+	    	{
+	    		EDT_ID.setText(acct.name);
+	    		break;
+	    	}
+    	}
+    	
+	    return new AlertDialog.Builder(AppActivity.this)
+	        .setIcon(android.R.drawable.ic_dialog_info)
+	        .setTitle("Login or Sign up")
+	        .setView(LoginDialogView)
+	        .setPositiveButton("Sign in", new DialogInterface.OnClickListener()
+	        {
+	            public void onClick(DialogInterface dialog, int whichButton)
+	            {
+	            	
+	            	
+	            	if( TextUtils.isEmpty(EDT_ID.getText()) )
+	            	{
+	            		ShowAlertDialog("Sign in failed", "Please enter ID.", "Ok");
+	            		showDialog(R.layout.login_dialog);
+	            		//Toast.makeText(getApplicationContext(), "ï¿½ï¿½ï¿½Ìµï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.", Toast.LENGTH_LONG).show();
+	            	}
+	            	else if( TextUtils.isEmpty(EDT_PW.getText()) )	            		
+	            	{
+	            		ShowAlertDialog("Sign in failed", "Please enter PW.", "Ok");
+	            		showDialog(R.layout.login_dialog);
+	            		//Toast.makeText(getApplicationContext(), "ï¿½Ð½ï¿½ï¿½ï¿½ï¿½å¸¦ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.", Toast.LENGTH_LONG).show();
+	            	}
+	            	else
+	            	{	            	
+	            		LoadingHandler.sendEmptyMessage(1);
+	            		
+	            		SignIn(EDT_ID.getText().toString(), EDT_PW.getText().toString());
+	            		
+	            	}
+	            	
+	            	
+	            }
+	        })
+	        .setNeutralButton("Sign up", new DialogInterface.OnClickListener()
+	        {
+	            public void onClick(DialogInterface dialog, int whichButton)
+	            {
+	            	if( TextUtils.isEmpty(EDT_ID.getText()) )
+	            	{
+	            		ShowAlertDialog("Sign up failed.", "Please enter ID.", "Ok");
+	            	}
+	            	else if( !EDT_ID.getText().toString().contains("@") )
+	            	{
+	            		ShowAlertDialog("Sign up failed.", "Please enter your ID correct email form :)", "Ok");
+	            	}
+	            	else if( TextUtils.isEmpty(EDT_PW.getText()) )	            		
+	            	{
+	            		ShowAlertDialog("Sign up failed.", "Please enter password.", "Ok");
+	            		//Toast.makeText(getApplicationContext(), "ï¿½Ð½ï¿½ï¿½ï¿½ï¿½å¸¦ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.", Toast.LENGTH_LONG).show();
+	            	}
+	            	else if( (4>EDT_PW.getText().length()) || (10<EDT_PW.getText().length()) )	            		
+	            	{
+	            		ShowAlertDialog("Sign up failed.", "Password must be 4~10 words.", "Ok");
+	            		
+	            	}
+	            	else
+	            	{
+	            		LoadingHandler.sendEmptyMessage(2);
+	            		
+		        		String strNumber= null;
+		        		String strIMEI= null;
+		        		
+		        		TelephonyManager TM = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE); 
+		        		if (TM.getSimState() == TelephonyManager.SIM_STATE_ABSENT)
+		        		{
+		        			strNumber= "usim_absent";
+		        		} 
+		        		else {
+		        			strNumber= TM.getLine1Number();
+		        			strIMEI= TM.getDeviceId();
+		        		}
+		        		
+		        		ParseUser user = new ParseUser();
+		        		user.setUsername(EDT_ID.getText().toString());
+		        		user.setPassword(EDT_PW.getText().toString()	);
+		        		user.setEmail(EDT_ID.getText().toString());
+		        		 
+
+		        		if(strNumber==null)
+		        			user.put("phone", "usim_null");
+		        		else
+		        			user.put("phone", strNumber);
+		        		 
+		        		user.signUpInBackground(new SignUpCallback()
+		        		{
+		        		  public void done(ParseException e)
+		        		  {
+		        		    if (e == null)
+		        		    {
+		        		    	LoadingHandler.sendEmptyMessage(999);
+		        		    	ShowAlertDialog("[Join success]", "Welcome abroad!\nPlease login again. +_+", "Ok");
+    		                    return;
+		        		    } else {
+		        		    	LoadingHandler.sendEmptyMessage(999);
+    		                	ShowAlertDialog("[Join failed]", "error code : "+e.getCode(), "Ok");
+    		                    return;
+		        		    }
+		        		  }
+		        		});
+		        		
+		        		
+		        		 
+	            	}
+	            }
+	        })
+	        .setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+	        {
+	            public void onClick(DialogInterface dialog, int whichButton)
+	            {
+
+	                /* User clicked cancel so do some stuff */
+	            }
+	        })
+	        .create();
+	}
+	
+    
+    static public void showInterstitial()
     {
       mActivity.runOnUiThread(new Runnable() 
       {
            
         @Override
-        public void run() {
-          if (interstitial.isLoaded())
-          {
-        	  
-        	  interstitial.show();
-          }
+        public void run()
+        {
+			// Create ad request.
+			AdRequest adRequest = new AdRequest.Builder().build();
+			
+			// Begin loading your interstitial.
+			interstitial.loadAd(adRequest);
+			interstitial.setAdListener(new AdListener()
+			{
+				@Override
+		        public void onAdLoaded()
+				{
+		            // TODO Auto-generated method stub
+		            super.onAdLoaded();
+		            interstitial.show();
+		        }
+			});
         }
       });
     }
     
     
+    
+    
     /*@brief Changes the actvie leaderboard
       @param The index of the leaderboard
     */
-    static public void openLeaderboard(int leaderboardID){
+    static public void openLeaderboard(int leaderboardID)
+    {
          currentID = leaderboardID;
     }
     
     /*@brief This function opens the leaderboards ui for an leaderboard id*/
-    static public void openLeaderboardUI(){
+    static public void openLeaderboardUI()
+    {
         if(gpgAvailable){
                 ((AppActivity)currentContext).runOnUiThread(new Runnable() {
             public void run() {

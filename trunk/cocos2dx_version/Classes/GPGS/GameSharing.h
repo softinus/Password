@@ -66,6 +66,10 @@ public:
 
 	static void ShowFullAd();
 
+	static void ConnectToParse();
+
+	static void ShowSignForm();
+
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
     
     /**@brief This function opens the sign in ui, if needed or shows the "Welcome back:..." banner*/

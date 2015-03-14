@@ -29,7 +29,7 @@ public:
 	void Touch_ranking(Ref* sender, Widget::TouchEventType type);
 	void Touch_credits(Ref* sender, Widget::TouchEventType type);
 
-	void Touch_sound(Ref* sender);
+	void Touch_sound(Ref* sender, Widget::TouchEventType type);
 	void Touch_setting(Ref* sender);
 	void onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event *event);
 	void ShowPopup();
@@ -42,7 +42,7 @@ protected:
 	MenuItemImage* m_IMG_ani_BG;
 	MenuItemImage* m_img_Logo;
 	Menu* m_BTN_set;
-	Menu* m_BTN_sound;
+	Button* m_BTN_sound;
 	Button* m_BTN_ranking;
 	Button* m_BTN_replay;
 	Button* m_BTN_credits;

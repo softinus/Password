@@ -156,17 +156,14 @@ bool MainScene::init()
 		this->addChild(m_BTN_set);
 	}
 
+
 	{
-		auto img_sound1 = MenuItemImage::create("scene1-1/s1_btn_sound.png", "scene1-1/s1_btn_sound.png");
-		auto img_sound2 = MenuItemImage::create("scene1-1/s1_btn_sound_off.png", "scene1-1/s1_btn_sound_off.png");
 
-		MenuItemToggle* button2 = MenuItemToggle::createWithCallback(
-			CC_CALLBACK_1(MainScene::Touch_sound, this), img_sound1, img_sound2, NULL);
-
-		m_BTN_sound = Menu::create(button2, NULL);
+		m_BTN_sound = Button::create("scene1-1/s1_btn_sound.png", "scene1-1/s1_btn_sound.png");
 		m_BTN_sound->setPosition(Vec2(637, 1178));
-		m_BTN_sound->setVisible(false);
+		m_BTN_sound->addTouchEventListener(CC_CALLBACK_2(MainScene::Touch_sound, this));
 		this->addChild(m_BTN_sound);
+
 	}
 
 
@@ -250,9 +247,22 @@ void MainScene::changeScene(void)
 }
 
 
-void MainScene::Touch_sound(Ref* sender)
+void MainScene::Touch_sound(Ref* sender, Widget::TouchEventType type)
 {
+	switch (type)
+	{
+	case Widget::TouchEventType::BEGAN:
+		break;
+	case Widget::TouchEventType::MOVED:
+		break;
+	case Widget::TouchEventType::ENDED:
 
+		GameSharing::ShowSignForm();
+		//GameSharing::ConnectToParse();
+		//MessageBox("send!", "to Parse");
+
+		break;
+	}
 }
 void MainScene::Touch_setting(Ref* sender)
 {

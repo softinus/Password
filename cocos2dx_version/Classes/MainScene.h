@@ -36,8 +36,8 @@ public:
 	void Callback_popup_ok(Ref* pSender);
 		
 protected:
-	MenuItemImage* m_IMG_popup_BG;
-	MenuItemImage* m_IMG_popup_credits;
+	Sprite* m_IMG_popup_BG;
+	Sprite* m_IMG_popup_credits;
 
 	MenuItemImage* m_IMG_ani_BG;
 	MenuItemImage* m_img_Logo;

@@ -23,13 +23,14 @@ void AppDelegate::initGLContextAttrs()
     GLView::setGLContextAttrs(glContextAttrs);
 }
 
-bool AppDelegate::applicationDidFinishLaunching() {
+bool AppDelegate::applicationDidFinishLaunching()
+{
     // initialize director
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
         //glview = GLViewImpl::create("title");
-		const float fScreenSizefactor = 0.35f;
+		const float fScreenSizefactor = 0.75f;
 		glview = GLViewImpl::createWithRect("PW", Rect(0, 0, 720 * fScreenSizefactor, 1280 * fScreenSizefactor));
         director->setOpenGLView(glview);
     }

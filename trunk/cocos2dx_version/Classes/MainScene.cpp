@@ -210,14 +210,15 @@ bool MainScene::init()
 	this->addChild(m_LBL_difficult);
 
 
-	m_IMG_popup_BG = MenuItemImage::create("common/bg_black_80.png", "common/bg_black_80.png");
+	m_IMG_popup_BG = Sprite::create("common/bg_black_80.png");
 	m_IMG_popup_BG->setPosition(Vec2(s.width / 2, s.height / 2));
 	//m_IMG_BG->setOpacity(76.5);
 	m_IMG_popup_BG->setVisible(false);
+	
 	//m_img_BG->setAnchorPoint(Vec2(0, 0));
 	this->addChild(m_IMG_popup_BG);
 
-	m_IMG_popup_credits = MenuItemImage::create("scene1-1/s1_pup_credits.png", "scene1-1/s1_pup_credits.png");
+	m_IMG_popup_credits = Sprite::create("scene1-1/s1_pup_credits.png");
 	m_IMG_popup_credits->setPosition(Vec2(s.width / 2, s.height / 2));
 	m_IMG_popup_credits->setVisible(false);
 	//m_img_BG->setAnchorPoint(Vec2(0, 0));
@@ -303,13 +304,12 @@ void MainScene::Touch_credits(Ref* sender, Widget::TouchEventType type)
 		break;
 	case Widget::TouchEventType::ENDED:
 
-
-
 		auto audio = SimpleAudioEngine::getInstance();
 		audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
 
 		m_IMG_popup_BG->setVisible(true);
 		m_IMG_popup_credits->setVisible(true);
+		//this->setSwallowsTouches(true);
 
 		break;
 	}

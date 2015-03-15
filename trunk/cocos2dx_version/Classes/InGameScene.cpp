@@ -671,6 +671,7 @@ void InGameScene::MakeAnswer()
 	{
 		int nNumber = random(1, m_nWid*m_nHei);
 		bool bAlreadyHas = false;
+		bool bCountious = false;	// 반복된 숫자 제외.
 		for (int i = 0; i < m_vQuestion.size(); ++i)
 		{
 			if (m_vQuestion[i] == nNumber)
@@ -678,8 +679,18 @@ void InGameScene::MakeAnswer()
 				bAlreadyHas = true;
 				break;
 			}
+			if (m_vQuestion[i]-1 ==  nNumber)
+			{
+				bCountious = true;
+				break;
+			}
+			if (m_vQuestion[i]+1 == nNumber)
+			{
+				bCountious = true;
+				break;
+			}
 		}
-		if (bAlreadyHas == false)
+		if (bAlreadyHas == false && bCountious==false)
 		{
 			m_vQuestion.push_back(nNumber);
 			nSum += nNumber;

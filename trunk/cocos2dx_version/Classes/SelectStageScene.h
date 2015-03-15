@@ -9,6 +9,24 @@ USING_NS_CC;
 using namespace ui;
 using namespace std;
 
+namespace
+{
+	enum EStage
+	{
+		EASY= 0,
+		NORMAL,
+		CHALLENGE,
+		ALL
+	};
+	enum ERank
+	{
+		D_RANK = 0,
+		C_RANK,
+		B_RANK,
+		A_RANK,
+		S_RANK
+	};
+}
 
 class SelectStageScene : public cocos2d::Layer
 {
@@ -35,7 +53,7 @@ protected:
 	Button* m_PAGE_left;
 	Button* m_PAGE_right;
 	MenuItemImage* m_IMG_title;
-	MenuItemImage* m_IMG_status;
+	//MenuItemImage* m_IMG_status;
 	vector<MenuItemImage*> m_vPage;
 
 	Button* m_BTN_back;

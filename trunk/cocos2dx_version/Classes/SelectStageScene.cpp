@@ -5,7 +5,6 @@
 #include "SimpleAudioEngine.h"
 using namespace CocosDenshion;
 
-#define PAGE_COUNT 2
 #define STAGE_COUNT 9
 
 
@@ -123,13 +122,13 @@ bool SelectStageScene::init()
 
 
 
-	for (int p = 0; p < PAGE_COUNT; ++p)
+	for (int p = 0; p < EStage::ALL; ++p)
 	{
 		auto image1 = MenuItemImage::create("scene2/page_navi_off.png", "scene2/page_navi_off.png", NULL, NULL);
 		//MenuItemImage*  IMG_page_indicator = MenuItemImage::create("scene2/page_navi_on.png", "scene2/page_navi_off.png", "scene2/page_navi_off.png");
 		MenuItemImage*  IMG_page_indicator = MenuItemImage::create("scene2/page_navi_on.png", "scene2/page_navi_off.png");
 		IMG_page_indicator->setDisabledImage(image1);
-		IMG_page_indicator->setPosition(Vec2( 360-(PAGE_COUNT*15) + (p*30), 196));	// calc page indicators
+		IMG_page_indicator->setPosition(Vec2(360 - (EStage::ALL * 15) + (p * 30), 196));	// calc page indicators
 
 		if (p == 0)
 			IMG_page_indicator->setEnabled(true);
@@ -153,20 +152,25 @@ bool SelectStageScene::init()
 	m_PAGE_stage->setBackGroundImage("scene2/s2_box01.png");
 	m_PAGE_stage->setAnchorPoint(Vec2(0, 0));
 
-	for (int p = 0; p < PAGE_COUNT; ++p)
+	for (int p = 0; p < EStage::ALL; ++p)
 	{
 		Layout* _frame = Layout::create();
 
-		if (p == 0)
+		MenuItemImage* IMG_status = NULL;
+		if (p == EStage::EASY)
 		{
-			m_IMG_status = MenuItemImage::create("scene2/s2_pnl_normal.png", "scene2/s2_pnl_normal.png");
+			IMG_status = MenuItemImage::create("scene2/s2_pnl_easy.png", "scene2/s2_pnl_easy.png");
 		}
-		else if (p == 1)
+		else if (p == EStage::NORMAL)
 		{
-			m_IMG_status = MenuItemImage::create("scene2/s2_pnl_cha.png", "scene2/s2_pnl_cha.png");
+			IMG_status = MenuItemImage::create("scene2/s2_pnl_normal.png", "scene2/s2_pnl_normal.png");
 		}
-		m_IMG_status->setPosition(Vec2(m_PAGE_stage->getContentSize().width/2, 750));
-		_frame->addChild(m_IMG_status);
+		else if (p == EStage::CHALLENGE)
+		{
+			IMG_status = MenuItemImage::create("scene2/s2_pnl_cha.png", "scene2/s2_pnl_cha.png");
+		}
+		IMG_status->setPosition(Vec2(m_PAGE_stage->getContentSize().width/2, 750));
+		_frame->addChild(IMG_status);
 
 		for (int i = 0; i < STAGE_COUNT; ++i)
 		{
@@ -174,7 +178,7 @@ bool SelectStageScene::init()
 				string strImageDown = "scene2/s2_btn_stg";
 				string strImageDisable = "scene2/s2_btn_stg";
 				strImageUp += to_string2(i + 1);
-				if (p == 0)
+				if (p == EStage::EASY || p == EStage::NORMAL)
 				{
 					strImageUp += "_up.png";
 					strImageDown += to_string2(i + 1);
@@ -182,7 +186,7 @@ bool SelectStageScene::init()
 					strImageDisable += to_string2(i + 1);
 					strImageDisable += "_deact.png";
 				}
-				else if (p == 1)
+				else if (p == EStage::CHALLENGE)
 				{
 					strImageUp += "_up2.png";
 					strImageDown += to_string2(i + 1);
@@ -191,7 +195,6 @@ bool SelectStageScene::init()
 					strImageDisable += "_deact.png";
 				}
 
-				
 
 				Button* BTN_stage = Button::create(strImageUp, strImageDown, strImageDisable);
 				BTN_stage->setName(StringUtils::format("%d", i+1));
@@ -212,23 +215,23 @@ bool SelectStageScene::init()
 				bool bUnranked = false;
 
 				string strIMGrank = "scene2/s2_rank_";
-				if (nCurrRank == 0)	// c rank
+				if (nCurrRank == ERank::D_RANK)
 				{
 					strIMGrank += "d.png";
 				}
-				if (nCurrRank == 1)	// c rank
+				if (nCurrRank == ERank::C_RANK)	// c rank
 				{
 					strIMGrank += "c.png";
 				}
-				else if (nCurrRank == 2)	// b rank
+				else if (nCurrRank == ERank::B_RANK)	// b rank
 				{
 					strIMGrank += "b.png";
 				}
-				else if (nCurrRank == 3)	// a rank
+				else if (nCurrRank == ERank::A_RANK)	// a rank
 				{
 					strIMGrank += "a.png";
 				}
-				else if (nCurrRank == 4)	// s rank
+				else if (nCurrRank == ERank::S_RANK)	// s rank
 				{
 					strIMGrank += "s.png";
 				}

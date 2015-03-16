@@ -27,6 +27,8 @@ THE SOFTWARE.
 ****************************************************************************/
 package org.cocos2dx.cpp;
 
+import java.util.List;
+
 import org.cocos2dx.lib.Cocos2dxActivity;
 
 import android.accounts.Account;
@@ -56,9 +58,11 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.games.Games;
+import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 import com.softinus.pw.R;
@@ -147,13 +151,40 @@ public class AppActivity extends BaseGameActivity {
         super.onCreate(savedInstanceState);
     }
 
-	static public void sendParse() 
+	static public void InitParse() 
 	{
-		{	// for parse
-    		ParseObject testObject = new ParseObject("TestObject");
-    		testObject.put("foo", "bar");
-    		testObject.saveInBackground();
-    	}
+		ParseUser currentUser = ParseUser.getCurrentUser();
+		if (currentUser != null)
+		{
+			ParseObject userInfo = new ParseObject("UserInfo");
+			userInfo.put("user_id", currentUser);
+			userInfo.put("coin", 0);
+			userInfo.saveInBackground();
+		}
+	}
+	
+	static public void earnCoins(final int nCount)
+	{
+		ParseUser currentUser = ParseUser.getCurrentUser();
+		if (currentUser != null)
+		{
+			ParseQuery<ParseObject> query= ParseQuery.getQuery("UserInfo");	// 유저 데이터를 찾는다.
+			query.whereEqualTo("user_id", currentUser);	// 해당되는 유저의
+			query.findInBackground(new FindCallback<ParseObject>()
+			{			
+				@Override
+				public void done(List<ParseObject> list, ParseException e)
+				{
+					for(ParseObject PO : list)
+					{
+						PO.increment("coin", nCount);
+						PO.saveInBackground();
+					}
+				}
+			});
+		} else {
+		  // show the signup or login screen
+		}
 	}
 	
 	static public void ShowSignForm()
@@ -185,10 +216,10 @@ public class AppActivity extends BaseGameActivity {
 		    	SPUtil.putString(currentContext, "login_id", strID);
 				SPUtil.putString(currentContext, "login_pw", strPW);    	        			
 				
-				
 		    	//SPUtil.putBoolean(getApplicationContext(), Global.SP_LOGIN_SUCCESS, true);	
+				LoadingHandler.sendEmptyMessage(999);
 		    	
-				ShowAlertDialog("[Connected]", "end", "Ok");        	        			
+				//ShowAlertDialog("[Connected]", "end", "Ok");        	        			
 				
 		    } else {
 		    	LoadingHandler.sendEmptyMessage(999);
@@ -257,10 +288,7 @@ public class AppActivity extends BaseGameActivity {
     	if (isAdmobInited || admobView == null) {
     		return;
     	}
-
-    	// OnCreate ���� ȣ���Ҷ��� ��Ƽ��Ƽ ���� ����Ŭ�� ��� ������ ���� ȣ���ϹǷ� post �Լ��� ���� ����Ŭ�� ������ Runable �� ������.
-    	// Runnable ���� �ڵ���� UI �����忡�� ����.
-    		
+    	
     	//	mActivity.runOnUiThread (new Runnable () {
     	mainLayout = new LinearLayout (mActivity);
     	mainLayout.post (new Runnable () {
@@ -312,7 +340,7 @@ public class AppActivity extends BaseGameActivity {
 	    final EditText EDT_ID= (EditText) LoginDialogView.findViewById(R.id.edt_username);
     	final EditText EDT_PW= (EditText) LoginDialogView.findViewById(R.id.edt_password);
     	
-    	for(Account acct : accts)	// ������ ���� ���鼭 �̸��������� ������ �⺻�Է�����
+    	for(Account acct : accts)	// account 목록
     	{
 	    	if(acct.name.contains("@"))
 	    	{
@@ -410,6 +438,7 @@ public class AppActivity extends BaseGameActivity {
 		        		  {
 		        		    if (e == null)
 		        		    {
+		        		    	InitParse();	// 파스 초기화
 		        		    	LoadingHandler.sendEmptyMessage(999);
 		        		    	ShowAlertDialog("[Join success]", "Welcome abroad!\nPlease login again. +_+", "Ok");
     		                    return;

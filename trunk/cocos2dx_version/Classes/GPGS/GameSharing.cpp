@@ -212,6 +212,22 @@ void GameSharing::SetErrorHandler(std::function<void ()> handler){
     errorHandler = handler;
 }
 
+void GameSharing::EarnCoins(int nCount)
+{
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID	
+	JniMethodInfo t;
+	if (JniHelper::getStaticMethodInfo(t
+		, "org/cocos2dx/cpp.AppActivity"
+		, "earnCoins"
+		, "(I)V"))
+	{
+		t.env->CallStaticVoidMethod(t.classID, t.methodID, nCount);
+	}
+#endif
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#endif
+}
+
 
 void GameSharing::ShowFullAd()
 {

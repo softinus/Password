@@ -666,7 +666,7 @@ void InGameScene::MakeAnswer()
 	m_vAnswer.clear();
 	m_vQuestion.clear();
 	int nSum = 0;
-	srand((unsigned int)time(NULL));
+	//srand((unsigned int)time(NULL));
 	while (m_vQuestion.size() != m_nAnswerDigit)
 	{
 		int nNumber = random(1, m_nWid*m_nHei);

@@ -31,6 +31,7 @@ bool ResultScene::init()
 		return false;
 	}
 
+	GameSharing::EarnCoins(3);
 	GameSharing::ShowFullAd();
 
 	// A,B,D ∑©≈© ±‚¡ÿ [3/6/2015 ChoiJunHyeok]

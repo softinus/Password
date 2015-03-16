@@ -282,7 +282,7 @@ void MainScene::Touch_ranking(Ref* sender, Widget::TouchEventType type)
 	case Widget::TouchEventType::ENDED:
 
 		auto audio = SimpleAudioEngine::getInstance();
-		audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
+		audio->playEffect("raw/number.wav", false, 1.0f, 1.0f, 1.0f);
 
 
 		GameSharing::ShowLeaderboards(0);
@@ -305,7 +305,7 @@ void MainScene::Touch_credits(Ref* sender, Widget::TouchEventType type)
 	case Widget::TouchEventType::ENDED:
 
 		auto audio = SimpleAudioEngine::getInstance();
-		audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
+		audio->playEffect("raw/number.wav", false, 1.0f, 1.0f, 1.0f);
 
 		m_IMG_popup_BG->setVisible(true);
 		m_IMG_popup_credits->setVisible(true);
@@ -330,7 +330,7 @@ void MainScene::Touch_start(Ref* sender, Widget::TouchEventType type)
 		break;
 	case Widget::TouchEventType::ENDED:
 		auto audio = SimpleAudioEngine::getInstance();
-		audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
+		audio->playEffect("raw/number.wav", false, 1.0f, 1.0f, 1.0f);
 		changeScene();
 		break;
 	}

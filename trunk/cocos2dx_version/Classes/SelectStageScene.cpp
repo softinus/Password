@@ -38,7 +38,7 @@ void SelectStageScene::onButtonBack(Ref* sender, Widget::TouchEventType type)
 	case Widget::TouchEventType::ENDED:
 	{
 		auto audio = SimpleAudioEngine::getInstance();
-		audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
+		audio->playEffect("raw/number.wav", false, 1.0f, 1.0f, 1.0f);
 
 		Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 
@@ -67,7 +67,7 @@ void SelectStageScene::onButtonSelect(Ref* sender, Widget::TouchEventType type)
 	{
 
 		auto audio = SimpleAudioEngine::getInstance();
-		audio->playEffect("raw/enter.wav", false, 1.0f, 1.0f, 1.0f);
+		audio->playEffect("raw/number.wav", false, 1.0f, 1.0f, 1.0f);
 
 		DataSingleton::getInstance().nLevel = atoi(btn->getName().c_str());
 		//nLevel = atoi(btn->getName().c_str());

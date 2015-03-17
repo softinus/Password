@@ -35,6 +35,8 @@ public:
 	CREATE_FUNC(SelectStageScene);
 	virtual bool init();
 
+	MenuItemImage* ShowRank(int p, int i);
+
 	EventListenerTouchOneByOne * listener;
 
 	static Scene* createScene(void);
@@ -42,20 +44,25 @@ public:
 
 	//callback events
 	virtual bool onTouchBegan(Touch* touch, Event* event);
-	void onButtonSelect(Ref* sender, Widget::TouchEventType type);
+	void onButtonSelectStage(Ref* sender, Widget::TouchEventType type);
 	void onButtonBack(Ref* sender, Widget::TouchEventType type);
 	void pageViewEvent(Ref *pSender, PageView::EventType type);
+
+	void onButtonPageLeft(Ref* sender, Widget::TouchEventType type);
+	void onButtonPageRight(Ref* sender, Widget::TouchEventType type);
 
 protected:
 	PageView* m_PAGE_stage;
 	MenuItemImage* m_img_Logo;
 
-	Button* m_PAGE_left;
-	Button* m_PAGE_right;
+	Button* m_BTN_left;
+	Button* m_BTN_right;
 	MenuItemImage* m_IMG_title;
 	//MenuItemImage* m_IMG_status;
-	vector<MenuItemImage*> m_vPage;
+	vector<MenuItemImage*> m_vPageIndicators;
 
 	Button* m_BTN_back;
+
+	size_t m_nCurPageIdx;
 
 };

@@ -640,10 +640,19 @@ void InGameScene::menuCloseCallback(Ref* pSender)
 
 void InGameScene::ClearStage()
 {
-	int nSavedStage = UserDefault::getInstance()->getIntegerForKey("stage", 0);	// get current highest stage level.
+	// play 
+	string strClear = "stage_clear_";
+	if(DataSingleton::getInstance().nPlayMode == EStage::EASY)
+		strClear += "easy";
+	else if (DataSingleton::getInstance().nPlayMode == EStage::NORMAL)
+		strClear += "normal";
+	else if (DataSingleton::getInstance().nPlayMode == EStage::CHALLENGE)
+		strClear += "challenge";
+
+	int nSavedStage = UserDefault::getInstance()->getIntegerForKey(strClear.c_str(), 0);	// get current highest stage level.
 	if (nSavedStage < DataSingleton::getInstance().nLevel)	// if this level is highest level...
 	{
-		UserDefault::getInstance()->setIntegerForKey("stage", DataSingleton::getInstance().nLevel);	// update save data.
+		UserDefault::getInstance()->setIntegerForKey(strClear.c_str(), DataSingleton::getInstance().nLevel);	// update save data.
 
 		//submit score to Google play store game service...
 		GameSharing::SubmitScore(DataSingleton::getInstance().nLevel, 0);

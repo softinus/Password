@@ -26,6 +26,8 @@ bool MainScene::init()
 		return false;
 	}
 
+	DataSingleton::getInstance().nPlayMode = 0;
+
 	auto keylistener = EventListenerKeyboard::create();
 	keylistener->onKeyReleased = CC_CALLBACK_2(MainScene::onKeyReleased, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keylistener, this);

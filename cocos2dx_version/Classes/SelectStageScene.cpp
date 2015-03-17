@@ -93,9 +93,12 @@ bool SelectStageScene::init()
 	//Size s = this->getContentSize();
 
 
-	if (UserDefault::getInstance()->getIntegerForKey("stage") == NULL)	// if it has no record.
+	if (UserDefault::getInstance()->getIntegerForKey("init") == NULL)	// if it has no record.
 	{
-		UserDefault::getInstance()->setIntegerForKey("stage", 0);
+		UserDefault::getInstance()->setIntegerForKey("init", true);
+
+		UserDefault::getInstance()->setIntegerForKey("stage_clear_easy", 0);
+		UserDefault::getInstance()->setIntegerForKey("stage_clear_normal", -1);
 
 		for (int i = 0; i < STAGE_COUNT; ++i)
 		{
@@ -220,14 +223,33 @@ bool SelectStageScene::init()
 				BTN_stage->setPosition(Vec2(155 + 155*(i % 3), 555-155*(i / 3) ));
 				
 				// It depends how many stages cleared.
-				int nClearedStage = UserDefault::getInstance()->getIntegerForKey("stage");
-				BTN_stage->setBright(i < nClearedStage+1);
-				BTN_stage->setEnabled(i < nClearedStage + 1);
-
+				int nClearedStage = 0;
+				if (p == EStage::EASY)
+				{
+					nClearedStage = UserDefault::getInstance()->getIntegerForKey("stage_clear_easy");
+					BTN_stage->setBright(i < nClearedStage + 1);
+					BTN_stage->setEnabled(i < nClearedStage + 1);
+				}
+				else if (p == EStage::NORMAL)
+				{
+					nClearedStage = UserDefault::getInstance()->getIntegerForKey("stage_clear_normal");
+					BTN_stage->setBright(i < nClearedStage + 1);
+					BTN_stage->setEnabled(i < nClearedStage + 1);
+				}
+				else if (p == EStage::CHALLENGE)
+				{
+					BTN_stage->setBright(true);
+					BTN_stage->setEnabled(true);
+				}
+				
 				
 				MenuItemImage* IMG_rank = NULL;
 				if (p != EStage::CHALLENGE)	// show rank when it's not challenge mode.
-				{ 
+				{
+					/*if (p == EStage::NORMAL)
+					{
+						m_PAGE_stage->scrollToPage(0);
+					}*/
 					IMG_rank = ShowRank(p, i);
 					_frame->addChild(IMG_rank);
 				}					
@@ -237,6 +259,9 @@ bool SelectStageScene::init()
 
 		m_PAGE_stage->insertPage(_frame, p);
 	}
+
+
+	m_PAGE_stage->scrollToPage(DataSingleton::getInstance().nPlayMode);
 
 	//m_PAGE_stage->removePageAtIndex(0);
 
@@ -398,7 +423,7 @@ MenuItemImage* SelectStageScene::ShowRank(int p, int i)
 	}
 
 	MenuItemImage* IMG_rank = MenuItemImage::create(strIMGrank, strIMGrank);
-	IMG_rank->setZOrder(2);
+	IMG_rank->setZOrder(11);
 	IMG_rank->setPosition(Vec2(200 + 155 * (i % 3), 505 - 155 * (i / 3)));
 	IMG_rank->setVisible(!bUnranked);	// 언랭크이면 표시 안함.
 

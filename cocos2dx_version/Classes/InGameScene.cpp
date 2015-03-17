@@ -40,6 +40,7 @@ void InGameScene::InitStage()
 	m_nDigitCount = 0;
 
 	int nLevel = DataSingleton::getInstance().nLevel;
+	int nMode = DataSingleton::getInstance().nPlayMode;
 	int nButtonSize = 0;
 	int nStartX = 0;
 	int nStartY = 0;
@@ -53,7 +54,11 @@ void InGameScene::InitStage()
 		m_nLife = 3;
 		m_nAnswerDigit = 2;
 
-		m_nRepeatStage_MAX = 2; //10
+		if (nMode == EStage::EASY)
+			m_nRepeatStage_MAX = 1;
+		else if (nMode == EStage::NORMAL)
+			m_nRepeatStage_MAX = 2;
+
 		m_nRecoverLifeAmount = 1;
 		m_nTime = 600;
 
@@ -69,7 +74,11 @@ void InGameScene::InitStage()
 		m_nLife = 7;
 		m_nAnswerDigit = 3;
 
-		m_nRepeatStage_MAX = 1; //8
+		if (nMode == EStage::EASY)
+			m_nRepeatStage_MAX = 1;
+		else if (nMode == EStage::NORMAL)
+			m_nRepeatStage_MAX = 3;
+
 		m_nRecoverLifeAmount = 1;
 		m_nTime = 660;
 
@@ -85,7 +94,11 @@ void InGameScene::InitStage()
 		m_nLife = 8;
 		m_nAnswerDigit = 4;
 
-		m_nRepeatStage_MAX = 6;
+		if (nMode == EStage::EASY)
+			m_nRepeatStage_MAX = 1;
+		else if (nMode == EStage::NORMAL)
+			m_nRepeatStage_MAX = 3;
+
 		m_nRecoverLifeAmount = 1;
 		m_nTime = 600;
 
@@ -101,7 +114,11 @@ void InGameScene::InitStage()
 		m_nLife = 9;
 		m_nAnswerDigit = 4;
 
-		m_nRepeatStage_MAX = 5;
+		if (nMode == EStage::EASY)
+			m_nRepeatStage_MAX = 1;
+		else if (nMode == EStage::NORMAL)
+			m_nRepeatStage_MAX = 3;
+
 		m_nRecoverLifeAmount = 2;
 		m_nTime = 780;
 
@@ -117,7 +134,11 @@ void InGameScene::InitStage()
 		m_nLife = 10;
 		m_nAnswerDigit = 4;
 
-		m_nRepeatStage_MAX = 4;
+		if (nMode == EStage::EASY)
+			m_nRepeatStage_MAX = 1;
+		else if (nMode == EStage::NORMAL)
+			m_nRepeatStage_MAX = 3;
+
 		m_nRecoverLifeAmount = 2;
 		m_nTime = 840;
 
@@ -133,7 +154,11 @@ void InGameScene::InitStage()
 		m_nLife = 11;
 		m_nAnswerDigit = 4;
 
-		m_nRepeatStage_MAX = 3;
+		if (nMode == EStage::EASY)
+			m_nRepeatStage_MAX = 1;
+		else if (nMode == EStage::NORMAL)
+			m_nRepeatStage_MAX = 3;
+
 		m_nRecoverLifeAmount = 2;
 		m_nTime = 900;
 
@@ -149,7 +174,11 @@ void InGameScene::InitStage()
 		m_nLife = 12;
 		m_nAnswerDigit = 5;
 
-		m_nRepeatStage_MAX = 2;
+		if (nMode == EStage::EASY)
+			m_nRepeatStage_MAX = 1;
+		else if (nMode == EStage::NORMAL)
+			m_nRepeatStage_MAX = 3;
+
 		m_nRecoverLifeAmount = 3;
 		m_nTime = 1020;
 
@@ -165,7 +194,11 @@ void InGameScene::InitStage()
 		m_nLife = 13;
 		m_nAnswerDigit = 5;
 
-		m_nRepeatStage_MAX = 1;
+		if (nMode == EStage::EASY)
+			m_nRepeatStage_MAX = 1;
+		else if (nMode == EStage::NORMAL)
+			m_nRepeatStage_MAX = 3;
+
 		m_nRecoverLifeAmount = 3;
 		m_nTime = 1140;
 
@@ -181,7 +214,11 @@ void InGameScene::InitStage()
 		m_nLife = 14;
 		m_nAnswerDigit = 5;
 
-		m_nRepeatStage_MAX = 1;
+		if (nMode == EStage::EASY)
+			m_nRepeatStage_MAX = 1;
+		else if (nMode == EStage::NORMAL)
+			m_nRepeatStage_MAX = 3;
+
 		m_nRecoverLifeAmount = 3;
 		m_nTime = 1200;
 
@@ -686,7 +723,7 @@ void InGameScene::MakeAnswer()
 	m_vAnswer.clear();
 	m_vQuestion.clear();
 	int nSum = 0;
-	//srand((unsigned int)time(NULL));
+	srand((unsigned int)time(NULL));
 	while (m_vQuestion.size() != m_nAnswerDigit)
 	{
 		int nNumber = random(1, m_nWid*m_nHei);

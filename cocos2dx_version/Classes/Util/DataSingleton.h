@@ -9,19 +9,23 @@ private:
 public:
 	static DataSingleton& getInstance() { return inst; }
 
+	// stage select -> ingame
+	int nPlayMode;	// save current page in select stage scene
 	int nLevel;
 
-	int nSpentTime;
+	
 	//std::string strSpentTime;
 	
-	int nSpentCount;
 
 	// 인게임 -> 결과창 
 	bool bClear;
 	int nStageRepeatCount;
 	int nLeftLife;
+	int nSpentTime;
+	int nSpentCount;
 
 	// 결과창 -> 스테이지 선택
 	int nCleardStage;
 	bool bNewRanked;
+
 };

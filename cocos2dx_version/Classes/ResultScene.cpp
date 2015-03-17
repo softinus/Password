@@ -60,7 +60,12 @@ bool ResultScene::init()
 	this->addChild(m_IMG_result);
 
 
-	string str_rank = "rank_normal_";
+	string str_rank = "rank_";
+	if (DataSingleton::getInstance().nPlayMode == EStage::EASY)
+		str_rank += "easy_";
+	else if (DataSingleton::getInstance().nPlayMode == EStage::EASY)
+		str_rank += "normal_";
+
 	str_rank += to_string2(DataSingleton::getInstance().nLevel);
 	int nSavedRank= UserDefault::getInstance()->getIntegerForKey(str_rank.c_str(), 0);
 	bool bNewRanked = false;

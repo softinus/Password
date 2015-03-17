@@ -63,7 +63,7 @@ bool ResultScene::init()
 	string str_rank = "rank_";
 	if (DataSingleton::getInstance().nPlayMode == EStage::EASY)
 		str_rank += "easy_";
-	else if (DataSingleton::getInstance().nPlayMode == EStage::EASY)
+	else if (DataSingleton::getInstance().nPlayMode == EStage::NORMAL)
 		str_rank += "normal_";
 
 	str_rank += to_string2(DataSingleton::getInstance().nLevel);

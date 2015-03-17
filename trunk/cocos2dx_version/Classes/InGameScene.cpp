@@ -53,7 +53,7 @@ void InGameScene::InitStage()
 		m_nLife = 3;
 		m_nAnswerDigit = 2;
 
-		m_nRepeatStage_MAX = 10;
+		m_nRepeatStage_MAX = 2; //10
 		m_nRecoverLifeAmount = 1;
 		m_nTime = 600;
 
@@ -69,7 +69,7 @@ void InGameScene::InitStage()
 		m_nLife = 7;
 		m_nAnswerDigit = 3;
 
-		m_nRepeatStage_MAX = 8;
+		m_nRepeatStage_MAX = 1; //8
 		m_nRecoverLifeAmount = 1;
 		m_nTime = 660;
 
@@ -641,23 +641,34 @@ void InGameScene::menuCloseCallback(Ref* pSender)
 void InGameScene::ClearStage()
 {
 	// play 
-	string strClear = "stage_clear_";
 	if(DataSingleton::getInstance().nPlayMode == EStage::EASY)
-		strClear += "easy";
-	else if (DataSingleton::getInstance().nPlayMode == EStage::NORMAL)
-		strClear += "normal";
-	else if (DataSingleton::getInstance().nPlayMode == EStage::CHALLENGE)
-		strClear += "challenge";
-
-	int nSavedStage = UserDefault::getInstance()->getIntegerForKey(strClear.c_str(), 0);	// get current highest stage level.
-	if (nSavedStage < DataSingleton::getInstance().nLevel)	// if this level is highest level...
 	{
-		UserDefault::getInstance()->setIntegerForKey(strClear.c_str(), DataSingleton::getInstance().nLevel);	// update save data.
+		int nSavedStage = UserDefault::getInstance()->getIntegerForKey("stage_clear_easy", 0);	// get current highest stage level.
+		if (nSavedStage < DataSingleton::getInstance().nLevel)	// if this level is highest level...
+		{
+			UserDefault::getInstance()->setIntegerForKey("stage_clear_easy", DataSingleton::getInstance().nLevel);	// update save data.
+			UserDefault::getInstance()->setIntegerForKey("stage_clear_normal", DataSingleton::getInstance().nLevel-1);	// update save data.
 
-		//submit score to Google play store game service...
-		GameSharing::SubmitScore(DataSingleton::getInstance().nLevel, 0);
-		GameSharing::UnlockAchivement(DataSingleton::getInstance().nLevel-1);
+			//submit score to Google play store game service...
+			GameSharing::SubmitScore(DataSingleton::getInstance().nLevel * DataSingleton::getInstance().nPlayMode, 0);
+			//GameSharing::UnlockAchivement(DataSingleton::getInstance().nLevel - 1);
+		}
 	}
+	else if (DataSingleton::getInstance().nPlayMode == EStage::NORMAL)
+	{
+		int nSavedStage = UserDefault::getInstance()->getIntegerForKey("stage_clear_normal", 0);	// get current highest stage level.
+		if (nSavedStage < DataSingleton::getInstance().nLevel)	// if this level is highest level...
+		{
+			UserDefault::getInstance()->setIntegerForKey("stage_clear_normal", DataSingleton::getInstance().nLevel);	// update save data.
+
+			//submit score to Google play store game service...
+			GameSharing::SubmitScore(DataSingleton::getInstance().nLevel * DataSingleton::getInstance().nPlayMode, 0);
+			GameSharing::UnlockAchivement(DataSingleton::getInstance().nLevel - 1);
+		}
+	}
+	else if (DataSingleton::getInstance().nPlayMode == EStage::CHALLENGE)
+	{ }
+	
 
 	DataSingleton::getInstance().bClear = true;
 	DataSingleton::getInstance().nStageRepeatCount = m_nRepeatStage_MAX;

@@ -9,8 +9,10 @@
     <uses-feature android:glEsVersion="0x00020000" />
 
     <application android:label="@string/app_name"
-                 android:icon="@drawable/icon">
+                 android:icon="@drawable/icon"
+                 android:name="org.cocos2dx.cpp.MainApp">
                  
+        
         <meta-data android:name="com.google.android.gms.games.APP_ID"
         android:value="@string/app_id" />
 		<meta-data android:name="com.google.android.gms.appstate.APP_ID"
@@ -21,6 +23,17 @@
         <!-- Tell Cocos2dxActivity the name of our .so -->
         <meta-data android:name="android.app.lib_name"
 	              android:value="cocos2dcpp" />
+        
+        <!-- google admob -->
+        <meta-data android:name="com.google.android.gms.version"
+           android:value="@integer/google_play_services_version" />
+        
+        <activity android:name="com.google.android.gms.ads.AdActivity" 
+		android:screenOrientation="portrait" 
+		android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
+        
+<!--         <activity android:name="com.google.android.gms.ads.AdActivity" -->
+<!--              android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize"/> -->
 
         <activity android:name="org.cocos2dx.cpp.AppActivity"
                   android:label="@string/app_name"
@@ -41,5 +54,14 @@
                       android:largeScreens="true"
                       android:xlargeScreens="true"/>
 
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    
+     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 </manifest> 

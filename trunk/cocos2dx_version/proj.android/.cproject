@@ -250,7 +250,12 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="pw_project.null.31159645" name="pw_project"/>
 	</storageModule>
-	<storageModule moduleId="refreshScope" versionNumber="1">
-		<resource resourceType="PROJECT" workspacePath="/pw_project"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/pw_project"/>
+		</configuration>
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/pw_project"/>
+		</configuration>
 	</storageModule>
 </cproject>

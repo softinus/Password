@@ -72,6 +72,7 @@ void SelectStageScene::onButtonSelectStage(Ref* sender, Widget::TouchEventType t
 		DataSingleton::getInstance().nLevel = atoi(btn->getName().c_str());	// current level
 		Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 
+
 		auto hScene = InGameScene::createScene();
 		auto pScene = TransitionFade::create(1.0f, hScene);
 		Director::getInstance()->replaceScene(pScene);

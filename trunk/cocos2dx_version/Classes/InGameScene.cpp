@@ -676,11 +676,11 @@ void InGameScene::showResult(void)
 {
 	//Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 
-	//auto hScene = ResultScene::createScene();
-	//auto pScene = TransitionFade::create(1.0f, hScene);
-	//Director::getInstance()->pushScene(pScene);
 	auto hScene = ResultScene::createScene();
-	this->addChild(hScene);
+	auto pScene = TransitionFade::create(1.0f, hScene);
+	Director::getInstance()->pushScene(pScene);
+	//auto hScene = ResultScene::createScene();
+	//this->addChild(hScene);
 }
 
 void InGameScene::changeScene(void)

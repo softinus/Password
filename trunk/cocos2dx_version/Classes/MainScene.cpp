@@ -311,8 +311,9 @@ void MainScene::Touch_credits(Ref* sender, Widget::TouchEventType type)
 
 		UIPopupWindow* pPopupCredit = UIPopupWindow::create(Sprite::create("scene1-1/s1_pup_credits.png"));
 		pPopupCredit->setBackgroundBorard(Sprite::create("common/bg_black_80.png"));
-		//pPopupCredit->setCallBackFunc(CC_CALLBACK_1(MainScene::ShowPopup));
-		pPopupCredit->setMessageString("test");
+		pPopupCredit->addButton("quit/pup_quit_btn_ok.png", "quit/pup_quit_btn_ok.png", "", TextureResType::LOCAL, Point(0, -235), "", 3);
+		pPopupCredit->setCallBackFunc(CC_CALLBACK_1(MainScene::Callback_popup_ok, this));
+		//pPopupCredit->setMessageString("test");
 		pPopupCredit->showPopup(this);
 
 		break;
@@ -322,9 +323,7 @@ void MainScene::Touch_credits(Ref* sender, Widget::TouchEventType type)
 void MainScene::Touch_start(Ref* sender, Widget::TouchEventType type)
 {
 	Button* btn = (Button*)sender;
-
-
-
+	
 	//터치 이벤트 실행시 프로그램 종료
 	switch (type)
 	{
@@ -368,11 +367,23 @@ void MainScene::Callback_popup_ok(Ref* pSender)
 	UIPopupWindow *pPopup = (UIPopupWindow *)pSender;
 	int nTag = pPopup->getResult();
 
-	if (nTag == 1)
+	if (nTag == 1)	// ok
+	{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+		MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.", "Alert");
+		return;
+#endif
+		Director::getInstance()->end();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+		exit(0);
+#endif
+	}
+	if (nTag == 2)	// cancel
 	{
 		pPopup->closePopup();
 	}
-	if (nTag == 2)
+
+	if (nTag == 3)	// credit-ok
 	{
 		pPopup->closePopup();
 	}
@@ -381,11 +392,11 @@ void MainScene::Callback_popup_ok(Ref* pSender)
 
 void MainScene::ShowPopup()
 {
-	//UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL, Sprite::create("quit/pup_quit.png"));
-	//pPopupOK->setBackgroundBorard(Sprite::create("common/bg_black_80.png"));
-	//pPopupOK->setCallBackFunc(CC_CALLBACK_1(MainScene::Callback_popup_ok, this));
-	//pPopupOK->addButton("quit/pup_quit_btn_ok.png", "quit/pup_quit_btn_ok.png", "", TextureResType::LOCAL, Point(-120, -51), "", 1);
-	//pPopupOK->addButton("quit/pup_quit_btn_resume.png", "quit/pup_quit_btn_resume.png", "", TextureResType::LOCAL, Point(120, -51), "", 2);
-	////pPopupOK->setMessageString("test_ popup");
-	//pPopupOK->showPopup(this);
+	UIPopupWindow* pPopupOK = UIPopupWindow::create(Sprite::create("quit/pup_quit.png"));
+	pPopupOK->setBackgroundBorard(Sprite::create("common/bg_black_80.png"));
+	pPopupOK->setCallBackFunc(CC_CALLBACK_1(MainScene::Callback_popup_ok, this));
+	pPopupOK->addButton("quit/pup_quit_btn_ok.png", "quit/pup_quit_btn_ok.png", "", TextureResType::LOCAL, Point(-120, -51), "", 1);
+	pPopupOK->addButton("quit/pup_quit_btn_resume.png", "quit/pup_quit_btn_resume.png", "", TextureResType::LOCAL, Point(120, -51), "", 2);
+	//pPopupOK->setMessageString("test_ popup");
+	pPopupOK->showPopup(this);
 }

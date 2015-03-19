@@ -146,7 +146,6 @@ public class AppActivity extends BaseGameActivity {
     	
     	//sendParse();
     	//ShowSignForm();
-    	
         
         super.onCreate(savedInstanceState);
     }
@@ -163,9 +162,21 @@ public class AppActivity extends BaseGameActivity {
 		}
 	}
 	
+	//static int nLastestCoinAmount= 0;
+	
+//	static public void coinHistory(int nCount, final String strComment)
+//	{
+//		ParseUser currentUser = ParseUser.getCurrentUser();
+//		if (currentUser != null)
+//		{
+//			
+//		}
+//		
+//	}
+	
 	static public void earnCoins(final int nCount)
 	{
-		ParseUser currentUser = ParseUser.getCurrentUser();
+		final ParseUser currentUser = ParseUser.getCurrentUser();
 		if (currentUser != null)
 		{
 			ParseQuery<ParseObject> query= ParseQuery.getQuery("UserInfo");	// 유저 데이터를 찾는다.
@@ -187,17 +198,57 @@ public class AppActivity extends BaseGameActivity {
 		}
 	}
 	
+	static public void earnCoins(final int nCount, final String strComment)
+	{
+		final ParseUser currentUser = ParseUser.getCurrentUser();
+		if (currentUser != null)
+		{
+			ParseQuery<ParseObject> query= ParseQuery.getQuery("UserInfo");	// 유저 데이터를 찾는다.
+			query.whereEqualTo("user_id", currentUser);	// 해당되는 유저의
+			query.findInBackground(new FindCallback<ParseObject>()
+			{			
+				@Override
+				public void done(List<ParseObject> list, ParseException e)
+				{
+					for(ParseObject PO : list)
+					{
+						ParseObject coinHistory = new ParseObject("CoinHistory");
+						coinHistory.put("user_id", currentUser);
+						coinHistory.put("comment", strComment);
+						coinHistory.put("coin", nCount);
+						coinHistory.saveInBackground();									
+
+						PO.increment("coin", nCount);
+						PO.saveInBackground();
+					}
+				}
+			});
+		} else {
+		  // show the signup or login screen
+		}
+	}
+	
 	static public void ShowSignForm()
 	{
-		mActivity.runOnUiThread(new Runnable() 
-        {
-	           
-	        @Override
-	        public void run()
+		final ParseUser currentUser = ParseUser.getCurrentUser();
+		
+		if (currentUser != null)	// if already login.
+		{
+			ShowAlertDialog("[Login]", "You are already logged in.", "Ok");
+		}
+		else
+		{
+			mActivity.runOnUiThread(new Runnable() 
 	        {
-	        	((AppActivity)currentContext).showDialog(R.layout.login_dialog);
-	        }
-        });
+		           
+		        @Override
+		        public void run()
+		        {
+		        	((AppActivity)currentContext).showDialog(R.layout.login_dialog);
+		        }
+	        });
+		}
+
 		
 	}
 	
@@ -318,9 +369,9 @@ public class AppActivity extends BaseGameActivity {
     }
     
     
-    private void ShowAlertDialog(String strTitle, String strContent, String strButton)
+    private static void ShowAlertDialog(String strTitle, String strContent, String strButton)
 	{
-		new AlertDialog.Builder(this)
+		new AlertDialog.Builder(mActivity)
 		.setTitle( strTitle )
 		.setMessage( strContent )
 		.setPositiveButton( strButton , null)

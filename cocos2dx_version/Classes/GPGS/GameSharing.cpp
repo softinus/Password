@@ -212,7 +212,7 @@ void GameSharing::SetErrorHandler(std::function<void ()> handler){
     errorHandler = handler;
 }
 
-void GameSharing::EarnCoins(int nCount)
+void GameSharing::EarnCoins(int nCount, char* strComment)
 {
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID	
 	JniMethodInfo t;
@@ -223,6 +223,28 @@ void GameSharing::EarnCoins(int nCount)
 	{
 		t.env->CallStaticVoidMethod(t.classID, t.methodID, nCount);
 	}
+
+	//if (JniHelper::getStaticMethodInfo(t
+	//	, "org/cocos2dx/cpp.AppActivity"
+	//	, "coinHistory"
+	//	, "(I)V"))
+	//{
+	//	t.env->CallStaticVoidMethod(t.classID, t.methodID, strComment);
+	//}
+
+	//JniMethodInfo t;
+
+	//if (JniHelper::getStaticMethodInfo(t,
+	//	"org/cocos2dx/cpp.AppActivity",
+	//	"earnCoins",
+	//	"(ILjava/lang/String)V"))
+	//{
+	//	jstring jstr = t.env->NewStringUTF(strComment);
+	//	MessageBox(jstr, "earnCoins");
+	//	t.env->CallStaticObjectMethod(t.classID, t.methodID, nCount, jstr);
+	//}
+}
+
 #endif
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 #endif

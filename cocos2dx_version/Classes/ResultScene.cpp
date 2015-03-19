@@ -31,7 +31,7 @@ bool ResultScene::init()
 		return false;
 	}
 
-	GameSharing::EarnCoins(3);
+	GameSharing::EarnCoins(30, "full-ad");
 	GameSharing::ShowFullAd();
 
 	// A,B,D ·©Å© ±âÁØ [3/6/2015 ChoiJunHyeok]
@@ -143,7 +143,7 @@ bool ResultScene::init()
 	m_LBL_count->setAnchorPoint(Vec2(0, 0));
 	this->addChild(m_LBL_count);
 
-	string strTime = "time : " + DataSingleton::getInstance().nSpentTime;
+	string strTime = "time : " + to_string2(DataSingleton::getInstance().nSpentTime);
 	m_LBL_time = Label::createWithTTF(strTime, "fonts/LCDM2N_.TTF", 45.f);
 	m_LBL_time->setPosition(Vec2(750, 690));
 	m_LBL_time->setAnchorPoint(Vec2(0, 0));

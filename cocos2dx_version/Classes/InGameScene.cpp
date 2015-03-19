@@ -47,11 +47,14 @@ void InGameScene::InitStage()
 	int nMargin = 1;
 	int nFontSize = 0;
 
+	//MessageBox(to_string2(nMode).c_str(), "mode-in");
+	//MessageBox(to_string2(nLevel).c_str(), "level-in");
+
 	if (nLevel == 1)
 	{
 		m_nWid = 2;
 		m_nHei = 2;
-		m_nLife = 3;
+		m_nLife = 5;
 		m_nAnswerDigit = 2;
 
 		if (nMode == EStage::EASY)
@@ -384,9 +387,36 @@ bool InGameScene::init()
 	this->addChild(m_LDB_progress);
 
 
+	//노티피케이션 추카
+	NotificationCenter::sharedNotificationCenter()->addObserver(this,
+		callfuncO_selector(InGameScene::doNotification), "notification", NULL);
+	//"notification"이라는 메시지가 오면 해당 함수를 실행한다.
 
 
 	return true;
+}
+
+//노티피케이션 함수
+void InGameScene::doNotification(Object *obj)
+{
+	////노티피케이션 받기
+	//int nParam = (int)obj;
+	//MessageBox(to_string2(nParam).c_str(), "param");
+
+	//if (nParam == 1)
+	//{
+	//	CCDirector::sharedDirector()->resume();   //화면 재시작
+	//	//CCDirector::sharedDirector()->gettouc ->getTouchDispatcher()->addTargetedDelegate(pMenu, kCCMenuHandlerPriority, true);
+	//	//메뉴 버튼 활성
+	//}
+	//else{
+	//	CCArray* childs = this->getChildren();
+	//	CCLog("noti 00");
+	//	CCDirector::sharedDirector()->pause();   //화면 정지
+
+	//	CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(pMenu);
+	//	//메뉴버튼 비활성
+	//}
 }
 
 void InGameScene::scheduleCallback(float delta)
@@ -646,9 +676,11 @@ void InGameScene::showResult(void)
 {
 	//Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 
+	//auto hScene = ResultScene::createScene();
+	//auto pScene = TransitionFade::create(1.0f, hScene);
+	//Director::getInstance()->pushScene(pScene);
 	auto hScene = ResultScene::createScene();
-	auto pScene = TransitionFade::create(1.0f, hScene);
-	Director::getInstance()->pushScene(pScene);
+	this->addChild(hScene);
 }
 
 void InGameScene::changeScene(void)
@@ -723,7 +755,7 @@ void InGameScene::MakeAnswer()
 	m_vAnswer.clear();
 	m_vQuestion.clear();
 	int nSum = 0;
-	srand((unsigned int)time(NULL));
+	//srand((unsigned int)time(NULL));
 	while (m_vQuestion.size() != m_nAnswerDigit)
 	{
 		int nNumber = random(1, m_nWid*m_nHei);

@@ -86,4 +86,5 @@ protected:
 	void showResultFailed(void);
 
 	void scheduleCallback(float delta);
+	void doNotification(Object *obj);
 };

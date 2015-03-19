@@ -1,7 +1,7 @@
 #include "MainScene.h"
 
 #include "GPGS/GameSharing.h"
-#include "CustomUI/UIPopupWindow.h"
+#include "CustomUI/PopupWindow.h"
 
 Scene* MainScene::createScene()
 {
@@ -26,7 +26,7 @@ bool MainScene::init()
 		return false;
 	}
 
-	DataSingleton::getInstance().nPlayMode = 0;
+	
 
 	auto keylistener = EventListenerKeyboard::create();
 	keylistener->onKeyReleased = CC_CALLBACK_2(MainScene::onKeyReleased, this);
@@ -35,7 +35,7 @@ bool MainScene::init()
 
 	Size s = this->getContentSize();
 
-
+	DataSingleton::getInstance().nPlayMode = 0;
 
 	m_IMG_ani_BG = MenuItemImage::create("scene1-1/ani_bg.png", "scene1-1/ani_bg.png");
 	m_IMG_ani_BG->setPosition(Vec2(0, 0));
@@ -212,19 +212,19 @@ bool MainScene::init()
 	this->addChild(m_LBL_difficult);
 
 
-	m_IMG_popup_BG = Sprite::create("common/bg_black_80.png");
-	m_IMG_popup_BG->setPosition(Vec2(s.width / 2, s.height / 2));
-	//m_IMG_BG->setOpacity(76.5);
-	m_IMG_popup_BG->setVisible(false);
-	
-	//m_img_BG->setAnchorPoint(Vec2(0, 0));
-	this->addChild(m_IMG_popup_BG);
+	//m_IMG_popup_BG = Sprite::create("common/bg_black_80.png");
+	//m_IMG_popup_BG->setPosition(Vec2(s.width / 2, s.height / 2));
+	////m_IMG_BG->setOpacity(76.5);
+	//m_IMG_popup_BG->setVisible(false);
+	//
+	////m_img_BG->setAnchorPoint(Vec2(0, 0));
+	//this->addChild(m_IMG_popup_BG);
 
-	m_IMG_popup_credits = Sprite::create("scene1-1/s1_pup_credits.png");
-	m_IMG_popup_credits->setPosition(Vec2(s.width / 2, s.height / 2));
-	m_IMG_popup_credits->setVisible(false);
+	//m_IMG_popup_credits = Sprite::create("scene1-1/s1_pup_credits.png");
+	//m_IMG_popup_credits->setPosition(Vec2(s.width / 2, s.height / 2));
+	//m_IMG_popup_credits->setVisible(false);
 	//m_img_BG->setAnchorPoint(Vec2(0, 0));
-	this->addChild(m_IMG_popup_credits);
+	//this->addChild(m_IMG_popup_credits);
 
 	return true;
 }
@@ -309,9 +309,11 @@ void MainScene::Touch_credits(Ref* sender, Widget::TouchEventType type)
 		auto audio = SimpleAudioEngine::getInstance();
 		audio->playEffect("raw/number.wav", false, 1.0f, 1.0f, 1.0f);
 
-		m_IMG_popup_BG->setVisible(true);
-		m_IMG_popup_credits->setVisible(true);
-		//this->setSwallowsTouches(true);
+		UIPopupWindow* pPopupCredit = UIPopupWindow::create(Sprite::create("scene1-1/s1_pup_credits.png"));
+		pPopupCredit->setBackgroundBorard(Sprite::create("common/bg_black_80.png"));
+		//pPopupCredit->setCallBackFunc(CC_CALLBACK_1(MainScene::ShowPopup));
+		pPopupCredit->setMessageString("test");
+		pPopupCredit->showPopup(this);
 
 		break;
 	}

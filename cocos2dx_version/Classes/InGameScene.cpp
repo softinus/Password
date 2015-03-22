@@ -8,6 +8,7 @@
 #include "GPGS/GameSharing.h"
 #include "SimpleAudioEngine.h"
 #include "network/HttpRequest.h"
+#include "CustomUI/PopupWindow.h"
 using namespace CocosDenshion;
 USING_NS_CC;
 //using namespace std;
@@ -391,6 +392,11 @@ bool InGameScene::init()
 	NotificationCenter::sharedNotificationCenter()->addObserver(this,
 		callfuncO_selector(InGameScene::doNotification), "notification", NULL);
 	//"notification"이라는 메시지가 오면 해당 함수를 실행한다.
+
+	if (UserDefault::getInstance()->getIntegerForKey("guide_already_showed") == NULL)	// if guide has not showed
+	{
+		ShowPopup1();
+	}
 
 
 	return true;
@@ -902,4 +908,65 @@ void InGameScene::ChangeLife(bool bIncrease, int nAmount)
 	m_TXT_life->setString(to_string2(m_nLife));
 
 
+}
+
+
+
+
+void InGameScene::Callback_popup_ok(Ref* pSender)
+{
+	UIPopupWindow *pPopup = (UIPopupWindow *)pSender;
+	int nTag = pPopup->getResult();
+
+	if (nTag == 1)	// ok
+	{
+		pPopup->closePopup();
+		ShowPopup2();
+	}
+	if (nTag == 2)	// cancel
+	{
+		pPopup->closePopup();
+	}
+
+	if (nTag == 3)	// credit-ok
+	{
+		pPopup->closePopup();
+	}
+}
+
+
+void InGameScene::ShowPopup1()
+{
+	Size s = this->getContentSize();
+
+	Size sRectSize = Size(680, 680);
+	Vec2 vStartPoint = Vec2(20, 250);
+
+	UIPopupWindow* pPopupOK = UIPopupWindow::create(Sprite::create("common/button.png"));
+	pPopupOK->addGuideRect(vStartPoint, sRectSize);
+	pPopupOK->setBackgroundBorard(Sprite::create("common/bg_black_80.png"));
+	pPopupOK->addText("Just push buttons!\nAnd hit the Enter button!", "fonts/LCDM2N_.TTF", Vec2(vStartPoint.x + s.width/2, vStartPoint.y+60), 45.0f, Color3B(240, 0, 0));
+	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
+	pPopupOK->addButton("quit/pup_quit_btn_ok.png", "quit/pup_quit_btn_ok.png", "", TextureResType::LOCAL, Point(-120, -50), "", 1);
+	pPopupOK->addButton("quit/pup_quit_btn_resume.png", "quit/pup_quit_btn_resume.png", "", TextureResType::LOCAL, Point(120, -50), "", 2);
+	//pPopupOK->setMessageString("test_ popup");
+	pPopupOK->showPopup(this);
+}
+
+void InGameScene::ShowPopup2()
+{
+	Size s = this->getContentSize();
+
+	Size sRectSize = Size(500, 200);
+	Vec2 vStartPoint = Vec2(30, 1050);
+
+	UIPopupWindow* pPopupOK = UIPopupWindow::create(Sprite::create("scene4/box_log.png"));
+	pPopupOK->addGuideRect(vStartPoint, sRectSize);
+	pPopupOK->setBackgroundBorard(Sprite::create("common/bg_black_80.png"));
+	pPopupOK->addText("NOW, YOU Could CHECK\nthe number of correct answers.", "fonts/LCDM2N_.TTF", Vec2(vStartPoint.x + s.width / 2, vStartPoint.y + 60), 45.0f, Color3B(240, 0, 0));
+	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
+	pPopupOK->addButton("quit/pup_quit_btn_ok.png", "quit/pup_quit_btn_ok.png", "", TextureResType::LOCAL, Point(-120, -50), "", 1);
+	pPopupOK->addButton("quit/pup_quit_btn_resume.png", "quit/pup_quit_btn_resume.png", "", TextureResType::LOCAL, Point(120, -50), "", 2);
+	//pPopupOK->setMessageString("test_ popup");
+	pPopupOK->showPopup(this);
 }

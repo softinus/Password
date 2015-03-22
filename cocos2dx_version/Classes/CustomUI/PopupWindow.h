@@ -19,6 +19,8 @@ public:
 	virtual void onBtnCallback(Ref *pSender, ui::Button::TouchEventType touchType);//추가되는 버튼들에 대한 콜백함수 설정
 	virtual void onSldCallback(Ref *pSender, ui::Slider::EventType touchType);// 슬라이드.
 
+	void addGuideRect(Vec2 vStartPonit, Size sRectSize);	// guide용 [3/20/2015 ChoiJunHyeok]
+
 	//CREATE_FUNC(UIPopupWindow);    //기본 create()함수 정의
 public:
 	virtual void setFontSize_Title(int size);   //타이틀 폰트 사이즈를 설정한다.

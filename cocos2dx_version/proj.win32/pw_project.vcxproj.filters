@@ -30,9 +30,6 @@
     <ClCompile Include="..\Classes\MainScene.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\ResultFailedScene.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\ResultScene.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -48,17 +45,20 @@
     <ClCompile Include="..\Classes\CustomUI\ButtonN.cpp">
       <Filter>src\CustomUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\CustomUI\UIPopupWindow.cpp">
-      <Filter>src\CustomUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CustomUI\UIPopupWindowBase.cpp">
-      <Filter>src\CustomUI</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Util\DataSingleton.cpp">
       <Filter>src\Util</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\InGameScene.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Util\Global.cpp">
+      <Filter>src\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CustomUI\PopupWindow.cpp">
+      <Filter>src\CustomUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CustomUI\PopupWindowBase.cpp">
+      <Filter>src\CustomUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -69,9 +69,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\MainScene.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\ResultFailedScene.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ResultScene.h">
@@ -89,12 +86,6 @@
     <ClInclude Include="..\Classes\CustomUI\ButtonN.h">
       <Filter>src\CustomUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\CustomUI\UIPopupWindow.h">
-      <Filter>src\CustomUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CustomUI\UIPopupWindowBase.h">
-      <Filter>src\CustomUI</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Util\DataSingleton.h">
       <Filter>src\Util</Filter>
     </ClInclude>
@@ -103,6 +94,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\InGameScene.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CustomUI\PopupWindow.h">
+      <Filter>src\CustomUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CustomUI\PopupWindowBase.h">
+      <Filter>src\CustomUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

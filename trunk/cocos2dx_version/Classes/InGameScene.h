@@ -87,4 +87,9 @@ protected:
 
 	void scheduleCallback(float delta);
 	void doNotification(Object *obj);
+
+
+	void Callback_popup_ok(Ref* pSender);
+	void ShowPopup1();
+	void ShowPopup2();
 };

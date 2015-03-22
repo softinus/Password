@@ -24,6 +24,16 @@ bool UIPopupWindow::onInit()
 	m_nZorderCnt = 1;//추가될 자식객체들에 대한 Zorder를 만들기위해
 	m_sprBg = NULL;
 
+
+
+
+	//// setup content
+	//Sprite* pSprite = Sprite::create("common/Button_Normal.png");
+	//pSprite->setPosition(ccp(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	//clip->addChild(pSprite);
+
+	//this->addChild(shape);
+
 	return true;
 }
 
@@ -59,7 +69,29 @@ void UIPopupWindow::setBackgroundBorard(Sprite  *sprBg)//팝업 아래에 투명이나 머
 
 	Size size = Director::getInstance()->getWinSize();
 	sprBg->setPosition(size.width / 2, size.height / 2);
-	addChild(sprBg, -10);
+	//addChild(sprBg, -10);
+
+
+	{	// TODO: 스텐실 사용 유무 함수 따로 만들어주자. [3/20/2015 ChoiJunHyeok]
+		DrawNode* shape = DrawNode::create();
+		Size sRectSize = Size(680, 680);
+		Vec2 vStartPoint = Vec2(20, 250);
+		shape->drawSolidRect(vStartPoint, vStartPoint + sRectSize, Color4F(1, 1, 1, 1));
+
+		auto sptest = Sprite::create("scene4/s4_pup_success.png");
+		sptest->setPosition(Point(100, 100));
+		sptest->setZOrder(105);
+
+		auto clipping = ClippingNode::create();
+		//auto clippingShape = Sprite::create("scene4/box_life.png");
+		clipping->setStencil(shape);
+		clipping->setContentSize(sprBg->getContentSize());
+		clipping->setInverted(true);
+		clipping->setAlphaThreshold(0.0f);
+		clipping->addChild(sprBg);
+		this->addChild(clipping, 105);
+	}
+
 }
 
 
@@ -78,9 +110,16 @@ void UIPopupWindow::setBackgroundImage(Sprite  *sprBg)
 	m_sprBg = sprBg;
 	if (!m_sprBg)return;
 
-	Size size = Director::getInstance()->getWinSize();
-	m_sprBg->setPosition(size.width / 2, size.height / 2);
-	addChild(m_sprBg, -1);
+
+	try
+	{
+		Size size = Director::getInstance()->getWinSize();
+		m_sprBg->setPosition(size.width / 2, size.height / 2);
+		addChild(m_sprBg, -1);
+	}
+	catch (...)
+	{
+	}
 
 }
 
@@ -118,6 +157,15 @@ void UIPopupWindow::setTextInit() //출력할 문자 UI초기화
 	addChild(m_txtTitle, (int)m_nZorderCnt + 100);
 	addChild(m_txt, (int)m_nZorderCnt + 100);
 
+}
+
+void UIPopupWindow :: addGuideRect(Vec2 vStartPoint, Size sRectSize)
+{
+	DrawNode* shape = DrawNode::create();
+
+	shape->drawRect(vStartPoint, vStartPoint + sRectSize, Color4F(0.9f, 0.0f, 0.0f, 0.8f));
+
+	this->addChild(shape);
 }
 
 void UIPopupWindow::addText(const std::string& text, const std::string& font, const Vec2& pos, int size, const Color3B& color)

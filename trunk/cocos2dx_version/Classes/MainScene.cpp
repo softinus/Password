@@ -226,6 +226,31 @@ bool MainScene::init()
 	//m_img_BG->setAnchorPoint(Vec2(0, 0));
 	//this->addChild(m_IMG_popup_credits);
 
+
+	//{
+	//	// setup stencil shape
+	//	DrawNode* shape = DrawNode::create();
+
+	//	Size sRectSize = Size(680, 680);
+	//	Vec2 vStartPoint = Vec2(20, 250);
+
+	//	shape->drawSolidRect(vStartPoint, vStartPoint + sRectSize, Color4F(1, 1, 1, 1));
+
+	//	// add shape in stencil
+	//	ClippingNode* clip = ClippingNode::create();
+	//	clip->setAnchorPoint(Vec2(0.5, 0.5));
+	//	clip->setStencil(shape);
+	//	clip->addChild(m_sprBg);
+	//	clip->setInverted(false);
+	//	clip->setAlphaThreshold(0.0f);
+
+	//	this->addChild(clip, 100);
+	//}
+
+
+
+
+
 	return true;
 }
 

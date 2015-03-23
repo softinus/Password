@@ -234,7 +234,14 @@ public class AppActivity extends BaseGameActivity {
 		
 		if (currentUser != null)	// if already login.
 		{
-			ShowAlertDialog("[Login]", "You are already logged in.", "Ok");
+			mActivity.runOnUiThread(new Runnable() 
+			{    
+				@Override
+			    public void run()
+			    {
+					ShowAlertDialog("[Login]", "You are already logged in.", "Ok");
+			    }
+		    });
 		}
 		else
 		{

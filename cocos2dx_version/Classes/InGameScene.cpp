@@ -942,13 +942,13 @@ void InGameScene::ShowPopup1()
 	Size sRectSize = Size(680, 680);
 	Vec2 vStartPoint = Vec2(20, 250);
 
-	UIPopupWindow* pPopupOK = UIPopupWindow::create(Sprite::create("common/button.png"));
-	pPopupOK->addGuideRect(vStartPoint, sRectSize);
-	pPopupOK->setBackgroundBorard(Sprite::create("common/bg_black_80.png"));
+	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
+	pPopupOK->SetStencilBackgroundBoard(Sprite::create("common/bg_black_80.png"), sRectSize, vStartPoint);
 	pPopupOK->addText("Just push buttons!\nAnd hit the Enter button!", "fonts/LCDM2N_.TTF", Vec2(vStartPoint.x + s.width/2, vStartPoint.y+60), 45.0f, Color3B(240, 0, 0));
+	pPopupOK->addGuideRect(vStartPoint, sRectSize);
 	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
-	pPopupOK->addButton("quit/pup_quit_btn_ok.png", "quit/pup_quit_btn_ok.png", "", TextureResType::LOCAL, Point(-120, -50), "", 1);
-	pPopupOK->addButton("quit/pup_quit_btn_resume.png", "quit/pup_quit_btn_resume.png", "", TextureResType::LOCAL, Point(120, -50), "", 2);
+	pPopupOK->addButton("quit/pup_quit_btn_ok.png", "quit/pup_quit_btn_ok.png", "", TextureResType::LOCAL, Point(s.width / 2 - 120, vStartPoint.y - 60), "", 1);
+	pPopupOK->addButton("quit/pup_quit_btn_resume.png", "quit/pup_quit_btn_resume.png", "", TextureResType::LOCAL, Point(s.width / 2 + 120, vStartPoint.y - 60), "", 2);
 	//pPopupOK->setMessageString("test_ popup");
 	pPopupOK->showPopup(this);
 }
@@ -960,13 +960,13 @@ void InGameScene::ShowPopup2()
 	Size sRectSize = Size(500, 200);
 	Vec2 vStartPoint = Vec2(30, 1050);
 
-	UIPopupWindow* pPopupOK = UIPopupWindow::create(Sprite::create("scene4/box_log.png"));
-	pPopupOK->addGuideRect(vStartPoint, sRectSize);
-	pPopupOK->setBackgroundBorard(Sprite::create("common/bg_black_80.png"));
+	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
+	pPopupOK->SetStencilBackgroundBoard(Sprite::create("common/bg_black_80.png"), sRectSize, vStartPoint);
 	pPopupOK->addText("NOW, YOU Could CHECK\nthe number of correct answers.", "fonts/LCDM2N_.TTF", Vec2(vStartPoint.x + s.width / 2, vStartPoint.y + 60), 45.0f, Color3B(240, 0, 0));
+	pPopupOK->addGuideRect(vStartPoint, sRectSize);
 	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
-	pPopupOK->addButton("quit/pup_quit_btn_ok.png", "quit/pup_quit_btn_ok.png", "", TextureResType::LOCAL, Point(-120, -50), "", 1);
-	pPopupOK->addButton("quit/pup_quit_btn_resume.png", "quit/pup_quit_btn_resume.png", "", TextureResType::LOCAL, Point(120, -50), "", 2);
+	pPopupOK->addButton("quit/pup_quit_btn_ok.png", "quit/pup_quit_btn_ok.png", "", TextureResType::LOCAL, Point(s.width / 2 - 120, vStartPoint.y - 60), "", 3);
+	pPopupOK->addButton("quit/pup_quit_btn_resume.png", "quit/pup_quit_btn_resume.png", "", TextureResType::LOCAL, Point(s.width / 2 + 120, vStartPoint.y - 60), "", 4);
 	//pPopupOK->setMessageString("test_ popup");
 	pPopupOK->showPopup(this);
 }

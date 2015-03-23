@@ -69,18 +69,23 @@ void UIPopupWindow::setBackgroundBorard(Sprite  *sprBg)//팝업 아래에 투명이나 머
 
 	Size size = Director::getInstance()->getWinSize();
 	sprBg->setPosition(size.width / 2, size.height / 2);
-	//addChild(sprBg, -10);
+	addChild(sprBg, -10);
 
+
+}
+
+
+void UIPopupWindow::SetStencilBackgroundBoard(Sprite * sprBg, Size sRectSize, Vec2 vStartPoint)
+{
+	if (!sprBg)return;
+
+	Size size = Director::getInstance()->getWinSize();
+	sprBg->setPosition(size.width / 2, size.height / 2);
+	//addChild(sprBg, -10);
 
 	{	// TODO: 스텐실 사용 유무 함수 따로 만들어주자. [3/20/2015 ChoiJunHyeok]
 		DrawNode* shape = DrawNode::create();
-		Size sRectSize = Size(680, 680);
-		Vec2 vStartPoint = Vec2(20, 250);
 		shape->drawSolidRect(vStartPoint, vStartPoint + sRectSize, Color4F(1, 1, 1, 1));
-
-		auto sptest = Sprite::create("scene4/s4_pup_success.png");
-		sptest->setPosition(Point(100, 100));
-		sptest->setZOrder(105);
 
 		auto clipping = ClippingNode::create();
 		//auto clippingShape = Sprite::create("scene4/box_life.png");
@@ -91,9 +96,7 @@ void UIPopupWindow::setBackgroundBorard(Sprite  *sprBg)//팝업 아래에 투명이나 머
 		clipping->addChild(sprBg);
 		this->addChild(clipping, 105);
 	}
-
 }
-
 
 void UIPopupWindow::setBackgroundImage(Sprite  *sprBg)
 {
@@ -165,15 +168,14 @@ void UIPopupWindow :: addGuideRect(Vec2 vStartPoint, Size sRectSize)
 
 	shape->drawRect(vStartPoint, vStartPoint + sRectSize, Color4F(0.9f, 0.0f, 0.0f, 0.8f));
 
-	this->addChild(shape);
+	this->addChild(shape, (int)m_nZorderCnt);
+	++m_nZorderCnt;
 }
 
 void UIPopupWindow::addText(const std::string& text, const std::string& font, const Vec2& pos, int size, const Color3B& color)
 {
 	//Text* textMsg = Text::create(); 
 	Label* textMsg = Label::createWithTTF(text, font, size);
-	this->addChild(textMsg, (int)m_nZorderCnt);
-	m_nZorderCnt++;
 
 	if (m_sprBg)
 	{
@@ -185,6 +187,8 @@ void UIPopupWindow::addText(const std::string& text, const std::string& font, co
 		textMsg->setPosition(pos);
 	}
 	textMsg->setTextColor(Color4B(color.r, color.g, color.b, 255));
+
+	this->addChild(textMsg, 111);
 }
 
 void UIPopupWindow::addSlideButton(const std::string& track, const std::string& progress, const std::string& normal, const std::string& pressed, const std::string& disable, Widget::TextureResType texType, const float percentage, const Point &pos, const int nTag)
@@ -231,7 +235,7 @@ void UIPopupWindow::addButton(const char* normalTexture, const char* selectedTex
 
 		//position += worlspace;
 		pBtn->setAnchorPoint(Vec2(0.5, 0.5));
-		pBtn->setPosition(m_sprBg->getPosition()+pos);
+		pBtn->setPosition(m_sprBg->getPosition() + pos);
 	}
 	else
 	{
@@ -242,8 +246,9 @@ void UIPopupWindow::addButton(const char* normalTexture, const char* selectedTex
 	// pBtn->addTouchEventListener(this,toucheventselector(UIPopupWindow::onBtnClickCallbackFnc) ); //이부분은 3.0부터 사용하지않도록 권장된다.
 	pBtn->addTouchEventListener(CC_CALLBACK_2(UIPopupWindow::onBtnCallback, this)); //버튼이 클릭시 콜백함수 설정
 
-	addChild(pBtn, (int)m_nZorderCnt);
-	m_nZorderCnt++;
+	addChild(pBtn, 105);
+	/*addChild(pBtn, (int)m_nZorderCnt);
+	m_nZorderCnt++;*/
 }
 
 

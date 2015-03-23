@@ -39,7 +39,7 @@ public:
 
 	EventListenerTouchOneByOne * listener;
 
-	static Scene* createScene(void);
+	static Scene* createScene2(void);
 	void changeScene(void);
 
 	//callback events

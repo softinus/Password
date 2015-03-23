@@ -693,7 +693,7 @@ void InGameScene::changeScene(void)
 {
 	//Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 
-	auto hScene = SelectStageScene::createScene();
+	auto hScene = SelectStageScene::createScene2();
 	auto pScene = TransitionFade::create(1.0f, hScene);
 	Director::getInstance()->replaceScene(pScene);
 }
@@ -918,21 +918,67 @@ void InGameScene::Callback_popup_ok(Ref* pSender)
 	UIPopupWindow *pPopup = (UIPopupWindow *)pSender;
 	int nTag = pPopup->getResult();
 
-	if (nTag == 1)	// ok
+	if (nTag == 0)	// skip
+	{
+		UserDefault::getInstance()->setIntegerForKey("guide_already_showed", true);	// 
+		pPopup->closePopup();
+	}
+	if (nTag == 1)	// p1-next
 	{
 		pPopup->closePopup();
 		ShowPopup2();
 	}
-	if (nTag == 2)	// cancel
+	if (nTag == 2)	// p1-prev
 	{
-		pPopup->closePopup();
 	}
 
-	if (nTag == 3)	// credit-ok
+	if (nTag == 3)	// p2-next
 	{
 		pPopup->closePopup();
+		ShowPopup3();
 	}
+	if (nTag == 4)	// p2-prev
+	{
+		pPopup->closePopup();
+		ShowPopup1();
+	}
+
+	if (nTag == 5)	// p3-next
+	{
+		pPopup->closePopup();
+		ShowPopup4();
+	}
+	if (nTag == 6)	// p3-prev
+	{
+		pPopup->closePopup();
+		ShowPopup2();
+	}
+
+	if (nTag == 7)	// p4-next
+	{
+		pPopup->closePopup();
+		ShowPopup5();
+	}
+	if (nTag == 8)	// p4-prev
+	{
+		pPopup->closePopup();
+		ShowPopup3();
+	}
+
+	if (nTag == 9)	// p5-next
+	{
+		UserDefault::getInstance()->setIntegerForKey("guide_already_showed", true);	// 
+		pPopup->closePopup();
+		//ShowPopup6();
+	}
+	if (nTag == 10)	// p5-prev
+	{
+		pPopup->closePopup();
+		ShowPopup4();
+	}
+
 }
+
 
 
 void InGameScene::ShowPopup1()
@@ -943,13 +989,13 @@ void InGameScene::ShowPopup1()
 	Vec2 vStartPoint = Vec2(20, 250);
 
 	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
-	pPopupOK->SetStencilBackgroundBoard(Sprite::create("common/bg_black_80.png"), sRectSize, vStartPoint);
-	pPopupOK->addText("Just push buttons!\nAnd hit the Enter button!", "fonts/LCDM2N_.TTF", Vec2(vStartPoint.x + s.width/2, vStartPoint.y+60), 45.0f, Color3B(240, 0, 0));
-	pPopupOK->addGuideRect(vStartPoint, sRectSize);
+	pPopupOK->setBackgroundBorard(Sprite::create("help/help_1.png"));
+	//pPopupOK->addText("Just push buttons!\nAnd hit the Enter button!", "fonts/LCDM2N_.TTF", Vec2(vStartPoint.x + s.width/2, vStartPoint.y+60), 45.0f, Color3B(240, 0, 0));
 	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
-	pPopupOK->addButton("quit/pup_quit_btn_ok.png", "quit/pup_quit_btn_ok.png", "", TextureResType::LOCAL, Point(s.width / 2 - 120, vStartPoint.y - 60), "", 1);
-	pPopupOK->addButton("quit/pup_quit_btn_resume.png", "quit/pup_quit_btn_resume.png", "", TextureResType::LOCAL, Point(s.width / 2 + 120, vStartPoint.y - 60), "", 2);
-	//pPopupOK->setMessageString("test_ popup");
+	pPopupOK->addButton("help/text_box1.png", "help/text_box1.png", "", TextureResType::LOCAL, Point(310, 1031), "", -1);
+	//pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 2);
+	pPopupOK->addButton("help/h1_btn_next_up.png", "help/h1_btn_next_up.png", "", TextureResType::LOCAL, Point(616.5, 217.5), "", 1);
+	pPopupOK->addButton("help/h1_btn_skip_up.png", "help/h1_btn_skip_up.png", "", TextureResType::LOCAL, Point(633, 1231), "", 0);
 	pPopupOK->showPopup(this);
 }
 
@@ -961,12 +1007,75 @@ void InGameScene::ShowPopup2()
 	Vec2 vStartPoint = Vec2(30, 1050);
 
 	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
-	pPopupOK->SetStencilBackgroundBoard(Sprite::create("common/bg_black_80.png"), sRectSize, vStartPoint);
-	pPopupOK->addText("NOW, YOU Could CHECK\nthe number of correct answers.", "fonts/LCDM2N_.TTF", Vec2(vStartPoint.x + s.width / 2, vStartPoint.y + 60), 45.0f, Color3B(240, 0, 0));
-	pPopupOK->addGuideRect(vStartPoint, sRectSize);
+	pPopupOK->setBackgroundBorard(Sprite::create("help/help_2.png"));
+	//pPopupOK->addText("NOW, YOU Could CHECK\nthe number of correct answers.", "fonts/LCDM2N_.TTF", Vec2(vStartPoint.x + s.width / 2, vStartPoint.y + 60), 45.0f, Color3B(240, 0, 0));
 	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
-	pPopupOK->addButton("quit/pup_quit_btn_ok.png", "quit/pup_quit_btn_ok.png", "", TextureResType::LOCAL, Point(s.width / 2 - 120, vStartPoint.y - 60), "", 3);
-	pPopupOK->addButton("quit/pup_quit_btn_resume.png", "quit/pup_quit_btn_resume.png", "", TextureResType::LOCAL, Point(s.width / 2 + 120, vStartPoint.y - 60), "", 4);
-	//pPopupOK->setMessageString("test_ popup");
+	pPopupOK->addButton("help/text_box2.png", "help/text_box2.png", "", TextureResType::LOCAL, Point(351.5, 903.5), "", -1);
+	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 4);
+	pPopupOK->addButton("help/h1_btn_next_up.png", "help/h1_btn_next_up.png", "", TextureResType::LOCAL, Point(616.5, 217.5), "", 3);
+	pPopupOK->addButton("help/h1_btn_skip_up.png", "help/h1_btn_skip_up.png", "", TextureResType::LOCAL, Point(633, 1231), "", 0);
 	pPopupOK->showPopup(this);
 }
+
+
+
+
+
+
+void InGameScene::ShowPopup3()
+{
+	Size s = this->getContentSize();
+
+	Size sRectSize = Size(500, 200);
+	Vec2 vStartPoint = Vec2(30, 1050);
+
+	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
+	pPopupOK->setBackgroundBorard(Sprite::create("help/help_3.png"));
+	//pPopupOK->addText("NOW, YOU Could CHECK\nthe number of correct answers.", "fonts/LCDM2N_.TTF", Vec2(vStartPoint.x + s.width / 2, vStartPoint.y + 60), 45.0f, Color3B(240, 0, 0));
+	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
+	pPopupOK->addButton("help/text_box4.png", "help/text_box4.png", "", TextureResType::LOCAL, Point(428, 923), "", -1);
+	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 6);
+	pPopupOK->addButton("help/h1_btn_next_up.png", "help/h1_btn_next_up.png", "", TextureResType::LOCAL, Point(616.5, 217.5), "", 5);
+	pPopupOK->addButton("help/h1_btn_skip_up.png", "help/h1_btn_skip_up.png", "", TextureResType::LOCAL, Point(633, 1231), "", 0);
+	pPopupOK->showPopup(this);
+}
+
+
+void InGameScene::ShowPopup4()
+{
+	Size s = this->getContentSize();
+
+	Size sRectSize = Size(500, 200);
+	Vec2 vStartPoint = Vec2(30, 1050);
+
+	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
+	pPopupOK->setBackgroundBorard(Sprite::create("help/help_4.png"));
+	//pPopupOK->addText("NOW, YOU Could CHECK\nthe number of correct answers.", "fonts/LCDM2N_.TTF", Vec2(vStartPoint.x + s.width / 2, vStartPoint.y + 60), 45.0f, Color3B(240, 0, 0));
+	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
+	pPopupOK->addButton("help/text_box5.png", "help/text_box5.png", "", TextureResType::LOCAL, Point(317, 1132), "", -1);
+	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 8);
+	pPopupOK->addButton("help/h1_btn_next_up.png", "help/h1_btn_next_up.png", "", TextureResType::LOCAL, Point(616.5, 217.5), "", 7);
+	pPopupOK->addButton("help/h1_btn_skip_up.png", "help/h1_btn_skip_up.png", "", TextureResType::LOCAL, Point(633, 1231), "", 0);
+	pPopupOK->showPopup(this);
+}
+
+void InGameScene::ShowPopup5()
+{
+	Size s = this->getContentSize();
+
+	Size sRectSize = Size(500, 200);
+	Vec2 vStartPoint = Vec2(30, 1050);
+
+	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
+	pPopupOK->setBackgroundBorard(Sprite::create("help/help_5.png"));
+	//pPopupOK->addText("NOW, YOU Could CHECK\nthe number of correct answers.", "fonts/LCDM2N_.TTF", Vec2(vStartPoint.x + s.width / 2, vStartPoint.y + 60), 45.0f, Color3B(240, 0, 0));
+	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
+	pPopupOK->addButton("help/text_box6.png", "help/text_box6.png", "", TextureResType::LOCAL, Point(357, 638), "", -1);
+	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 10);
+	pPopupOK->addButton("help/h1_btn_next_up.png", "help/h1_btn_next_up.png", "", TextureResType::LOCAL, Point(616.5, 217.5), "", 9);
+	pPopupOK->addButton("help/h1_btn_skip_up.png", "help/h1_btn_skip_up.png", "", TextureResType::LOCAL, Point(633, 1231), "", 0);
+	pPopupOK->showPopup(this);
+}
+
+
+

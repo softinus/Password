@@ -6,7 +6,6 @@
 #include "ui\CocosGUI.h"                //코코스 스튜디오 GUI 기능 추가
 #include "SelectStageScene.h"
 #include "ResultScene.h"
-#include "ResultFailedScene.h"
 //#include "ButtonN.h"
 USING_NS_CC;
 using namespace ui;
@@ -92,4 +91,7 @@ protected:
 	void Callback_popup_ok(Ref* pSender);
 	void ShowPopup1();
 	void ShowPopup2();
+	void ShowPopup3();
+	void ShowPopup4();
+	void ShowPopup5();
 };

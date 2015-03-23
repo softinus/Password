@@ -8,7 +8,7 @@ using namespace CocosDenshion;
 #define STAGE_COUNT 9
 
 
-Scene* SelectStageScene::createScene()
+Scene* SelectStageScene::createScene2()
 {
 	// 'scene' is an autorelease object
 	auto scene = Scene::create();
@@ -425,7 +425,7 @@ MenuItemImage* SelectStageScene::ShowRank(int p, int i)
 
 	MenuItemImage* IMG_rank = MenuItemImage::create(strIMGrank, strIMGrank);
 	IMG_rank->setZOrder(11);
-	IMG_rank->setPosition(Vec2(200 + 155 * (i % 3), 505 - 155 * (i / 3)));
+	IMG_rank->setPosition(Vec2(197 + 155 * (i % 3), 515 - 155 * (i / 3)));
 	IMG_rank->setVisible(!bUnranked);	// 언랭크이면 표시 안함.
 
 	// 새로 깨면 연출 동작

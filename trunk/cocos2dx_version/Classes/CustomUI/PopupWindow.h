@@ -19,7 +19,7 @@ public:
 	virtual void onBtnCallback(Ref *pSender, ui::Button::TouchEventType touchType);//추가되는 버튼들에 대한 콜백함수 설정
 	virtual void onSldCallback(Ref *pSender, ui::Slider::EventType touchType);// 슬라이드.
 
-	void addGuideRect(Vec2 vStartPonit, Size sRectSize);	// guide용 [3/20/2015 ChoiJunHyeok]
+	void addGuideRect(cocos2d::Vec2, cocos2d::Size);	// guide용 [3/20/2015 ChoiJunHyeok]
 
 	//CREATE_FUNC(UIPopupWindow);    //기본 create()함수 정의
 public:
@@ -44,6 +44,8 @@ public:
 
 	void setBackgroundImage(Sprite  *sprBg);//실제 보여질 박스
 	void setBackgroundBorard(Sprite  *sprBg);//팝업 아래에 투명이나 머 이런거? 하여간 맨 밑바닥
+
+	void SetStencilBackgroundBoard(Sprite * sprBg, Size sRectSize, Vec2 vStartPoint);
 
 	Size getContentsSize() { return m_sprBg->getContentSize(); }
 protected:

@@ -681,6 +681,17 @@ void InGameScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d
 
 void InGameScene::showResultFailed(void)
 {
+	// challenge mode는 fail이 끝난거임.
+	if (DataSingleton::getInstance().nPlayMode == EStage::CHALLENGE)
+	{
+		int nScore= UserDefault::getInstance()->getIntegerForKey("leaderboard_challenge_score", 0);	// load existing score
+		int nNewScore = nScore + DataSingleton::getInstance().nLevel * DataSingleton::getInstance().nStageRepeatCount;	// append existing score + new score
+
+		GameSharing::SubmitScore(nNewScore, 0);
+		GameSharing::UnlockAchivement(DataSingleton::getInstance().nLevel - 1);
+
+		UserDefault::getInstance()->getIntegerForKey("leaderboard_challenge_score", nNewScore);
+	}
 	//Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 
 
@@ -760,22 +771,22 @@ void InGameScene::ClearStage()
 			//GameSharing::SubmitScore(DataSingleton::getInstance().nLevel * DataSingleton::getInstance().nPlayMode, 0);
 		}
 	}
-	else if (DataSingleton::getInstance().nPlayMode == EStage::CHALLENGE)
-	{ 
-		int nSavedStage = UserDefault::getInstance()->getIntegerForKey("stage_clear_challenge", 0);	// get current highest stage level.
-		if (nSavedStage < DataSingleton::getInstance().nLevel)	// if this level is highest level...
-		{
-			UserDefault::getInstance()->setIntegerForKey("stage_clear_challenge", DataSingleton::getInstance().nLevel);	// update save data.
+	//else if (DataSingleton::getInstance().nPlayMode == EStage::CHALLENGE)
+	//{ 
+	//	int nSavedStage = UserDefault::getInstance()->getIntegerForKey("stage_clear_challenge", 0);	// get current highest stage level.
+	//	if (nSavedStage < DataSingleton::getInstance().nLevel)	// if this level is highest level...
+	//	{
+	//		UserDefault::getInstance()->setIntegerForKey("stage_clear_challenge", DataSingleton::getInstance().nLevel);	// update save data.
 
-			int nScore= UserDefault::getInstance()->getIntegerForKey("leaderboard_challenge_score", 0);	// load existing score
-			int nNewScore = nScore + DataSingleton::getInstance().nLevel * DataSingleton::getInstance().nStageRepeatCount;	// append existing score + new score
+	//		int nScore= UserDefault::getInstance()->getIntegerForKey("leaderboard_challenge_score", 0);	// load existing score
+	//		int nNewScore = nScore + DataSingleton::getInstance().nLevel * DataSingleton::getInstance().nStageRepeatCount;	// append existing score + new score
 
-			GameSharing::SubmitScore(nNewScore, 0);
-			GameSharing::UnlockAchivement(DataSingleton::getInstance().nLevel - 1);
+	//		GameSharing::SubmitScore(nNewScore, 0);
+	//		GameSharing::UnlockAchivement(DataSingleton::getInstance().nLevel - 1);
 
-			UserDefault::getInstance()->getIntegerForKey("leaderboard_challenge_score", nNewScore);
-		}
-	}
+	//		UserDefault::getInstance()->getIntegerForKey("leaderboard_challenge_score", nNewScore);
+	//	}
+	//}
 	
 
 	DataSingleton::getInstance().bClear = true;

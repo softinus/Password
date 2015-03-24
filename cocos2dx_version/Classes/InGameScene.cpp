@@ -39,6 +39,7 @@ void InGameScene::InitStage()
 	m_nSubmitCount = 0;
 	m_nAnswerDigit = 2;
 	m_nDigitCount = 0;
+	m_nSpendTime = 0;
 
 	int nLevel = DataSingleton::getInstance().nLevel;
 	int nMode = DataSingleton::getInstance().nPlayMode;
@@ -64,7 +65,7 @@ void InGameScene::InitStage()
 			m_nRepeatStage_MAX = 2;
 
 		m_nRecoverLifeAmount = 1;
-		m_nTime = 600;
+		m_nTimeLimit = 600;
 
 		nButtonSize = 338;
 		nStartX = 190;
@@ -84,7 +85,7 @@ void InGameScene::InitStage()
 			m_nRepeatStage_MAX = 3;
 
 		m_nRecoverLifeAmount = 1;
-		m_nTime = 660;
+		m_nTimeLimit = 660;
 
 		nButtonSize = 224;
 		nStartX = 133;
@@ -104,7 +105,7 @@ void InGameScene::InitStage()
 			m_nRepeatStage_MAX = 3;
 
 		m_nRecoverLifeAmount = 1;
-		m_nTime = 600;
+		m_nTimeLimit = 600;
 
 		nButtonSize = 224;
 		nStartX = 133;
@@ -124,7 +125,7 @@ void InGameScene::InitStage()
 			m_nRepeatStage_MAX = 3;
 
 		m_nRecoverLifeAmount = 2;
-		m_nTime = 780;
+		m_nTimeLimit = 780;
 
 		nButtonSize = 168;
 		nStartX = 105;
@@ -144,7 +145,7 @@ void InGameScene::InitStage()
 			m_nRepeatStage_MAX = 3;
 
 		m_nRecoverLifeAmount = 2;
-		m_nTime = 840;
+		m_nTimeLimit = 840;
 
 		nButtonSize = 168;
 		nStartX = 105;
@@ -164,7 +165,7 @@ void InGameScene::InitStage()
 			m_nRepeatStage_MAX = 3;
 
 		m_nRecoverLifeAmount = 2;
-		m_nTime = 900;
+		m_nTimeLimit = 900;
 
 		nButtonSize = 135;
 		nStartX = 88;
@@ -184,7 +185,7 @@ void InGameScene::InitStage()
 			m_nRepeatStage_MAX = 3;
 
 		m_nRecoverLifeAmount = 3;
-		m_nTime = 1020;
+		m_nTimeLimit = 1020;
 
 		nButtonSize = 135;
 		nStartX = 88;
@@ -204,7 +205,7 @@ void InGameScene::InitStage()
 			m_nRepeatStage_MAX = 3;
 
 		m_nRecoverLifeAmount = 3;
-		m_nTime = 1140;
+		m_nTimeLimit = 1140;
 
 		nButtonSize = 112;
 		nStartX = 77;
@@ -224,7 +225,7 @@ void InGameScene::InitStage()
 			m_nRepeatStage_MAX = 3;
 
 		m_nRecoverLifeAmount = 3;
-		m_nTime = 1200;
+		m_nTimeLimit = 1200;
 
 
 		nButtonSize = 112;
@@ -429,19 +430,19 @@ void InGameScene::scheduleCallback(float delta)
 {
 	//CCLOG("scheduleCallback : %f", delta);
 
-	--m_nTime;
+	--m_nTimeLimit;
+	++m_nSpendTime;
 
-
-	int nMinute = m_nTime / 60;
-	int nSec = m_nTime % 60;
+	int nMinute = m_nTimeLimit / 60;
+	int nSec = m_nTimeLimit % 60;
 
 	char szTime[32] = { NULL, };
 	sprintf(szTime, "%d:%02d", nMinute, nSec);
 	m_TXT_time->setString(szTime);
 	//DataSingleton::getInstance().strSpentTime = time;	// 총 소모한 시간 저장.
-	DataSingleton::getInstance().nSpentTime = m_nTime;	// 총 소모한 시간 저장.
+	DataSingleton::getInstance().nSpentTime = m_nSpendTime;	// 총 소모한 시간 저장.
 
-	if (m_nTime == 0)	// 시간 내에 전부 못 풀면 실패.
+	if (m_nTimeLimit == 0)	// 시간 내에 전부 못 풀면 실패.
 	{
 		showResultFailed();
 	}
@@ -746,7 +747,7 @@ void InGameScene::ClearStage()
 	
 
 	DataSingleton::getInstance().bClear = true;
-	DataSingleton::getInstance().nStageRepeatCount = m_nRepeatStage_MAX;
+	//DataSingleton::getInstance().nStageRepeatCount = m_nRepeatStage_MAX;
 	DataSingleton::getInstance().nLeftLife = m_nLife;
 	
 	showResult();
@@ -836,9 +837,21 @@ void InGameScene::RepeatStage()
 	float f = (((float)m_nCurrStageRepeatCount + 1) / (float)m_nRepeatStage_MAX) * 100.f;
 	m_LDB_progress->setPercent(f);
 
-	// append listbox
-	string str = " ===== SUCCESS! (" + to_string2(m_nCurrStageRepeatCount+1) + "/" + to_string2(m_nRepeatStage_MAX) + ") ===== ";
-	Text* txt = Text::create(str, "fonts/LCDM2N_.TTF", 30.f);
+	string str = "";
+	Text* txt = NULL;
+	if (EStage::CHALLENGE == DataSingleton::getInstance().nPlayMode)	// if challenge mode
+	{
+		// append listbox
+		str = " ===== SUCCESS! (" + to_string2(m_nCurrStageRepeatCount + 1) + ") ===== ";
+		txt = Text::create(str, "fonts/LCDM2N_.TTF", 30.f);
+	}
+	else
+	{
+		// append listbox
+		str = " ===== SUCCESS! (" + to_string2(m_nCurrStageRepeatCount + 1) + "/" + to_string2(m_nRepeatStage_MAX) + ") ===== ";
+		txt = Text::create(str, "fonts/LCDM2N_.TTF", 30.f);
+	}
+	
 
 	Layout* default_item = Layout::create();
 	default_item->setTouchEnabled(true);
@@ -847,12 +860,9 @@ void InGameScene::RepeatStage()
 		default_item->getContentSize().height / 2.0f));
 	default_item->addChild(txt);
 
-	//lst_log->setItemModel(default_item);
-	//lst_log->pushBackDefaultItem();
 	lst_log->pushBackCustomItem(default_item);
 	lst_log->refreshView();
 	lst_log->scrollToBottom(0.5f, true);
-	//this->addChild(lst_log);
 
 	++m_nCurrStageRepeatCount;	//  repeat stage
 }

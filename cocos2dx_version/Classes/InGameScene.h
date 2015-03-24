@@ -74,7 +74,8 @@ protected:
 	int m_nSumFixed;	// sum (정답 다시 만들기 전까지는 그대로)
 	int m_nRepeatStage_MAX;	// 스테이지 반복 횟수
 	int m_nRecoverLifeAmount;	// 성공했을 때 회복 라이프 개수
-	int m_nTime;	// time (unit:sec)
+	int m_nTimeLimit;	// time (unit:sec)
+	int m_nSpendTime;	// spend time (unit:sec) [3/24/2015 ChoiJunHyeok]
 
 	int m_nWid;
 	int m_nHei;

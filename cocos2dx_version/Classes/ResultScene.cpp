@@ -34,120 +34,16 @@ bool ResultScene::init()
 	GameSharing::EarnCoins(30, "full-ad");
 	GameSharing::ShowFullAd();
 
-	// A,B,D 랭크 기준 [3/6/2015 ChoiJunHyeok]
-	if (DataSingleton::getInstance().nLevel == 1)
+	if (DataSingleton::getInstance().nPlayMode == EStage::CHALLENGE)
 	{
-		m_nCriterionOfDrank = 1;	// 1단계 실패시
-		m_nCriterionOfBrank = 2;	// 남은 라이프 2이하
-		m_nCriterionOfArank = 4;	// 남은 라이프 4이하
-		// 나머지 S랭크
+		this->ShowRankInEasyNormalMode();
 	}
 	else
 	{
-		m_nCriterionOfDrank = 3;	// 3단계 실패시
-		m_nCriterionOfBrank = 1;	// 남은 라이프 1이하
-		m_nCriterionOfArank = 3;	// 남은 라이프 3이하
-		// 나머지 S랭크
+		this->ShowRankInEasyNormalMode();
 	}
+	
 
-
-	int nTotalCount = DataSingleton::getInstance().nSpentCount;
-//	int nTotalTime = DataSingleton::getInstance().nSpentTime;
-
-
-	m_IMG_result = MenuItemImage::create("scene5-1/s5_result.png", "scene5-1/s5_result.png");
-	m_IMG_result->setPosition(Vec2(-260, 1144));
-	this->addChild(m_IMG_result);
-
-
-	string str_rank = "rank_";
-	if (DataSingleton::getInstance().nPlayMode == EStage::EASY)
-		str_rank += "easy_";
-	else if (DataSingleton::getInstance().nPlayMode == EStage::NORMAL)
-		str_rank += "normal_";
-
-	str_rank += to_string2(DataSingleton::getInstance().nLevel);
-	int nSavedRank= UserDefault::getInstance()->getIntegerForKey(str_rank.c_str(), 0);
-	bool bNewRanked = false;
-
-	string strRankImagePath = "";
-	if ( DataSingleton::getInstance().bClear)	// 클리어 했으면 S, A,B 중 하나
-	{
-		if (DataSingleton::getInstance().nLeftLife < m_nCriterionOfBrank)
-		{
-			strRankImagePath = "scene5-1/s5_rank_b.png";
-			if (nSavedRank < 2)	// 현재 랭크가 b랭크보다 낮으면
-			{
-				UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 2);
-				bNewRanked = true;
-			}
-				
-		}
-		else if (DataSingleton::getInstance().nLeftLife < m_nCriterionOfArank)
-		{
-			strRankImagePath = "scene5-1/s5_rank_a.png";
-			if (nSavedRank < 3)	// 현재 랭크가 a랭크보다 낮으면
-			{
-				UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 3);
-				bNewRanked = true;
-			}
-				
-		}
-		else
-		{
-			strRankImagePath = "scene5-1/s5_rank_s.png";
-			if (nSavedRank != 4)	// 현재 랭크가 s랭크가 아니면
-			{
-				UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 4);
-				bNewRanked = true;
-			}
-				
-		}
-	}
-	else
-	{
-		if (m_nCriterionOfDrank > DataSingleton::getInstance().nStageRepeatCount)	// criterion of D rank
-		{
-			strRankImagePath = "scene5-1/s5_rank_d.png";
-			if (nSavedRank == -1)	// 현재 랭크가 없으면
-			{
-				UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 0);
-				bNewRanked = true;
-			}
-				
-		}
-		else
-		{
-			strRankImagePath = "scene5-1/s5_rank_c.png";
-			if (nSavedRank < 1)	// 현재 랭크가 c랭크보다 낮으면
-			{
-				UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 1);
-				bNewRanked = true;
-			}
-				
-		}
-		
-	}
-	DataSingleton::getInstance().nCleardStage = DataSingleton::getInstance().nLevel;
-	DataSingleton::getInstance().bNewRanked = bNewRanked;
-
-
-	m_IMG_rank = MenuItemImage::create(strRankImagePath, strRankImagePath);
-	m_IMG_rank->setPosition(Vec2(1150, 891.5));
-	this->addChild(m_IMG_rank);
-
-
-	string strCount = "count : " + to_string2(nTotalCount);
-	m_LBL_count = Label::createWithTTF(strCount, "fonts/LCDM2N_.TTF", 45.f);
-	m_LBL_count->setPosition(Vec2(750, 740));
-	m_LBL_count->setAnchorPoint(Vec2(0, 0));
-	this->addChild(m_LBL_count);
-
-	string strTime = "time : " + to_string2(DataSingleton::getInstance().nSpentTime);
-	m_LBL_time = Label::createWithTTF(strTime, "fonts/LCDM2N_.TTF", 45.f);
-	m_LBL_time->setPosition(Vec2(750, 690));
-	m_LBL_time->setAnchorPoint(Vec2(0, 0));
-	this->addChild(m_LBL_time);
 
 	m_BTN_main = Button::create("scene5-1/btn_main_up.png", "scene5-1/btn_main_down.png");
 	m_BTN_main->setPosition(Vec2(443.5, 396.5));
@@ -234,4 +130,144 @@ bool ResultScene::onTouchBegan(Touch* touch, Event* event) {
 
 	changeScene();
 	return true;
+}
+
+// when challenge mode
+void ResultScene::ShowCountInChallengeMode()
+{
+	int nTotalCount = DataSingleton::getInstance().nStageRepeatCount;
+	 
+	m_IMG_result = MenuItemImage::create("scene5-1/s5_result.png", "scene5-1/s5_result.png");
+	m_IMG_result->setPosition(Vec2(-260, 1144));
+	this->addChild(m_IMG_result);
+
+	string strChallenge = "rank_challenge_";
+	strChallenge += to_string2(DataSingleton::getInstance().nLevel);
+	UserDefault::getInstance()->setIntegerForKey(strChallenge.c_str(), 0);
+
+	string strCount = "played : " + to_string2(nTotalCount);
+	m_LBL_count = Label::createWithTTF(strCount, "fonts/LCDM2N_.TTF", 60.f);
+	m_LBL_count->setPosition(Vec2(750, 740));
+	m_LBL_count->setAnchorPoint(Vec2(0, 0));
+	this->addChild(m_LBL_count);
+}
+
+
+// when easy or normal mode
+void ResultScene::ShowRankInEasyNormalMode()
+{
+	// A,B,D 랭크 기준 [3/6/2015 ChoiJunHyeok]
+	if (DataSingleton::getInstance().nLevel == 1)
+	{
+		m_nCriterionOfDrank = 1;	// 1단계 실패시
+		m_nCriterionOfBrank = 2;	// 남은 라이프 2이하
+		m_nCriterionOfArank = 4;	// 남은 라이프 4이하
+		// 나머지 S랭크
+	}
+	else
+	{
+		m_nCriterionOfDrank = 3;	// 3단계 실패시
+		m_nCriterionOfBrank = 1;	// 남은 라이프 1이하
+		m_nCriterionOfArank = 3;	// 남은 라이프 3이하
+		// 나머지 S랭크
+	}
+
+
+	int nTotalCount = DataSingleton::getInstance().nSpentCount;
+	//	int nTotalTime = DataSingleton::getInstance().nSpentTime;
+
+
+	m_IMG_result = MenuItemImage::create("scene5-1/s5_result.png", "scene5-1/s5_result.png");
+	m_IMG_result->setPosition(Vec2(-260, 1144));
+	this->addChild(m_IMG_result);
+
+
+	string str_rank = "rank_";
+	if (DataSingleton::getInstance().nPlayMode == EStage::EASY)
+		str_rank += "easy_";
+	else if (DataSingleton::getInstance().nPlayMode == EStage::NORMAL)
+		str_rank += "normal_";
+
+	str_rank += to_string2(DataSingleton::getInstance().nLevel);
+	int nSavedRank = UserDefault::getInstance()->getIntegerForKey(str_rank.c_str(), 0);
+	bool bNewRanked = false;
+
+	string strRankImagePath = "";
+	if (DataSingleton::getInstance().bClear)	// 클리어 했으면 S, A,B 중 하나
+	{
+		if (DataSingleton::getInstance().nLeftLife < m_nCriterionOfBrank)
+		{
+			strRankImagePath = "scene5-1/s5_rank_b.png";
+			if (nSavedRank < 2)	// 현재 랭크가 b랭크보다 낮으면
+			{
+				UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 2);
+				bNewRanked = true;
+			}
+
+		}
+		else if (DataSingleton::getInstance().nLeftLife < m_nCriterionOfArank)
+		{
+			strRankImagePath = "scene5-1/s5_rank_a.png";
+			if (nSavedRank < 3)	// 현재 랭크가 a랭크보다 낮으면
+			{
+				UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 3);
+				bNewRanked = true;
+			}
+
+		}
+		else
+		{
+			strRankImagePath = "scene5-1/s5_rank_s.png";
+			if (nSavedRank != 4)	// 현재 랭크가 s랭크가 아니면
+			{
+				UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 4);
+				bNewRanked = true;
+			}
+
+		}
+	}
+	else
+	{
+		if (m_nCriterionOfDrank > DataSingleton::getInstance().nStageRepeatCount)	// criterion of D rank
+		{
+			strRankImagePath = "scene5-1/s5_rank_d.png";
+			if (nSavedRank == -1)	// 현재 랭크가 없으면
+			{
+				UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 0);
+				bNewRanked = true;
+			}
+
+		}
+		else
+		{
+			strRankImagePath = "scene5-1/s5_rank_c.png";
+			if (nSavedRank < 1)	// 현재 랭크가 c랭크보다 낮으면
+			{
+				UserDefault::getInstance()->setIntegerForKey(str_rank.c_str(), 1);
+				bNewRanked = true;
+			}
+
+		}
+
+	}
+	DataSingleton::getInstance().nCleardStage = DataSingleton::getInstance().nLevel;
+	DataSingleton::getInstance().bNewRanked = bNewRanked;
+
+
+	m_IMG_rank = MenuItemImage::create(strRankImagePath, strRankImagePath);
+	m_IMG_rank->setPosition(Vec2(1150, 891.5));
+	this->addChild(m_IMG_rank);
+
+
+	string strCount = "count : " + to_string2(nTotalCount);
+	m_LBL_count = Label::createWithTTF(strCount, "fonts/LCDM2N_.TTF", 45.f);
+	m_LBL_count->setPosition(Vec2(750, 740));
+	m_LBL_count->setAnchorPoint(Vec2(0, 0));
+	this->addChild(m_LBL_count);
+
+	string strTime = "time : " + to_string2(DataSingleton::getInstance().nSpentTime);
+	m_LBL_time = Label::createWithTTF(strTime, "fonts/LCDM2N_.TTF", 45.f);
+	m_LBL_time->setPosition(Vec2(750, 690));
+	m_LBL_time->setAnchorPoint(Vec2(0, 0));
+	this->addChild(m_LBL_time);
 }

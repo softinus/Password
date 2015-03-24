@@ -136,7 +136,7 @@ bool SelectStageScene::init()
 	for (int p = 0; p < EStage::ALL; ++p)
 	{
 		string strNaviOn= "";
-		if (p == EStage::CHALLENGE)
+		if (p == EStage::CHALLENGE)	// Show red navigator when turn to page in challenge mode.
 		{
 			strNaviOn = "scene2/page_navi_on2.png";
 		}

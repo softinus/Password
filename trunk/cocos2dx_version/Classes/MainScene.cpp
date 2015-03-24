@@ -125,25 +125,6 @@ bool MainScene::init()
 		this->addChild(sprite);
 	}
 
-	//m_img_Logo = MenuItemImage::create("scene1-1/s1_title.png", "scene1-1/s1_title.png");
-	//m_img_Logo->setPosition(Vec2(360, 990));
-	//this->addChild(m_img_Logo);
-
-
-	//ParticleSystemQuad *particle = ParticleSystemQuad::create("particle/particle4.plist");
-	//particle->setTexture(CCTextureCache::sharedTextureCache()->addImage("particle/particle_texture.png"));
-	//particle->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
-	//this->addChild(particle);
-
-	//Label* LBL_title = Label::create("password", "fonts/LCDM2L_.TTF", 85);
-	//LBL_title->setPosition(Vec2(360, 990));
-	//LBL_title->setTextColor(Color4B(25, 185, 35, 255));
-	//LBL_title->enableGlow(Color4B(25, 185, 35, 120));
-	//LBL_title->enableShadow(Color4B(25, 185, 35, 120), Size(3, 10), 10);
-	//LBL_title->enableOutline(Color4B(255, 255, 255, 100), 1);
-	//this->addChild(LBL_title);
-
-
 
 	{
 		auto img_set1 = MenuItemImage::create("scene1-1/s1_btn_set_up.png", "scene1-1/s1_btn_set_up.png");
@@ -180,18 +161,6 @@ bool MainScene::init()
 	m_BTN_credits->addTouchEventListener(CC_CALLBACK_2(MainScene::Touch_credits, this));
 	this->addChild(m_BTN_credits);
 
-	//m_BTN_replay = Button::create("scene1-1/s1_btn_replay_up.png", "scene1-1/s1_btn_replay_down.png");
-	//m_BTN_replay->setPosition(Vec2(512, 835));
-	//m_BTN_replay->addTouchEventListener(CC_CALLBACK_2(MainScene::Touch_replay, this));
-	//this->addChild(m_BTN_replay);
-
-	m_BTN_base = Button::create("scene1-1/s1_btry_base_off.png", "scene1-1/s1_btry_base_off.png");
-	m_BTN_base->setPosition(Vec2(543, 480));
-	this->addChild(m_BTN_base);
-
-	m_BTN_charge = Button::create("scene1-1/s1_btn_charge_1.png", "scene1-1/s1_btn_charge_2.png");
-	m_BTN_charge->setPosition(Vec2(640.5, 480));
-	this->addChild(m_BTN_charge);
 
 	m_BTN_start = Button::create("scene1-1/s1_btn_start_up.png", "scene1-1/s1_btn_start_down.png");
 	m_BTN_start->setPosition(Vec2(360, 352));
@@ -205,47 +174,6 @@ bool MainScene::init()
 	m_BTN_charge_ok = Button::create("scene1-1/s1_btn_charge_ok.png", "scene1-1/s1_btn_charge_ok.png");
 	m_BTN_charge_ok->setPosition(Vec2(310.5, 1159));
 	this->addChild(m_BTN_charge_ok);
-
-	m_LBL_difficult = Label::create("Current stage", "fonts/LCDM2N_.TTF", 30);
-	m_LBL_difficult->setPosition(Vec2(50, 470));
-	m_LBL_difficult->setAnchorPoint(Vec2(0, 0));
-	this->addChild(m_LBL_difficult);
-
-
-	//m_IMG_popup_BG = Sprite::create("common/bg_black_80.png");
-	//m_IMG_popup_BG->setPosition(Vec2(s.width / 2, s.height / 2));
-	////m_IMG_BG->setOpacity(76.5);
-	//m_IMG_popup_BG->setVisible(false);
-	//
-	////m_img_BG->setAnchorPoint(Vec2(0, 0));
-	//this->addChild(m_IMG_popup_BG);
-
-	//m_IMG_popup_credits = Sprite::create("scene1-1/s1_pup_credits.png");
-	//m_IMG_popup_credits->setPosition(Vec2(s.width / 2, s.height / 2));
-	//m_IMG_popup_credits->setVisible(false);
-	//m_img_BG->setAnchorPoint(Vec2(0, 0));
-	//this->addChild(m_IMG_popup_credits);
-
-
-	//{
-	//	// setup stencil shape
-	//	DrawNode* shape = DrawNode::create();
-
-	//	Size sRectSize = Size(680, 680);
-	//	Vec2 vStartPoint = Vec2(20, 250);
-
-	//	shape->drawSolidRect(vStartPoint, vStartPoint + sRectSize, Color4F(1, 1, 1, 1));
-
-	//	// add shape in stencil
-	//	ClippingNode* clip = ClippingNode::create();
-	//	clip->setAnchorPoint(Vec2(0.5, 0.5));
-	//	clip->setStencil(shape);
-	//	clip->addChild(m_sprBg);
-	//	clip->setInverted(false);
-	//	clip->setAlphaThreshold(0.0f);
-
-	//	this->addChild(clip, 100);
-	//}
 
 
 

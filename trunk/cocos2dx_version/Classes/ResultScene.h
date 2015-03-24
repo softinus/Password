@@ -17,7 +17,11 @@ public:
 	static Scene* scene();
 	CREATE_FUNC(ResultScene);
 	virtual bool init();
-	
+
+	void ShowRankInEasyNormalMode();
+	void ShowCountInChallengeMode();
+
+
 	EventListenerTouchOneByOne * listener;
 
 	static Scene* createScene(void);

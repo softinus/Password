@@ -64,7 +64,7 @@ public:
     /**@brief A function, that shall be called when an error is encountered.*/
     static std::function<void()> errorHandler;
 
-	static void EarnCoins(int nCount, char* strComment);
+	static void EarnCoins(int, char*);
 
 	static void ShowFullAd();
 

@@ -100,6 +100,7 @@ bool SelectStageScene::init()
 
 		UserDefault::getInstance()->setIntegerForKey("stage_clear_easy", 0);
 		UserDefault::getInstance()->setIntegerForKey("stage_clear_normal", -1);
+		UserDefault::getInstance()->setIntegerForKey("stage_clear_challenge", -1);
 
 		for (int i = 0; i < STAGE_COUNT; ++i)
 		{
@@ -244,8 +245,9 @@ bool SelectStageScene::init()
 				}
 				else if (p == EStage::CHALLENGE)
 				{
-					BTN_stage->setBright(true);
-					BTN_stage->setEnabled(true);
+					nClearedStage = UserDefault::getInstance()->getIntegerForKey("stage_clear_challenge");
+					BTN_stage->setBright(i < nClearedStage + 1);
+					BTN_stage->setEnabled(i < nClearedStage + 1);
 				}
 				
 				

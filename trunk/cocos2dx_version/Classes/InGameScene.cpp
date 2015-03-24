@@ -234,6 +234,12 @@ void InGameScene::InitStage()
 		nFontSize = 58;
 	}
 
+	// all of challenge mode's time limit is 60 sec
+	if (EStage::CHALLENGE == nLevel)
+	{
+		m_nTimeLimit = 60;
+	}
+
 	// pad setting
 	for (int i = 0; i < m_nWid; ++i)
 	{
@@ -444,6 +450,10 @@ void InGameScene::scheduleCallback(float delta)
 
 	if (m_nTimeLimit == 0)	// 시간 내에 전부 못 풀면 실패.
 	{
+		DataSingleton::getInstance().bClear = false;
+		DataSingleton::getInstance().nStageRepeatCount = m_nCurrStageRepeatCount;
+		DataSingleton::getInstance().nLeftLife = m_nLife;
+
 		showResultFailed();
 	}
 

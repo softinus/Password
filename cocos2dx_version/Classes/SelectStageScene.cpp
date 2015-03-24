@@ -175,6 +175,7 @@ bool SelectStageScene::init()
 	m_PAGE_stage->setBackGroundImage("scene2/s2_box01.png");
 	m_PAGE_stage->setAnchorPoint(Vec2(0, 0));
 
+	MenuItemImage* IMG_need_animation = NULL;
 	for (int p = 0; p < EStage::ALL; ++p)
 	{
 		Layout* _frame = Layout::create();
@@ -251,11 +252,13 @@ bool SelectStageScene::init()
 				MenuItemImage* IMG_rank = NULL;
 				if (p != EStage::CHALLENGE)	// show rank when it's not challenge mode.
 				{
-					/*if (p == EStage::NORMAL)
-					{
-						m_PAGE_stage->scrollToPage(0);
-					}*/
 					IMG_rank = ShowRank(p, i);
+
+					// 새로 깨면 연출 동작
+					if (DataSingleton::getInstance().nPlayMode == p && DataSingleton::getInstance().nCleardStage == i + 1 && DataSingleton::getInstance().bNewRanked)
+					{
+						IMG_need_animation = IMG_rank;	// It needs animation
+					}
 					_frame->addChild(IMG_rank);
 				}
 				else
@@ -279,8 +282,29 @@ bool SelectStageScene::init()
 
 
 	m_PAGE_stage->scrollToPage(DataSingleton::getInstance().nPlayMode);
-
 	//m_PAGE_stage->removePageAtIndex(0);
+
+
+	if (IMG_need_animation != NULL)
+	{
+		auto fadeout = FadeOut::create(0.1f);
+		auto scale1 = ScaleTo::create(0.1f, 2.5f);
+		auto roate1 = RotateBy::create(0.1f, 35);
+		auto sq1 = Spawn::create(fadeout, scale1, roate1, NULL);
+
+		auto fadein = FadeIn::create(0.8f);
+		auto delay = DelayTime::create(0.3f);
+
+		auto scale2 = ScaleTo::create(0.7f, 1.0f);
+		auto roate2 = RotateBy::create(0.7f, -35);
+		auto sq2 = Spawn::create(scale2, roate2, NULL);
+		auto easeEinout = EaseElasticInOut::create(sq2);
+
+		auto seq = Sequence::create(sq1, fadein, delay, easeEinout, NULL);
+		IMG_need_animation->runAction(seq);
+
+		DataSingleton::getInstance().nCleardStage = -1;	// 한번 플레이 하면 끝 [3/9/2015 ChoiJunHyeok]
+	}
 
 	m_PAGE_stage->addEventListener(CC_CALLBACK_2(SelectStageScene::pageViewEvent, this));
 
@@ -444,27 +468,7 @@ MenuItemImage* SelectStageScene::ShowRank(int p, int i)
 	IMG_rank->setPosition(Vec2(197 + 155 * (i % 3), 515 - 155 * (i / 3)));
 	IMG_rank->setVisible(!bUnranked);	// 언랭크이면 표시 안함.
 
-	// 새로 깨면 연출 동작
-	if (DataSingleton::getInstance().nCleardStage == i + 1 && DataSingleton::getInstance().bNewRanked)
-	{
-		auto fadeout = FadeOut::create(0.1f);
-		auto scale1 = ScaleTo::create(0.1f, 2.5f);
-		auto roate1 = RotateBy::create(0.1f, 35);
-		auto sq1 = Spawn::create(fadeout, scale1, roate1, NULL);
 
-		auto fadein = FadeIn::create(0.8f);
-		auto delay = DelayTime::create(0.3f);
-
-		auto scale2 = ScaleTo::create(0.7f, 1.0f);
-		auto roate2 = RotateBy::create(0.7f, -35);
-		auto sq2 = Spawn::create(scale2, roate2, NULL);
-		auto easeEinout = EaseElasticInOut::create(sq2);
-
-		auto seq = Sequence::create(sq1, fadein, delay, easeEinout, NULL);
-		IMG_rank->runAction(seq);
-
-		DataSingleton::getInstance().nCleardStage = -1;	// 한번 플레이 하면 끝 [3/9/2015 ChoiJunHyeok]
-	}
 
 
 

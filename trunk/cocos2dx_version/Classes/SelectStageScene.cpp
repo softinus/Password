@@ -110,6 +110,10 @@ bool SelectStageScene::init()
 			string str2 = "rank_normal_";
 			str2 += to_string2(i + 1);
 			UserDefault::getInstance()->setIntegerForKey(str2.c_str(), 0);	// save each level's rank.
+
+			string str3 = "rank_challenge_";
+			str3 += to_string2(i + 1);
+			UserDefault::getInstance()->setIntegerForKey(str3.c_str(), 0);	// save each level's rank.
 		}
 	}
 
@@ -253,7 +257,19 @@ bool SelectStageScene::init()
 					}*/
 					IMG_rank = ShowRank(p, i);
 					_frame->addChild(IMG_rank);
-				}					
+				}
+				else
+				{
+					// userDefault prefix of key.
+					string str = "rank_challenge_";
+					str += to_string2(i + 1);
+					int nCurrRank = UserDefault::getInstance()->getIntegerForKey(str.c_str(), -1);	// restore each level's rank.
+
+					Label* LBL_stage = Label::create(to_string2(nCurrRank), "fonts/LCDM2N_.TTF", 40.0f);
+					LBL_stage->setZOrder(11);
+					LBL_stage->setPosition(Vec2(212 + 155 * (i % 3), 530 - 155 * (i / 3)));
+					_frame->addChild(LBL_stage);
+				}
 				
 				_frame->addChild(BTN_stage);
 		}
@@ -449,6 +465,8 @@ MenuItemImage* SelectStageScene::ShowRank(int p, int i)
 
 		DataSingleton::getInstance().nCleardStage = -1;	// 한번 플레이 하면 끝 [3/9/2015 ChoiJunHyeok]
 	}
+
+
 
 	return IMG_rank;
 }

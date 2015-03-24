@@ -36,7 +36,7 @@ bool ResultScene::init()
 
 	if (DataSingleton::getInstance().nPlayMode == EStage::CHALLENGE)
 	{
-		this->ShowRankInEasyNormalMode();
+		this->ShowCountInChallengeMode();
 	}
 	else
 	{
@@ -67,30 +67,7 @@ bool ResultScene::init()
 		EaseElasticInOut *action_1 = EaseElasticInOut::create(action_0);    // action, Åº¼º
 		m_IMG_result->runAction(action_1);
 	}
-	{
-		DelayTime *delay = DelayTime::create(0.2f);    // ½Ã°£
-		MoveTo *action_0 = MoveTo::create(2.0f, Vec2(495, 891.5));
-		EaseElasticInOut *action_1 = EaseElasticInOut::create(action_0);    // action, Åº¼º
-		Sequence *seq = Sequence::create(delay, action_1, NULL);
-		m_IMG_rank->runAction(action_1);
-	}
 
-	{
-		DelayTime *delay = DelayTime::create(0.4f);    // ½Ã°£
-		MoveTo *action_0 = MoveTo::create(2.0f, Vec2(290, 740));
-		EaseElasticInOut *action_1 = EaseElasticInOut::create(action_0);    // action, Åº¼º
-		Sequence *seq = Sequence::create(delay, action_1, NULL);
-		m_LBL_count->runAction(seq);
-	}
-
-	{
-		DelayTime *delay = DelayTime::create(0.6f);    // ½Ã°£
-		MoveTo *action_2 = MoveTo::create(2.0f, Vec2(290, 690));
-		EaseElasticInOut *action_3 = EaseElasticInOut::create(action_2);    // action, Åº¼º
-		Sequence *seq = Sequence::create(delay, action_3, NULL);
-
-		m_LBL_time->runAction(seq);
-	}
 
 	
 
@@ -143,13 +120,22 @@ void ResultScene::ShowCountInChallengeMode()
 
 	string strChallenge = "rank_challenge_";
 	strChallenge += to_string2(DataSingleton::getInstance().nLevel);
-	UserDefault::getInstance()->setIntegerForKey(strChallenge.c_str(), 0);
+	UserDefault::getInstance()->setIntegerForKey(strChallenge.c_str(), nTotalCount);
 
-	string strCount = "played : " + to_string2(nTotalCount);
+	string strCount = "Record : " + to_string2(nTotalCount);
 	m_LBL_count = Label::createWithTTF(strCount, "fonts/LCDM2N_.TTF", 60.f);
 	m_LBL_count->setPosition(Vec2(750, 740));
 	m_LBL_count->setAnchorPoint(Vec2(0, 0));
 	this->addChild(m_LBL_count);
+
+
+	{
+		DelayTime *delay = DelayTime::create(0.4f);    // ½Ã°£
+		MoveTo *action_0 = MoveTo::create(2.0f, Vec2(290, 740));
+		EaseElasticInOut *action_1 = EaseElasticInOut::create(action_0);    // action, Åº¼º
+		Sequence *seq = Sequence::create(delay, action_1, NULL);
+		m_LBL_count->runAction(seq);
+	}
 }
 
 
@@ -270,4 +256,29 @@ void ResultScene::ShowRankInEasyNormalMode()
 	m_LBL_time->setPosition(Vec2(750, 690));
 	m_LBL_time->setAnchorPoint(Vec2(0, 0));
 	this->addChild(m_LBL_time);
+
+	{
+		DelayTime *delay = DelayTime::create(0.2f);    // ½Ã°£
+		MoveTo *action_0 = MoveTo::create(2.0f, Vec2(495, 891.5));
+		EaseElasticInOut *action_1 = EaseElasticInOut::create(action_0);    // action, Åº¼º
+		Sequence *seq = Sequence::create(delay, action_1, NULL);
+		m_IMG_rank->runAction(action_1);
+	}
+
+	{
+		DelayTime *delay = DelayTime::create(0.4f);    // ½Ã°£
+		MoveTo *action_0 = MoveTo::create(2.0f, Vec2(290, 740));
+		EaseElasticInOut *action_1 = EaseElasticInOut::create(action_0);    // action, Åº¼º
+		Sequence *seq = Sequence::create(delay, action_1, NULL);
+		m_LBL_count->runAction(seq);
+	}
+
+	{
+		DelayTime *delay = DelayTime::create(0.6f);    // ½Ã°£
+		MoveTo *action_2 = MoveTo::create(2.0f, Vec2(290, 690));
+		EaseElasticInOut *action_3 = EaseElasticInOut::create(action_2);    // action, Åº¼º
+		Sequence *seq = Sequence::create(delay, action_3, NULL);
+
+		m_LBL_time->runAction(seq);
+	}
 }

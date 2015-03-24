@@ -243,12 +243,11 @@ void GameSharing::EarnCoins(int nCount, char* strComment)
 	//	MessageBox(jstr, "earnCoins");
 	//	t.env->CallStaticObjectMethod(t.classID, t.methodID, nCount, jstr);
 	//}
-}
-
 #endif
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
 #endif
 }
+
 
 
 void GameSharing::ShowFullAd()

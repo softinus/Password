@@ -740,7 +740,7 @@ void InGameScene::ClearStage()
 				UserDefault::getInstance()->setIntegerForKey("stage_clear_normal", DataSingleton::getInstance().nLevel-1);	// update save data.
 
 			//submit score to Google play store game service...
-			GameSharing::SubmitScore(DataSingleton::getInstance().nLevel * DataSingleton::getInstance().nPlayMode, 0);
+			//GameSharing::SubmitScore(DataSingleton::getInstance().nLevel * DataSingleton::getInstance().nPlayMode, 0);
 			//GameSharing::UnlockAchivement(DataSingleton::getInstance().nLevel - 1);
 		}
 	}
@@ -757,7 +757,7 @@ void InGameScene::ClearStage()
 				UserDefault::getInstance()->setIntegerForKey("stage_clear_challenge", DataSingleton::getInstance().nLevel - 1);	// update save data.
 
 			//submit score to Google play store game service...
-			GameSharing::SubmitScore(DataSingleton::getInstance().nLevel * DataSingleton::getInstance().nPlayMode, 0);
+			//GameSharing::SubmitScore(DataSingleton::getInstance().nLevel * DataSingleton::getInstance().nPlayMode, 0);
 		}
 	}
 	else if (DataSingleton::getInstance().nPlayMode == EStage::CHALLENGE)
@@ -767,9 +767,13 @@ void InGameScene::ClearStage()
 		{
 			UserDefault::getInstance()->setIntegerForKey("stage_clear_challenge", DataSingleton::getInstance().nLevel);	// update save data.
 
-			//submit score to Google play store game service...
-			GameSharing::SubmitScore(DataSingleton::getInstance().nLevel * DataSingleton::getInstance().nPlayMode, 0);
+			int nScore= UserDefault::getInstance()->getIntegerForKey("leaderboard_challenge_score", 0);	// load existing score
+			int nNewScore = nScore + DataSingleton::getInstance().nLevel * DataSingleton::getInstance().nStageRepeatCount;	// append existing score + new score
+
+			GameSharing::SubmitScore(nNewScore, 0);
 			GameSharing::UnlockAchivement(DataSingleton::getInstance().nLevel - 1);
+
+			UserDefault::getInstance()->getIntegerForKey("leaderboard_challenge_score", nNewScore);
 		}
 	}
 	

@@ -47,6 +47,7 @@ public:
 	void onButtonSelectStage(Ref* sender, Widget::TouchEventType type);
 	void onButtonBack(Ref* sender, Widget::TouchEventType type);
 	void pageViewEvent(Ref *pSender, PageView::EventType type);
+	void onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event *event);
 
 	void onButtonPageLeft(Ref* sender, Widget::TouchEventType type);
 	void onButtonPageRight(Ref* sender, Widget::TouchEventType type);

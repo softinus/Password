@@ -53,6 +53,8 @@ protected:
 	Button* m_BTN_charge_ok;
 	Label*	m_LBL_difficult;
 
+	bool m_bPopupAlreadyOpened;	// popup [3/25/2015 ChoiJunHyeok]
+
 
 
 };

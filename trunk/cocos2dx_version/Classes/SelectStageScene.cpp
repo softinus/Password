@@ -39,13 +39,8 @@ void SelectStageScene::onButtonBack(Ref* sender, Widget::TouchEventType type)
 	{
 		auto audio = SimpleAudioEngine::getInstance();
 		audio->playEffect("raw/number.wav", false, 1.0f, 1.0f, 1.0f);
-
-		Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
-
-		auto hScene = MainScene::createScene();
-		auto pScene = TransitionFade::create(1.0f, hScene);
-		//auto pScene = TransitionFlipAngular::create(1.0f, hScene);
-		Director::getInstance()->replaceScene(pScene);
+	
+		this->changeScene();
 	}
 		break;
 	}
@@ -90,6 +85,11 @@ bool SelectStageScene::init()
 	{
 		return false;
 	}
+
+	auto keylistener = EventListenerKeyboard::create();
+	keylistener->onKeyReleased = CC_CALLBACK_2(SelectStageScene::onKeyReleased, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(keylistener, this);
+
 
 	//Size s = this->getContentSize();
 
@@ -408,14 +408,13 @@ Scene* SelectStageScene::scene()
 
 void SelectStageScene::changeScene(void)
 {
-	////  Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
 
-	//Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
+	Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 
-	//auto hScene = MainScene::createScene();
-	//auto pScene = TransitionFade::create(1.0f, hScene);
-	////auto pScene = TransitionFlipAngular::create(1.0f, hScene);
-	//Director::getInstance()->replaceScene(pScene);
+	auto hScene = MainScene::createScene();
+	auto pScene = TransitionFade::create(1.0f, hScene);
+	//auto pScene = TransitionFlipAngular::create(1.0f, hScene);
+	Director::getInstance()->replaceScene(pScene);
 }
 
 bool SelectStageScene::onTouchBegan(Touch* touch, Event* event) {
@@ -475,4 +474,17 @@ MenuItemImage* SelectStageScene::ShowRank(int p, int i)
 
 
 	return IMG_rank;
+}
+
+void SelectStageScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event *event)
+{
+	if (keycode == EventKeyboard::KeyCode::KEY_BACK)
+	{
+		this->changeScene();
+	}
+	else if (keycode == EventKeyboard::KeyCode::KEY_ESCAPE)
+	{
+		this->changeScene();
+	}
+
 }

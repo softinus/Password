@@ -36,6 +36,7 @@ bool MainScene::init()
 	Size s = this->getContentSize();
 
 	DataSingleton::getInstance().nPlayMode = 0;
+	m_bPopupAlreadyOpened = false;
 
 	m_IMG_ani_BG = MenuItemImage::create("scene1-1/ani_bg.png", "scene1-1/ani_bg.png");
 	m_IMG_ani_BG->setPosition(Vec2(0, 0));
@@ -269,6 +270,8 @@ void MainScene::Touch_credits(Ref* sender, Widget::TouchEventType type)
 		//pPopupCredit->setMessageString("test");
 		pPopupCredit->showPopup(this);
 
+		m_bPopupAlreadyOpened = true;
+
 		break;
 	}
 }
@@ -304,6 +307,9 @@ bool MainScene::onTouchBegan(Touch* touch, Event* event)
 
 void MainScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event *event)
 {
+	if (m_bPopupAlreadyOpened)	// if already showing
+		return;
+
 	if (keycode == EventKeyboard::KeyCode::KEY_BACK)
 	{
 		ShowPopup();
@@ -333,11 +339,13 @@ void MainScene::Callback_popup_ok(Ref* pSender)
 	}
 	if (nTag == 2)	// cancel
 	{
+		m_bPopupAlreadyOpened = false;
 		pPopup->closePopup();
 	}
 
 	if (nTag == 3)	// credit-ok
 	{
+		m_bPopupAlreadyOpened = false;
 		pPopup->closePopup();
 	}
 }
@@ -352,4 +360,6 @@ void MainScene::ShowPopup()
 	pPopupOK->addButton("quit/pup_quit_btn_resume.png", "quit/pup_quit_btn_resume.png", "", TextureResType::LOCAL, Point(120, -51), "", 2);
 	//pPopupOK->setMessageString("test_ popup");
 	pPopupOK->showPopup(this);
+
+	m_bPopupAlreadyOpened = true;
 }

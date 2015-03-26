@@ -146,9 +146,30 @@ bool MainScene::init()
 		m_BTN_sound = Button::create("scene1-1/s1_btn_sound.png", "scene1-1/s1_btn_sound.png");
 		m_BTN_sound->setPosition(Vec2(637, 1178));
 		m_BTN_sound->addTouchEventListener(CC_CALLBACK_2(MainScene::Touch_sound, this));
+		m_BTN_sound->setVisible(false);
 		this->addChild(m_BTN_sound);
 
 	}
+
+
+
+
+	m_BTN_signin = Button::create("scene1-1/s1_btn_login_active.png", "scene1-1/s1_btn_login_down.png");
+	m_BTN_signin->setPosition(Vec2(645, 1167));
+	m_BTN_signin->addTouchEventListener(CC_CALLBACK_2(MainScene::Touch_signin, this));
+	this->addChild(m_BTN_signin);
+
+
+	m_BTN_help = Button::create("scene1-1/s1_btn_help_up.png", "scene1-1/s1_btn_help_down.png");
+	m_BTN_help->setPosition(Vec2(197, 760));
+	m_BTN_help->addTouchEventListener(CC_CALLBACK_2(MainScene::Touch_help, this));
+	this->addChild(m_BTN_help);
+
+
+	m_BTN_achievement = Button::create("scene1-1/s1_btn_achievement_up.png", "scene1-1/s1_btn_achievement_down.png");
+	m_BTN_achievement->setPosition(Vec2(512, 760));
+	m_BTN_achievement->addTouchEventListener(CC_CALLBACK_2(MainScene::Touch_achievement, this));
+	this->addChild(m_BTN_achievement);
 
 
 
@@ -214,7 +235,7 @@ void MainScene::Touch_sound(Ref* sender, Widget::TouchEventType type)
 		break;
 	case Widget::TouchEventType::ENDED:
 
-		GameSharing::ShowSignForm();
+		
 		//GameSharing::ConnectToParse();
 		//MessageBox("send!", "to Parse");
 
@@ -265,8 +286,8 @@ void MainScene::Touch_credits(Ref* sender, Widget::TouchEventType type)
 
 		UIPopupWindow* pPopupCredit = UIPopupWindow::create(Sprite::create("scene1-1/s1_pup_credits.png"));
 		pPopupCredit->setBackgroundBorard(Sprite::create("common/bg_black_80.png"));
-		pPopupCredit->addButton("quit/pup_quit_btn_ok.png", "quit/pup_quit_btn_ok.png", "", TextureResType::LOCAL, Point(0, -235), "", 3);
-		pPopupCredit->setCallBackFunc(CC_CALLBACK_1(MainScene::Callback_popup_ok, this));
+		pPopupCredit->addButton("quit/pup_quit_btn_ok_up.png", "quit/pup_quit_btn_ok_down.png", "", TextureResType::LOCAL, Point(0, -235), "", 3);
+		pPopupCredit->setCallBackFunc(CC_CALLBACK_1(MainScene::Callback_popup_exit_msg, this));
 		//pPopupCredit->setMessageString("test");
 		pPopupCredit->showPopup(this);
 
@@ -275,6 +296,69 @@ void MainScene::Touch_credits(Ref* sender, Widget::TouchEventType type)
 		break;
 	}
 }
+
+void MainScene::Touch_signin(Ref* sender, Widget::TouchEventType type)
+{
+	Button* btn = (Button*)sender;
+
+	//터치 이벤트 실행시 프로그램 종료
+	switch (type)
+	{
+	case Widget::TouchEventType::BEGAN:
+		break;
+	case Widget::TouchEventType::MOVED:
+		break;
+	case Widget::TouchEventType::ENDED:
+		auto audio = SimpleAudioEngine::getInstance();
+		audio->playEffect("raw/number.wav", false, 1.0f, 1.0f, 1.0f);
+
+		GameSharing::ShowSignForm();
+
+		break;
+	}
+}
+
+void MainScene::Touch_help(Ref* sender, Widget::TouchEventType type)
+{
+	Button* btn = (Button*)sender;
+
+	//터치 이벤트 실행시 프로그램 종료
+	switch (type)
+	{
+	case Widget::TouchEventType::BEGAN:
+		break;
+	case Widget::TouchEventType::MOVED:
+		break;
+	case Widget::TouchEventType::ENDED:
+		auto audio = SimpleAudioEngine::getInstance();
+		audio->playEffect("raw/number.wav", false, 1.0f, 1.0f, 1.0f);
+
+		ShowPopup1();
+
+		break;
+	}
+}
+void MainScene::Touch_achievement(Ref* sender, Widget::TouchEventType type)
+{
+	Button* btn = (Button*)sender;
+	
+	//터치 이벤트 실행시 프로그램 종료
+	switch (type)
+	{
+	case Widget::TouchEventType::BEGAN:
+		break;
+	case Widget::TouchEventType::MOVED:
+		break;
+	case Widget::TouchEventType::ENDED:
+		auto audio = SimpleAudioEngine::getInstance();
+		audio->playEffect("raw/number.wav", false, 1.0f, 1.0f, 1.0f);
+
+		GameSharing::ShowAchievementsUI();
+
+		break;
+	}
+}
+
 
 void MainScene::Touch_start(Ref* sender, Widget::TouchEventType type)
 {
@@ -312,16 +396,16 @@ void MainScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::
 
 	if (keycode == EventKeyboard::KeyCode::KEY_BACK)
 	{
-		ShowPopup();
+		ShowPopup_exit();
 	}
 	else if (keycode == EventKeyboard::KeyCode::KEY_ESCAPE)
 	{
-		ShowPopup();
+		ShowPopup_exit();
 	}
 
 }
 
-void MainScene::Callback_popup_ok(Ref* pSender)
+void MainScene::Callback_popup_exit_msg(Ref* pSender)
 {
 	UIPopupWindow *pPopup = (UIPopupWindow *)pSender;
 	int nTag = pPopup->getResult();
@@ -351,15 +435,174 @@ void MainScene::Callback_popup_ok(Ref* pSender)
 }
 
 
-void MainScene::ShowPopup()
+void MainScene::ShowPopup_exit()
 {
 	UIPopupWindow* pPopupOK = UIPopupWindow::create(Sprite::create("quit/pup_quit.png"));
 	pPopupOK->setBackgroundBorard(Sprite::create("common/bg_black_80.png"));
-	pPopupOK->setCallBackFunc(CC_CALLBACK_1(MainScene::Callback_popup_ok, this));
-	pPopupOK->addButton("quit/pup_quit_btn_ok.png", "quit/pup_quit_btn_ok.png", "", TextureResType::LOCAL, Point(-120, -51), "", 1);
-	pPopupOK->addButton("quit/pup_quit_btn_resume.png", "quit/pup_quit_btn_resume.png", "", TextureResType::LOCAL, Point(120, -51), "", 2);
+	pPopupOK->setCallBackFunc(CC_CALLBACK_1(MainScene::Callback_popup_exit_msg, this));
+	pPopupOK->addButton("quit/pup_quit_btn_ok_up.png", "quit/pup_quit_btn_ok_down.png", "", TextureResType::LOCAL, Point(-120, -51), "", 1);
+	pPopupOK->addButton("quit/pup_quit_btn_resume_up.png", "quit/pup_quit_btn_resume_down.png", "", TextureResType::LOCAL, Point(120, -51), "", 2);
 	//pPopupOK->setMessageString("test_ popup");
 	pPopupOK->showPopup(this);
 
 	m_bPopupAlreadyOpened = true;
 }
+
+
+void MainScene::Callback_popup_tutorial_msg(Ref* pSender)
+{
+	UIPopupWindow *pPopup = (UIPopupWindow *)pSender;
+	int nTag = pPopup->getResult();
+
+	if (nTag == 0)	// skip
+	{
+		UserDefault::getInstance()->setIntegerForKey("guide_already_showed", true);	// 
+		pPopup->closePopup();
+	}
+	if (nTag == 1)	// p1-next
+	{
+		pPopup->closePopup();
+		ShowPopup2();
+	}
+	if (nTag == 2)	// p1-prev
+	{
+	}
+
+	if (nTag == 3)	// p2-next
+	{
+		pPopup->closePopup();
+		ShowPopup3();
+	}
+	if (nTag == 4)	// p2-prev
+	{
+		pPopup->closePopup();
+		ShowPopup1();
+	}
+
+	if (nTag == 5)	// p3-next
+	{
+		pPopup->closePopup();
+		ShowPopup4();
+	}
+	if (nTag == 6)	// p3-prev
+	{
+		pPopup->closePopup();
+		ShowPopup2();
+	}
+
+	if (nTag == 7)	// p4-next
+	{
+		pPopup->closePopup();
+		ShowPopup5();
+	}
+	if (nTag == 8)	// p4-prev
+	{
+		pPopup->closePopup();
+		ShowPopup3();
+	}
+
+	if (nTag == 9)	// p5-next
+	{
+		pPopup->closePopup();
+		ShowPopup6();
+	}
+	if (nTag == 10)	// p5-prev
+	{
+		pPopup->closePopup();
+		ShowPopup4();
+	}
+
+	if (nTag == 11)	// p6-next
+	{
+		UserDefault::getInstance()->setIntegerForKey("guide_already_showed", true);	// 
+		pPopup->closePopup();
+		//ShowPopup6();
+	}
+	if (nTag == 12)	// p6-prev
+	{
+		pPopup->closePopup();
+		ShowPopup5();
+	}
+
+}
+
+
+
+void MainScene::ShowPopup1()
+{
+	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
+	pPopupOK->setBackgroundBorard(Sprite::create("help/help_1.png"));
+	pPopupOK->setCallBackFunc(CC_CALLBACK_1(MainScene::Callback_popup_tutorial_msg, this));
+	pPopupOK->addButton("help/text_box1.png", "help/text_box1.png", "", TextureResType::LOCAL, Point(310, 1031), "", -1);
+	pPopupOK->addButton("help/h1_btn_next_up.png", "help/h1_btn_next_up.png", "", TextureResType::LOCAL, Point(616.5, 217.5), "", 1);
+	pPopupOK->addButton("help/h1_btn_skip_up.png", "help/h1_btn_skip_up.png", "", TextureResType::LOCAL, Point(633, 1231), "", 0);
+	pPopupOK->showPopup(this);
+}
+
+void MainScene::ShowPopup2()
+{
+	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
+	pPopupOK->setBackgroundBorard(Sprite::create("help/help_2.png"));
+	pPopupOK->setCallBackFunc(CC_CALLBACK_1(MainScene::Callback_popup_tutorial_msg, this));
+	pPopupOK->addButton("help/text_box2.png", "help/text_box2.png", "", TextureResType::LOCAL, Point(351.5, 903.5), "", -1);
+	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 4);
+	pPopupOK->addButton("help/h1_btn_next_up.png", "help/h1_btn_next_up.png", "", TextureResType::LOCAL, Point(616.5, 217.5), "", 3);
+	pPopupOK->addButton("help/h1_btn_skip_up.png", "help/h1_btn_skip_up.png", "", TextureResType::LOCAL, Point(633, 1231), "", 0);
+	pPopupOK->showPopup(this);
+}
+
+
+
+
+
+
+void MainScene::ShowPopup3()
+{
+	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
+	pPopupOK->setBackgroundBorard(Sprite::create("help/help_3.png"));
+	pPopupOK->setCallBackFunc(CC_CALLBACK_1(MainScene::Callback_popup_tutorial_msg, this));
+	pPopupOK->addButton("help/text_box4.png", "help/text_box4.png", "", TextureResType::LOCAL, Point(428, 923), "", -1);
+	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 6);
+	pPopupOK->addButton("help/h1_btn_next_up.png", "help/h1_btn_next_up.png", "", TextureResType::LOCAL, Point(616.5, 217.5), "", 5);
+	pPopupOK->addButton("help/h1_btn_skip_up.png", "help/h1_btn_skip_up.png", "", TextureResType::LOCAL, Point(633, 1231), "", 0);
+	pPopupOK->showPopup(this);
+}
+
+
+void MainScene::ShowPopup4()
+{
+	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
+	pPopupOK->setBackgroundBorard(Sprite::create("help/help_4.png"));
+	pPopupOK->setCallBackFunc(CC_CALLBACK_1(MainScene::Callback_popup_tutorial_msg, this));
+	pPopupOK->addButton("help/text_box5.png", "help/text_box5.png", "", TextureResType::LOCAL, Point(317, 1132), "", -1);
+	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 8);
+	pPopupOK->addButton("help/h1_btn_next_up.png", "help/h1_btn_next_up.png", "", TextureResType::LOCAL, Point(616.5, 217.5), "", 7);
+	pPopupOK->addButton("help/h1_btn_skip_up.png", "help/h1_btn_skip_up.png", "", TextureResType::LOCAL, Point(633, 1231), "", 0);
+	pPopupOK->showPopup(this);
+}
+
+void MainScene::ShowPopup5()
+{
+	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
+	pPopupOK->setBackgroundBorard(Sprite::create("help/help_5.png"));
+	pPopupOK->setCallBackFunc(CC_CALLBACK_1(MainScene::Callback_popup_tutorial_msg, this));
+	pPopupOK->addButton("help/text_box6.png", "help/text_box6.png", "", TextureResType::LOCAL, Point(357, 638), "", -1);
+	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 10);
+	pPopupOK->addButton("help/h1_btn_next_up.png", "help/h1_btn_next_up.png", "", TextureResType::LOCAL, Point(616.5, 217.5), "", 9);
+	pPopupOK->addButton("help/h1_btn_skip_up.png", "help/h1_btn_skip_up.png", "", TextureResType::LOCAL, Point(633, 1231), "", 0);
+	pPopupOK->showPopup(this);
+}
+
+void MainScene::ShowPopup6()
+{
+	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
+	pPopupOK->setBackgroundBorard(Sprite::create("common/bg_black_80.png"));
+	pPopupOK->setCallBackFunc(CC_CALLBACK_1(MainScene::Callback_popup_tutorial_msg, this));
+	pPopupOK->addButton("help/text_tip.png", "help/text_tip.png", "", TextureResType::LOCAL, Point(312, 815), "", -1);
+	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 12);
+	pPopupOK->addButton("help/h1_btn_next_up.png", "help/h1_btn_next_up.png", "", TextureResType::LOCAL, Point(616.5, 217.5), "", 11);
+	pPopupOK->addButton("help/h1_btn_skip_up.png", "help/h1_btn_skip_up.png", "", TextureResType::LOCAL, Point(633, 1231), "", 0);
+	pPopupOK->showPopup(this);
+}
+
+

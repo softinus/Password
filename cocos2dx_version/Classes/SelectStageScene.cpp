@@ -3,6 +3,7 @@
 #include "Util/DataSingleton.h"
 
 #include "SimpleAudioEngine.h"
+#include "GPGS/GameSharing.h"
 using namespace CocosDenshion;
 
 #define STAGE_COUNT 9
@@ -23,6 +24,28 @@ Scene* SelectStageScene::createScene2()
 	return scene;
 }
 
+
+void SelectStageScene::onTouch_ranking(Ref* sender, Widget::TouchEventType type)
+{
+	Button* btn = (Button*)sender;
+
+	//터치 이벤트 실행시 프로그램 종료
+	switch (type)
+	{
+	case Widget::TouchEventType::BEGAN:
+		break;
+	case Widget::TouchEventType::MOVED:
+		break;
+	case Widget::TouchEventType::ENDED:
+	{
+		auto audio = SimpleAudioEngine::getInstance();
+		audio->playEffect("raw/number.wav", false, 1.0f, 1.0f, 1.0f);
+
+		GameSharing::ShowLeaderboards(0);
+		break;
+	}
+	}
+}
 
 void SelectStageScene::onButtonBack(Ref* sender, Widget::TouchEventType type)
 {
@@ -131,7 +154,7 @@ bool SelectStageScene::init()
 	m_BTN_right->setZOrder(10);
 	this->addChild(m_BTN_right);
 
-	m_IMG_title = MenuItemImage::create("scene2/s2_pnl_stage.png", "scene2/s2_pnl_stage.png");
+	m_IMG_title = Button::create("scene2/s2_pnl_stage_easynormal.png", "scene2/s2_pnl_stage_easynormal.png");
 	m_IMG_title->setPosition(Vec2(377, 1025.5));
 	this->addChild(m_IMG_title);
 
@@ -173,7 +196,7 @@ bool SelectStageScene::init()
 	m_PAGE_stage = PageView::create();
 	m_PAGE_stage->setContentSize(Size(620, 804));
 	m_PAGE_stage->setPosition(Vec2(50, 136));
-	m_PAGE_stage->setBackGroundImage("scene2/s2_box01.png");
+	//m_PAGE_stage->setBackGroundImage("scene2/s2_box01.png");
 	m_PAGE_stage->setAnchorPoint(Vec2(0, 0));
 
 	MenuItemImage* IMG_need_animation = NULL;
@@ -196,6 +219,23 @@ bool SelectStageScene::init()
 		}
 		IMG_status->setPosition(Vec2(m_PAGE_stage->getContentSize().width/2, 750));
 		_frame->addChild(IMG_status);
+
+		// ranking image and challenge score
+		if (p == EStage::CHALLENGE)
+		{
+			auto BTN_ranking = Button::create("scene2/s2_btn_rank_up.png", "scene2/s2_btn_rank_up.png");
+			BTN_ranking->setPosition(Vec2(520, 763));
+			BTN_ranking->addTouchEventListener(CC_CALLBACK_2(SelectStageScene::onTouch_ranking, this));
+			BTN_ranking->setZOrder(30);
+			_frame->addChild(BTN_ranking);
+
+			int nScore = UserDefault::getInstance()->getIntegerForKey("leaderboard_challenge_score", 0);
+			auto LBL_score = Label::create(to_string2(nScore), "fonts/LCDM2N_.TTF", 27.0f);
+			LBL_score->setZOrder(31);
+			LBL_score->setTextColor(Color4B(255, 0, 0, 255));
+			LBL_score->setPosition(Vec2(519, 712));
+			_frame->addChild(LBL_score);
+		}
 
 		for (int i = 0; i < STAGE_COUNT; ++i)
 		{
@@ -374,6 +414,8 @@ void SelectStageScene::pageViewEvent(Ref *pSender, PageView::EventType type)
 
 				m_BTN_right->loadTextureNormal("scene2/s2_btn_right_up2.png");
 				m_BTN_right->loadTexturePressed("scene2/s2_btn_right_down2.png");
+
+				m_IMG_title->loadTextureNormal("scene2/s2_pnl_stage_chall.png");
 			}
 			else
 			{
@@ -382,6 +424,8 @@ void SelectStageScene::pageViewEvent(Ref *pSender, PageView::EventType type)
 
 				m_BTN_right->loadTextureNormal("scene2/s2_btn_right_up.png");
 				m_BTN_right->loadTexturePressed("scene2/s2_btn_right_down.png");
+
+				m_IMG_title->loadTextureNormal("scene2/s2_pnl_stage_easynormal.png");
 			}
 		}
 		

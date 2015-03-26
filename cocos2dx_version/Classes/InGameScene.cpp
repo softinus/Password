@@ -2,7 +2,7 @@
 //#include "cocostudio\CocoStudio.h"
 //#include "ui\UILayout.h"
 //#include "ui/CocosGUI.h"
-
+#include <random>
 #include "Util/Global.h"
 #include "Util/DataSingleton.h"
 #include "GPGS/GameSharing.h"
@@ -294,7 +294,7 @@ bool InGameScene::init()
 
 
 	// 버튼 하나 누르면 타이머 시작함.
-	this->schedule(schedule_selector(InGameScene::scheduleCallback), 0.85f);
+	this->schedule(schedule_selector(InGameScene::scheduleCallback), 0.33f);
 
 	// gen answer
 	m_TXT_sum = Label::create(to_string2(m_sumNew), "fonts/LCDM2N_.TTF", 54.f);
@@ -677,21 +677,9 @@ void InGameScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d
 
 }
 
-
-
 void InGameScene::showResultFailed(void)
 {
-	// challenge mode는 fail이 끝난거임.
-	if (DataSingleton::getInstance().nPlayMode == EStage::CHALLENGE)
-	{
-		int nScore= UserDefault::getInstance()->getIntegerForKey("leaderboard_challenge_score", 0);	// load existing score
-		int nNewScore = nScore + DataSingleton::getInstance().nLevel * DataSingleton::getInstance().nStageRepeatCount;	// append existing score + new score
-
-		GameSharing::SubmitScore(nNewScore, 0);
-		GameSharing::UnlockAchivement(DataSingleton::getInstance().nLevel - 1);
-
-		UserDefault::getInstance()->getIntegerForKey("leaderboard_challenge_score", nNewScore);
-	}
+	
 	//Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::TOUCH_ONE_BY_ONE);
 
 
@@ -742,51 +730,77 @@ void InGameScene::ClearStage()
 	{
 		int nSavedStage_Easy = UserDefault::getInstance()->getIntegerForKey("stage_clear_easy", 0);	// get current highest stage level.
 		int nSavedStage_Normal = UserDefault::getInstance()->getIntegerForKey("stage_clear_normal", 0);	// get current highest stage level.
+		int nCurrClearLevel = DataSingleton::getInstance().nLevel;
 
-		if (nSavedStage_Easy < DataSingleton::getInstance().nLevel)	// if this level is highest level...
+		if (nSavedStage_Easy < nCurrClearLevel)	// if this level is highest level...
 		{
-			UserDefault::getInstance()->setIntegerForKey("stage_clear_easy", DataSingleton::getInstance().nLevel);	// update save data.
+			UserDefault::getInstance()->setIntegerForKey("stage_clear_easy", nCurrClearLevel);	// update save data.
 
-			if (nSavedStage_Normal < DataSingleton::getInstance().nLevel -1 )	// if this level is highest level...
-				UserDefault::getInstance()->setIntegerForKey("stage_clear_normal", DataSingleton::getInstance().nLevel-1);	// update save data.
+			if (nSavedStage_Normal < nCurrClearLevel - 1)	// if this level is highest level...
+				UserDefault::getInstance()->setIntegerForKey("stage_clear_normal", nCurrClearLevel - 1);	// update save data.
 
-			//submit score to Google play store game service...
-			//GameSharing::SubmitScore(DataSingleton::getInstance().nLevel * DataSingleton::getInstance().nPlayMode, 0);
-			//GameSharing::UnlockAchivement(DataSingleton::getInstance().nLevel - 1);
+			// unlock achievements
+			if (nCurrClearLevel == 3)
+				GameSharing::UnlockAchivement(EAchievement::EASY_BEGINNER);
+			else if (nCurrClearLevel == 6)
+				GameSharing::UnlockAchivement(EAchievement::EASY_EXPERT);
+			else if (nCurrClearLevel == 9)
+				GameSharing::UnlockAchivement(EAchievement::EASY_MASTER);
+
+
+			bool bAllStageSRankClear = true;
+			for (size_t i = 0; i<9; ++i)
+			{
+				// userDefault prefix of key.
+				string str = "rank_easy_";
+				str += to_string2(nCurrClearLevel + 1);
+				int nCurrRank = UserDefault::getInstance()->getIntegerForKey(str.c_str(), -1);
+
+				if (nCurrRank != ERank::S_RANK)	// if at least one of non-s rank exist...
+					bAllStageSRankClear = false;
+			}
+			if (bAllStageSRankClear)
+				GameSharing::UnlockAchivement(EAchievement::EASY_ALL_S_RANK);
 		}
+
+
 	}
 	else if (DataSingleton::getInstance().nPlayMode == EStage::NORMAL)
 	{
 		int nSavedStage_Normal = UserDefault::getInstance()->getIntegerForKey("stage_clear_normal", 0);	// get current highest stage level.
 		int nSavedStage_Challenge = UserDefault::getInstance()->getIntegerForKey("stage_clear_challenge", 0);	// get current highest stage level.
+		int nCurrClearLevel = DataSingleton::getInstance().nLevel;
 
-		if (nSavedStage_Normal < DataSingleton::getInstance().nLevel)	// if this level is highest level...
+		if (nSavedStage_Normal < nCurrClearLevel)	// if this level is highest level...
 		{
-			UserDefault::getInstance()->setIntegerForKey("stage_clear_normal", DataSingleton::getInstance().nLevel);	// update save data.
+			UserDefault::getInstance()->setIntegerForKey("stage_clear_normal", nCurrClearLevel);	// update save data.
 
-			if (nSavedStage_Challenge < DataSingleton::getInstance().nLevel -1 )	// if this level is highest level...
-				UserDefault::getInstance()->setIntegerForKey("stage_clear_challenge", DataSingleton::getInstance().nLevel - 1);	// update save data.
+			if (nSavedStage_Challenge < nCurrClearLevel - 1)	// if this level is highest level...
+				UserDefault::getInstance()->setIntegerForKey("stage_clear_challenge", nCurrClearLevel - 1);	// update save data.
 
-			//submit score to Google play store game service...
-			//GameSharing::SubmitScore(DataSingleton::getInstance().nLevel * DataSingleton::getInstance().nPlayMode, 0);
+			// unlock achievements
+			if (nCurrClearLevel == 3)
+				GameSharing::UnlockAchivement(EAchievement::NORMAL_BEGINNER);
+			else if (nCurrClearLevel == 6)
+				GameSharing::UnlockAchivement(EAchievement::NORMAL_EXPERT);
+			else if (nCurrClearLevel == 9)
+				GameSharing::UnlockAchivement(EAchievement::NORMAL_MASTER);
+
+			bool bAllStageSRankClear = true;
+			for (size_t i = 1; i < 10; ++i)
+			{
+				// userDefault prefix of key.
+				string str = "rank_normal_";
+				str += to_string2(nCurrClearLevel + 1);
+				int nCurrRank = UserDefault::getInstance()->getIntegerForKey(str.c_str(), -1);
+
+				if (nCurrRank != ERank::S_RANK)	// if at least one of non-s rank exist...
+					bAllStageSRankClear = false;
+			}
+			if (bAllStageSRankClear)
+				GameSharing::UnlockAchivement(EAchievement::NORMAL_ALL_S_RANK);
 		}
 	}
-	//else if (DataSingleton::getInstance().nPlayMode == EStage::CHALLENGE)
-	//{ 
-	//	int nSavedStage = UserDefault::getInstance()->getIntegerForKey("stage_clear_challenge", 0);	// get current highest stage level.
-	//	if (nSavedStage < DataSingleton::getInstance().nLevel)	// if this level is highest level...
-	//	{
-	//		UserDefault::getInstance()->setIntegerForKey("stage_clear_challenge", DataSingleton::getInstance().nLevel);	// update save data.
-
-	//		int nScore= UserDefault::getInstance()->getIntegerForKey("leaderboard_challenge_score", 0);	// load existing score
-	//		int nNewScore = nScore + DataSingleton::getInstance().nLevel * DataSingleton::getInstance().nStageRepeatCount;	// append existing score + new score
-
-	//		GameSharing::SubmitScore(nNewScore, 0);
-	//		GameSharing::UnlockAchivement(DataSingleton::getInstance().nLevel - 1);
-
-	//		UserDefault::getInstance()->getIntegerForKey("leaderboard_challenge_score", nNewScore);
-	//	}
-	//}
 	
 
 	DataSingleton::getInstance().bClear = true;
@@ -805,10 +819,15 @@ void InGameScene::MakeAnswer()
 	m_vAnswer.clear();
 	m_vQuestion.clear();
 	int nSum = 0;
+	int nLoopCount = 0;
 	//srand((unsigned int)time(NULL));
 	while (m_vQuestion.size() != m_nAnswerDigit)
 	{
-		int nNumber = random(1, m_nWid*m_nHei);
+		std::random_device rd;
+		std::mt19937 rEngine(rd()); // 엔진에 시드를 세팅.
+		std::uniform_int_distribution<> dist(1, m_nWid*m_nHei); // 범위지정.
+		int nNumber = dist(rEngine); // 
+
 		bool bAlreadyHas = false;
 		bool bCountious = false;	// 반복된 숫자 제외.
 		for (int i = 0; i < m_vQuestion.size(); ++i)
@@ -833,6 +852,19 @@ void InGameScene::MakeAnswer()
 		{
 			m_vQuestion.push_back(nNumber);
 			nSum += nNumber;
+		}
+		++nLoopCount;
+		if (nLoopCount > 1000)
+		{
+			//string msg = "loop err -> ";
+			//for (size_t i = 0; i < m_vQuestion.size(); i++)
+			//{
+			//	msg += to_string2(m_vQuestion[i]);
+			//	msg += ", ";
+			//}
+			//MessageBox("reset", msg.c_str());
+			MakeAnswer();
+			return;
 		}
 	}
 	m_sumNew = nSum;
@@ -1020,14 +1052,25 @@ void InGameScene::Callback_popup_ok(Ref* pSender)
 
 	if (nTag == 9)	// p5-next
 	{
-		UserDefault::getInstance()->setIntegerForKey("guide_already_showed", true);	// 
 		pPopup->closePopup();
-		//ShowPopup6();
+		ShowPopup6();
 	}
 	if (nTag == 10)	// p5-prev
 	{
 		pPopup->closePopup();
 		ShowPopup4();
+	}
+
+	if (nTag == 11)	// p6-next
+	{
+		UserDefault::getInstance()->setIntegerForKey("guide_already_showed", true);	// 
+		pPopup->closePopup();
+		//ShowPopup6();
+	}
+	if (nTag == 12)	// p6-prev
+	{
+		pPopup->closePopup();
+		ShowPopup5();
 	}
 
 }
@@ -1036,17 +1079,10 @@ void InGameScene::Callback_popup_ok(Ref* pSender)
 
 void InGameScene::ShowPopup1()
 {
-	Size s = this->getContentSize();
-
-	Size sRectSize = Size(680, 680);
-	Vec2 vStartPoint = Vec2(20, 250);
-
 	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
 	pPopupOK->setBackgroundBorard(Sprite::create("help/help_1.png"));
-	//pPopupOK->addText("Just push buttons!\nAnd hit the Enter button!", "fonts/LCDM2N_.TTF", Vec2(vStartPoint.x + s.width/2, vStartPoint.y+60), 45.0f, Color3B(240, 0, 0));
 	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
 	pPopupOK->addButton("help/text_box1.png", "help/text_box1.png", "", TextureResType::LOCAL, Point(310, 1031), "", -1);
-	//pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 2);
 	pPopupOK->addButton("help/h1_btn_next_up.png", "help/h1_btn_next_up.png", "", TextureResType::LOCAL, Point(616.5, 217.5), "", 1);
 	pPopupOK->addButton("help/h1_btn_skip_up.png", "help/h1_btn_skip_up.png", "", TextureResType::LOCAL, Point(633, 1231), "", 0);
 	pPopupOK->showPopup(this);
@@ -1054,14 +1090,8 @@ void InGameScene::ShowPopup1()
 
 void InGameScene::ShowPopup2()
 {
-	Size s = this->getContentSize();
-
-	Size sRectSize = Size(500, 200);
-	Vec2 vStartPoint = Vec2(30, 1050);
-
 	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
 	pPopupOK->setBackgroundBorard(Sprite::create("help/help_2.png"));
-	//pPopupOK->addText("NOW, YOU Could CHECK\nthe number of correct answers.", "fonts/LCDM2N_.TTF", Vec2(vStartPoint.x + s.width / 2, vStartPoint.y + 60), 45.0f, Color3B(240, 0, 0));
 	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
 	pPopupOK->addButton("help/text_box2.png", "help/text_box2.png", "", TextureResType::LOCAL, Point(351.5, 903.5), "", -1);
 	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 4);
@@ -1077,14 +1107,8 @@ void InGameScene::ShowPopup2()
 
 void InGameScene::ShowPopup3()
 {
-	Size s = this->getContentSize();
-
-	Size sRectSize = Size(500, 200);
-	Vec2 vStartPoint = Vec2(30, 1050);
-
 	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
 	pPopupOK->setBackgroundBorard(Sprite::create("help/help_3.png"));
-	//pPopupOK->addText("NOW, YOU Could CHECK\nthe number of correct answers.", "fonts/LCDM2N_.TTF", Vec2(vStartPoint.x + s.width / 2, vStartPoint.y + 60), 45.0f, Color3B(240, 0, 0));
 	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
 	pPopupOK->addButton("help/text_box4.png", "help/text_box4.png", "", TextureResType::LOCAL, Point(428, 923), "", -1);
 	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 6);
@@ -1096,14 +1120,8 @@ void InGameScene::ShowPopup3()
 
 void InGameScene::ShowPopup4()
 {
-	Size s = this->getContentSize();
-
-	Size sRectSize = Size(500, 200);
-	Vec2 vStartPoint = Vec2(30, 1050);
-
 	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
 	pPopupOK->setBackgroundBorard(Sprite::create("help/help_4.png"));
-	//pPopupOK->addText("NOW, YOU Could CHECK\nthe number of correct answers.", "fonts/LCDM2N_.TTF", Vec2(vStartPoint.x + s.width / 2, vStartPoint.y + 60), 45.0f, Color3B(240, 0, 0));
 	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
 	pPopupOK->addButton("help/text_box5.png", "help/text_box5.png", "", TextureResType::LOCAL, Point(317, 1132), "", -1);
 	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 8);
@@ -1114,14 +1132,8 @@ void InGameScene::ShowPopup4()
 
 void InGameScene::ShowPopup5()
 {
-	Size s = this->getContentSize();
-
-	Size sRectSize = Size(500, 200);
-	Vec2 vStartPoint = Vec2(30, 1050);
-
 	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
 	pPopupOK->setBackgroundBorard(Sprite::create("help/help_5.png"));
-	//pPopupOK->addText("NOW, YOU Could CHECK\nthe number of correct answers.", "fonts/LCDM2N_.TTF", Vec2(vStartPoint.x + s.width / 2, vStartPoint.y + 60), 45.0f, Color3B(240, 0, 0));
 	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
 	pPopupOK->addButton("help/text_box6.png", "help/text_box6.png", "", TextureResType::LOCAL, Point(357, 638), "", -1);
 	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 10);
@@ -1129,6 +1141,19 @@ void InGameScene::ShowPopup5()
 	pPopupOK->addButton("help/h1_btn_skip_up.png", "help/h1_btn_skip_up.png", "", TextureResType::LOCAL, Point(633, 1231), "", 0);
 	pPopupOK->showPopup(this);
 }
+
+void InGameScene::ShowPopup6()
+{
+	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
+	pPopupOK->setBackgroundBorard(Sprite::create("common/bg_black_80.png"));
+	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
+	pPopupOK->addButton("help/text_tip.png", "help/text_tip.png", "", TextureResType::LOCAL, Point(312, 815), "", -1);
+	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 12);
+	pPopupOK->addButton("help/h1_btn_next_up.png", "help/h1_btn_next_up.png", "", TextureResType::LOCAL, Point(616.5, 217.5), "", 11);
+	pPopupOK->addButton("help/h1_btn_skip_up.png", "help/h1_btn_skip_up.png", "", TextureResType::LOCAL, Point(633, 1231), "", 0);
+	pPopupOK->showPopup(this);
+}
+
 
 
 

@@ -21,6 +21,8 @@ public:
 	void ShowRankInEasyNormalMode();
 	void ShowCountInChallengeMode();
 
+	void UpdateAchievementOfChallengeMode();
+
 
 	EventListenerTouchOneByOne * listener;
 

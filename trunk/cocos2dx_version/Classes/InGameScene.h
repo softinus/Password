@@ -95,4 +95,5 @@ protected:
 	void ShowPopup3();
 	void ShowPopup4();
 	void ShowPopup5();
+	void ShowPopup6();
 };

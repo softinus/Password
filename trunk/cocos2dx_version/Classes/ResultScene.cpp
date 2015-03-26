@@ -99,6 +99,7 @@ void ResultScene::changeScene(void)
 	auto pScene = TransitionFade::create(1.0f, hScene);
 	//auto pScene = TransitionFlipAngular::create(1.0f, hScene);
 	Director::getInstance()->replaceScene(pScene);
+	//Director::getInstance()->popScene();
 }
 
 bool ResultScene::onTouchBegan(Touch* touch, Event* event) {
@@ -118,8 +119,10 @@ void ResultScene::ShowCountInChallengeMode()
 	m_IMG_result->setPosition(Vec2(-260, 1144));
 	this->addChild(m_IMG_result);
 
+	int nCurrLevel = DataSingleton::getInstance().nLevel;
+
 	string strChallenge = "rank_challenge_";
-	strChallenge += to_string2(DataSingleton::getInstance().nLevel);
+	strChallenge += to_string2(nCurrLevel);
 	UserDefault::getInstance()->setIntegerForKey(strChallenge.c_str(), nTotalCount);
 
 	string strCount = "Record : " + to_string2(nTotalCount);
@@ -136,6 +139,9 @@ void ResultScene::ShowCountInChallengeMode()
 		Sequence *seq = Sequence::create(delay, action_1, NULL);
 		m_LBL_count->runAction(seq);
 	}
+
+	UpdateAchievementOfChallengeMode();
+
 }
 
 
@@ -281,4 +287,47 @@ void ResultScene::ShowRankInEasyNormalMode()
 
 		m_LBL_time->runAction(seq);
 	}
+}
+
+void ResultScene::UpdateAchievementOfChallengeMode()
+{
+
+	int nChallengeSum = 0;
+	for (size_t i = 1; i < 10; i++)
+	{
+		string strChallenge = "rank_challenge_";
+		strChallenge += to_string2(i);
+		int nSingleScore = UserDefault::getInstance()->getIntegerForKey(strChallenge.c_str(), 0);
+
+		nChallengeSum += nSingleScore * pow(2, (i - 1));
+
+	}
+
+
+	//int nScore= UserDefault::getInstance()->getIntegerForKey("leaderboard_challenge_score", 0);	// load existing score
+	int nNewScore = nChallengeSum;
+
+	GameSharing::SubmitScore(nNewScore, 0);
+
+	if (nNewScore >= 50)
+	{
+		GameSharing::UnlockAchivement(EAchievement::BEGINNER_CHALLENGER);
+	}
+	else if (nNewScore >= 100)
+	{
+		GameSharing::UnlockAchivement(EAchievement::EXPERT_CHALLENGER);
+	}
+	else if (nNewScore >= 300)
+	{
+		GameSharing::UnlockAchivement(EAchievement::MASTER_CHALLENGER);
+	}
+	else if (nNewScore >= 1000)
+	{
+		GameSharing::UnlockAchivement(EAchievement::THE_KING_OF_PW);
+	}
+
+	UserDefault::getInstance()->setIntegerForKey("leaderboard_challenge_score", nNewScore);
+
+	//string str = "old score: " + to_string2(nScore) + "\nnew score: " + to_string2(nNewScore);
+	//MessageBox(str.c_str(), "test");
 }

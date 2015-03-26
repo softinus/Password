@@ -34,6 +34,28 @@ Created by Adrian Dawid on 17.08.14.
 #include <android/log.h>
 #endif
 
+
+namespace
+{
+	enum EAchievement
+	{
+		WELCOME_TO_GABINA= 0,
+		EASY_BEGINNER,
+		EASY_EXPERT,
+		EASY_MASTER,
+		EASY_ALL_S_RANK,
+		NORMAL_BEGINNER,
+		NORMAL_EXPERT,
+		NORMAL_MASTER,
+		NORMAL_ALL_S_RANK,
+		THE_TRUE_CHALLENGER,
+		BEGINNER_CHALLENGER,
+		EXPERT_CHALLENGER,
+		MASTER_CHALLENGER,
+		THE_KING_OF_PW		
+	};
+}
+
 class GameSharing
 {
 public:

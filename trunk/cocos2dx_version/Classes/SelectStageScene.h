@@ -49,6 +49,8 @@ public:
 	void pageViewEvent(Ref *pSender, PageView::EventType type);
 	void onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event *event);
 
+	void onTouch_ranking(Ref* sender, Widget::TouchEventType type);
+
 	void onButtonPageLeft(Ref* sender, Widget::TouchEventType type);
 	void onButtonPageRight(Ref* sender, Widget::TouchEventType type);
 
@@ -58,7 +60,7 @@ protected:
 
 	Button* m_BTN_left;
 	Button* m_BTN_right;
-	MenuItemImage* m_IMG_title;
+	Button* m_IMG_title;
 	//MenuItemImage* m_IMG_status;
 	vector<MenuItemImage*> m_vPageIndicators;
 

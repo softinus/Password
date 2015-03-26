@@ -499,6 +499,8 @@ public class AppActivity extends BaseGameActivity {
 		        		    	InitParse();	// 파스 초기화
 		        		    	LoadingHandler.sendEmptyMessage(999);
 		        		    	ShowAlertDialog("[Join success]", "Welcome abroad!\nPlease login again. +_+", "Ok");
+		        		    	openAchievement(0);
+		        		    	updateAchievement(100);	// gabina sign up achievement update! 
     		                    return;
 		        		    } else {
 		        		    	LoadingHandler.sendEmptyMessage(999);

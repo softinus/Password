@@ -36,7 +36,7 @@ bool ResultScene::init()
 
 	if (nLatestShow == 0)	// first
 	{
-		UserDefault::getInstance()->getIntegerForKey("latest_ad", unixCurrTime);
+		UserDefault::getInstance()->setIntegerForKey("latest_ad", unixCurrTime);
 		GameSharing::EarnCoins(30, "full-ad");
 		GameSharing::ShowFullAd();
 	}

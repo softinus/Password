@@ -31,9 +31,26 @@ bool ResultScene::init()
 		return false;
 	}
 
-	GameSharing::EarnCoins(30, "full-ad");
-	GameSharing::ShowFullAd();
+	time_t unixCurrTime= time(NULL);
+	int nLatestShow = UserDefault::getInstance()->getIntegerForKey("latest_ad", 0);
 
+	if (nLatestShow == 0)	// first
+	{
+		UserDefault::getInstance()->getIntegerForKey("latest_ad", unixCurrTime);
+		GameSharing::EarnCoins(30, "full-ad");
+		GameSharing::ShowFullAd();
+	}
+	else // non-first
+	{
+		int nGap = abs((int)unixCurrTime - nLatestShow);
+
+		if (nGap > 90)
+		{
+			GameSharing::EarnCoins(30, "full-ad");
+			GameSharing::ShowFullAd();
+		}
+	}
+		
 	if (DataSingleton::getInstance().nPlayMode == EStage::CHALLENGE)
 	{
 		this->ShowCountInChallengeMode();

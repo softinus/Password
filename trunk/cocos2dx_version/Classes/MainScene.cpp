@@ -3,6 +3,25 @@
 #include "GPGS/GameSharing.h"
 #include "CustomUI/PopupWindow.h"
 
+
+//#if(CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+//#include "platform/android/jni/JniHelper.h"
+//
+//#ifdef __cplusplus
+//extern "C" {
+//#endif 
+//	jint Java_com_softinus_pw_SignInActivate(JNIEnv* env, jobject obj)
+//	{
+//		m_BTN_signin->loadTextureNormal("scene1-1/s1_btn_login_active.png");
+//
+//		return 0;
+//	}
+//#ifdef __cplusplus
+//}
+//#endif
+//#endif
+
+
 Scene* MainScene::createScene()
 {
 	// 'scene' is an autorelease object
@@ -154,20 +173,20 @@ bool MainScene::init()
 
 
 
-	m_BTN_signin = Button::create("scene1-1/s1_btn_login_active.png", "scene1-1/s1_btn_login_down.png");
+	m_BTN_signin = Button::create("scene1-1/s1_btn_login_up.png", "scene1-1/s1_btn_login_down.png");
 	m_BTN_signin->setPosition(Vec2(645, 1167));
 	m_BTN_signin->addTouchEventListener(CC_CALLBACK_2(MainScene::Touch_signin, this));
 	this->addChild(m_BTN_signin);
 
 
 	m_BTN_help = Button::create("scene1-1/s1_btn_help_up.png", "scene1-1/s1_btn_help_down.png");
-	m_BTN_help->setPosition(Vec2(197, 760));
+	m_BTN_help->setPosition(Vec2(512, 760));
 	m_BTN_help->addTouchEventListener(CC_CALLBACK_2(MainScene::Touch_help, this));
 	this->addChild(m_BTN_help);
 
 
 	m_BTN_achievement = Button::create("scene1-1/s1_btn_achievement_up.png", "scene1-1/s1_btn_achievement_down.png");
-	m_BTN_achievement->setPosition(Vec2(512, 760));
+	m_BTN_achievement->setPosition(Vec2(197, 760)); 
 	m_BTN_achievement->addTouchEventListener(CC_CALLBACK_2(MainScene::Touch_achievement, this));
 	this->addChild(m_BTN_achievement);
 
@@ -405,10 +424,12 @@ void MainScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::
 
 }
 
+
 void MainScene::Callback_popup_exit_msg(Ref* pSender)
 {
 	UIPopupWindow *pPopup = (UIPopupWindow *)pSender;
 	int nTag = pPopup->getResult();
+
 
 	if (nTag == 1)	// ok
 	{
@@ -447,6 +468,8 @@ void MainScene::ShowPopup_exit()
 
 	m_bPopupAlreadyOpened = true;
 }
+
+
 
 
 void MainScene::Callback_popup_tutorial_msg(Ref* pSender)

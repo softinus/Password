@@ -294,7 +294,7 @@ bool InGameScene::init()
 
 
 	// 버튼 하나 누르면 타이머 시작함.
-	this->schedule(schedule_selector(InGameScene::scheduleCallback), 0.33f);
+	this->schedule(schedule_selector(InGameScene::scheduleCallback), 1.0f);
 
 	// gen answer
 	m_TXT_sum = Label::create(to_string2(m_sumNew), "fonts/LCDM2N_.TTF", 54.f);

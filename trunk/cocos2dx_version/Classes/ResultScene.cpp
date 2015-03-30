@@ -140,7 +140,12 @@ void ResultScene::ShowCountInChallengeMode()
 
 	string strChallenge = "rank_challenge_";
 	strChallenge += to_string2(nCurrLevel);
-	UserDefault::getInstance()->setIntegerForKey(strChallenge.c_str(), nTotalCount);
+
+	int nExistingCount= UserDefault::getInstance()->getIntegerForKey(strChallenge.c_str(), 0);
+	if (nExistingCount < nTotalCount)
+	{
+		UserDefault::getInstance()->setIntegerForKey(strChallenge.c_str(), nTotalCount);
+	}	
 
 	string strCount = "Record : " + to_string2(nTotalCount);
 	m_LBL_count = Label::createWithTTF(strCount, "fonts/LCDM2N_.TTF", 60.f);
@@ -317,34 +322,39 @@ void ResultScene::UpdateAchievementOfChallengeMode()
 		int nSingleScore = UserDefault::getInstance()->getIntegerForKey(strChallenge.c_str(), 0);
 
 		nChallengeSum += nSingleScore * pow(2, (i - 1));
-
 	}
 
 
-	//int nScore= UserDefault::getInstance()->getIntegerForKey("leaderboard_challenge_score", 0);	// load existing score
-	int nNewScore = nChallengeSum;
-
-	GameSharing::SubmitScore(nNewScore, 0);
-
-	if (nNewScore >= 50)
+	// if exsiting score is lower than new score
+	int nExsitingScore = UserDefault::getInstance()->getIntegerForKey("leaderboard_challenge_score", 0);
+	if (nExsitingScore < nChallengeSum)
 	{
-		GameSharing::UnlockAchivement(EAchievement::BEGINNER_CHALLENGER);
-	}
-	else if (nNewScore >= 100)
-	{
-		GameSharing::UnlockAchivement(EAchievement::EXPERT_CHALLENGER);
-	}
-	else if (nNewScore >= 300)
-	{
-		GameSharing::UnlockAchivement(EAchievement::MASTER_CHALLENGER);
-	}
-	else if (nNewScore >= 1000)
-	{
-		GameSharing::UnlockAchivement(EAchievement::THE_KING_OF_PW);
+		//int nScore= UserDefault::getInstance()->getIntegerForKey("leaderboard_challenge_score", 0);	// load existing score
+		int nNewScore = nChallengeSum;
+
+		GameSharing::SubmitScore(nNewScore, 0);
+
+		if (nNewScore >= 50)
+		{
+			GameSharing::UnlockAchivement(EAchievement::BEGINNER_CHALLENGER);
+		}
+		else if (nNewScore >= 100)
+		{
+			GameSharing::UnlockAchivement(EAchievement::EXPERT_CHALLENGER);
+		}
+		else if (nNewScore >= 300)
+		{
+			GameSharing::UnlockAchivement(EAchievement::MASTER_CHALLENGER);
+		}
+		else if (nNewScore >= 1000)
+		{
+			GameSharing::UnlockAchivement(EAchievement::THE_KING_OF_PW);
+		}
+
+		UserDefault::getInstance()->setIntegerForKey("leaderboard_challenge_score", nNewScore);
+
+		//string str = "old score: " + to_string2(nScore) + "\nnew score: " + to_string2(nNewScore);
+		//MessageBox(str.c_str(), "test");
 	}
 
-	UserDefault::getInstance()->setIntegerForKey("leaderboard_challenge_score", nNewScore);
-
-	//string str = "old score: " + to_string2(nScore) + "\nnew score: " + to_string2(nNewScore);
-	//MessageBox(str.c_str(), "test");
 }

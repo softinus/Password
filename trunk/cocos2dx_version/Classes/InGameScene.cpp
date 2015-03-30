@@ -1110,7 +1110,7 @@ void InGameScene::ShowPopup3()
 	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
 	pPopupOK->setBackgroundBorard(Sprite::create("help/help_3.png"));
 	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
-	pPopupOK->addButton("help/text_box4.png", "help/text_box4.png", "", TextureResType::LOCAL, Point(428, 923), "", -1);
+	pPopupOK->addButton("help/text_box3.png", "help/text_box3.png", "", TextureResType::LOCAL, Point(428, 923), "", -1);
 	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 6);
 	pPopupOK->addButton("help/h1_btn_next_up.png", "help/h1_btn_next_up.png", "", TextureResType::LOCAL, Point(616.5, 217.5), "", 5);
 	pPopupOK->addButton("help/h1_btn_skip_up.png", "help/h1_btn_skip_up.png", "", TextureResType::LOCAL, Point(633, 1231), "", 0);
@@ -1123,7 +1123,7 @@ void InGameScene::ShowPopup4()
 	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
 	pPopupOK->setBackgroundBorard(Sprite::create("help/help_4.png"));
 	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
-	pPopupOK->addButton("help/text_box5.png", "help/text_box5.png", "", TextureResType::LOCAL, Point(317, 1132), "", -1);
+	pPopupOK->addButton("help/text_box4.png", "help/text_box4.png", "", TextureResType::LOCAL, Point(317, 1132), "", -1);
 	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 8);
 	pPopupOK->addButton("help/h1_btn_next_up.png", "help/h1_btn_next_up.png", "", TextureResType::LOCAL, Point(616.5, 217.5), "", 7);
 	pPopupOK->addButton("help/h1_btn_skip_up.png", "help/h1_btn_skip_up.png", "", TextureResType::LOCAL, Point(633, 1231), "", 0);
@@ -1135,7 +1135,7 @@ void InGameScene::ShowPopup5()
 	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
 	pPopupOK->setBackgroundBorard(Sprite::create("help/help_5.png"));
 	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
-	pPopupOK->addButton("help/text_box6.png", "help/text_box6.png", "", TextureResType::LOCAL, Point(357, 638), "", -1);
+	pPopupOK->addButton("help/text_box5.png", "help/text_box5.png", "", TextureResType::LOCAL, Point(357, 638), "", -1);
 	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 10);
 	pPopupOK->addButton("help/h1_btn_next_up.png", "help/h1_btn_next_up.png", "", TextureResType::LOCAL, Point(616.5, 217.5), "", 9);
 	pPopupOK->addButton("help/h1_btn_skip_up.png", "help/h1_btn_skip_up.png", "", TextureResType::LOCAL, Point(633, 1231), "", 0);
@@ -1147,7 +1147,7 @@ void InGameScene::ShowPopup6()
 	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
 	pPopupOK->setBackgroundBorard(Sprite::create("help/help_6.png"));
 	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InGameScene::Callback_popup_ok, this));
-	pPopupOK->addButton("help/text_tip.png", "help/text_tip.png", "", TextureResType::LOCAL, Point(312, 815), "", -1);
+	pPopupOK->addButton("help/text_box6.png", "help/text_box6.png", "", TextureResType::LOCAL, Point(312, 815), "", -1);
 	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 12);
 	pPopupOK->addButton("help/h1_btn_next_up.png", "help/h1_btn_next_up.png", "", TextureResType::LOCAL, Point(616.5, 217.5), "", 11);
 	pPopupOK->addButton("help/h1_btn_skip_up.png", "help/h1_btn_skip_up.png", "", TextureResType::LOCAL, Point(633, 1231), "", 0);

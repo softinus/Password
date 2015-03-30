@@ -619,7 +619,7 @@ void MainScene::ShowPopup5()
 void MainScene::ShowPopup6()
 {
 	UIPopupWindow* pPopupOK = UIPopupWindow::create(NULL);
-	pPopupOK->setBackgroundBorard(Sprite::create("common/bg_black_80.png"));
+	pPopupOK->setBackgroundBorard(Sprite::create("help/help_6.png"));
 	pPopupOK->setCallBackFunc(CC_CALLBACK_1(MainScene::Callback_popup_tutorial_msg, this));
 	pPopupOK->addButton("help/text_tip.png", "help/text_tip.png", "", TextureResType::LOCAL, Point(312, 815), "", -1);
 	pPopupOK->addButton("help/h1_btn_prev_up.png", "help/h1_btn_prev_up.png", "", TextureResType::LOCAL, Point(119.5, 217.5), "", 12);

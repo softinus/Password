@@ -44,10 +44,14 @@ bool ResultScene::init()
 	{
 		int nGap = abs((int)unixCurrTime - nLatestShow);
 
+		//string strGap = "It's shown at " + to_string2(nGap) + "seconds before.";
+		//MessageBox(strGap.c_str(), "timer");
+	
 		if (nGap > 90)
 		{
 			GameSharing::EarnCoins(30, "full-ad");
 			GameSharing::ShowFullAd();
+			UserDefault::getInstance()->setIntegerForKey("latest_ad", unixCurrTime);
 		}
 	}
 		

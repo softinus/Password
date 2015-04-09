@@ -9,7 +9,6 @@
 #include "ui\CocosGUI.h"
 #endif
 
-#include "CocosGUI.h"
 /*#include "ui\CocosGUI.h"  */              //코코스 스튜디오 GUI 기능 추가
 #include "SelectStageScene.h"
 #include "ResultScene.h"

@@ -1,5 +1,11 @@
 #include "ResultScene.h"
+
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#include "GameSharing.h"
+#else
 #include "GPGS\GameSharing.h"
+#endif
+
 
 
 

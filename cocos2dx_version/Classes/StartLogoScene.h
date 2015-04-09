@@ -1,7 +1,13 @@
 #pragma once
 
 #include "cocos2d.h"
+
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#include "CocosGUI.h"
+#else
 #include "ui\CocosGUI.h"
+#endif
+
 #include "InGameScene.h"
 #include "MainScene.h"
 USING_NS_CC;

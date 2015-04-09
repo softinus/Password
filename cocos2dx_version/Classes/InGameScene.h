@@ -3,7 +3,14 @@
 #include <vector>
 #include "cocos2d.h"
 //#include "cocostudio\CocoStudio.h"        //코코스 스튜디오 사용
-#include "ui\CocosGUI.h"                //코코스 스튜디오 GUI 기능 추가
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#include "CocosGUI.h"
+#else
+#include "ui\CocosGUI.h"
+#endif
+
+#include "CocosGUI.h"
+/*#include "ui\CocosGUI.h"  */              //코코스 스튜디오 GUI 기능 추가
 #include "SelectStageScene.h"
 #include "ResultScene.h"
 //#include "ButtonN.h"

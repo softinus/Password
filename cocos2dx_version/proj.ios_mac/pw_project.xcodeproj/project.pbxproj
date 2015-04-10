@@ -25,6 +25,19 @@
 		3F8671161AD74AEA00826BF0 /* scene4 in Resources */ = {isa = PBXBuildFile; fileRef = 3F8671091AD74AEA00826BF0 /* scene4 */; };
 		3F8671171AD74AEA00826BF0 /* scene5-1 in Resources */ = {isa = PBXBuildFile; fileRef = 3F86710A1AD74AEA00826BF0 /* scene5-1 */; };
 		3F8671181AD74AEA00826BF0 /* scene5-2 in Resources */ = {isa = PBXBuildFile; fileRef = 3F86710B1AD74AEA00826BF0 /* scene5-2 */; };
+		3F86711B1AD757DA00826BF0 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8671191AD757DA00826BF0 /* Bolts.framework */; };
+		3F86711C1AD757DA00826BF0 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F86711A1AD757DA00826BF0 /* Parse.framework */; };
+		3F86711E1AD7581200826BF0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F86711D1AD7581200826BF0 /* AudioToolbox.framework */; };
+		3F8671201AD7582400826BF0 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F86711F1AD7582400826BF0 /* CFNetwork.framework */; };
+		3F8671221AD7582D00826BF0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8671211AD7582D00826BF0 /* CoreGraphics.framework */; };
+		3F8671241AD7583700826BF0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8671231AD7583700826BF0 /* CoreLocation.framework */; };
+		3F8671261AD7585200826BF0 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8671251AD7585200826BF0 /* MobileCoreServices.framework */; };
+		3F8671281AD7585C00826BF0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8671271AD7585C00826BF0 /* QuartzCore.framework */; };
+		3F86712A1AD7586600826BF0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8671291AD7586600826BF0 /* Security.framework */; };
+		3F86712C1AD7586E00826BF0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F86712B1AD7586E00826BF0 /* StoreKit.framework */; };
+		3F86712E1AD7587700826BF0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F86712D1AD7587700826BF0 /* SystemConfiguration.framework */; };
+		3F8671301AD7588800826BF0 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F86712F1AD7588800826BF0 /* libz.1.2.5.dylib */; };
+		3F8671321AD7589300826BF0 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8671311AD7589300826BF0 /* libsqlite3.dylib */; };
 		3FE817A71AD6ADED00033B2E /* GameCenterHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3FE817A61AD6ADED00033B2E /* GameCenterHelper.mm */; };
 		3FE8F5B71AD661A500033B2E /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FE8F5B61AD661A500033B2E /* GameKit.framework */; };
 		3FE8F5D41AD661CE00033B2E /* PopupWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3FE8F5BB1AD661CE00033B2E /* PopupWindow.cpp */; };
@@ -119,6 +132,19 @@
 		3F8671091AD74AEA00826BF0 /* scene4 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = scene4; sourceTree = "<group>"; };
 		3F86710A1AD74AEA00826BF0 /* scene5-1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "scene5-1"; sourceTree = "<group>"; };
 		3F86710B1AD74AEA00826BF0 /* scene5-2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "scene5-2"; sourceTree = "<group>"; };
+		3F8671191AD757DA00826BF0 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		3F86711A1AD757DA00826BF0 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		3F86711D1AD7581200826BF0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.2.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
+		3F86711F1AD7582400826BF0 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.2.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
+		3F8671211AD7582D00826BF0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.2.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		3F8671231AD7583700826BF0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.2.sdk/System/Library/Frameworks/CoreLocation.framework; sourceTree = DEVELOPER_DIR; };
+		3F8671251AD7585200826BF0 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.2.sdk/System/Library/Frameworks/MobileCoreServices.framework; sourceTree = DEVELOPER_DIR; };
+		3F8671271AD7585C00826BF0 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.2.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
+		3F8671291AD7586600826BF0 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.2.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		3F86712B1AD7586E00826BF0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.2.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
+		3F86712D1AD7587700826BF0 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.2.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		3F86712F1AD7588800826BF0 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.2.sdk/usr/lib/libz.1.2.5.dylib; sourceTree = DEVELOPER_DIR; };
+		3F8671311AD7589300826BF0 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.2.sdk/usr/lib/libsqlite3.dylib; sourceTree = DEVELOPER_DIR; };
 		3FE817A61AD6ADED00033B2E /* GameCenterHelper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GameCenterHelper.mm; path = ios/GameCenterHelper.mm; sourceTree = SOURCE_ROOT; };
 		3FE8F5B61AD661A500033B2E /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.2.sdk/System/Library/Frameworks/GameKit.framework; sourceTree = DEVELOPER_DIR; };
 		3FE8F5BB1AD661CE00033B2E /* PopupWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PopupWindow.cpp; sourceTree = "<group>"; };
@@ -194,10 +220,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F8671321AD7589300826BF0 /* libsqlite3.dylib in Frameworks */,
+				3F8671301AD7588800826BF0 /* libz.1.2.5.dylib in Frameworks */,
+				3F86712E1AD7587700826BF0 /* SystemConfiguration.framework in Frameworks */,
+				3F86712C1AD7586E00826BF0 /* StoreKit.framework in Frameworks */,
+				3F86712A1AD7586600826BF0 /* Security.framework in Frameworks */,
+				3F8671281AD7585C00826BF0 /* QuartzCore.framework in Frameworks */,
+				3F8671261AD7585200826BF0 /* MobileCoreServices.framework in Frameworks */,
+				3F8671241AD7583700826BF0 /* CoreLocation.framework in Frameworks */,
+				3F8671221AD7582D00826BF0 /* CoreGraphics.framework in Frameworks */,
+				3F8671201AD7582400826BF0 /* CFNetwork.framework in Frameworks */,
+				3F86711E1AD7581200826BF0 /* AudioToolbox.framework in Frameworks */,
 				3FE8F5B71AD661A500033B2E /* GameKit.framework in Frameworks */,
 				52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */,
 				1AC6FB30180E99EB004C840B /* libcocos2d iOS.a in Frameworks */,
 				D6B0611B1803AB670077942B /* CoreMotion.framework in Frameworks */,
+				3F86711C1AD757DA00826BF0 /* Parse.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
@@ -207,6 +245,7 @@
 				D44C620C132DFF330009C878 /* OpenAL.framework in Frameworks */,
 				D44C620E132DFF430009C878 /* AVFoundation.framework in Frameworks */,
 				D44C6210132DFF4E0009C878 /* AudioToolbox.framework in Frameworks */,
+				3F86711B1AD757DA00826BF0 /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +320,19 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3F8671311AD7589300826BF0 /* libsqlite3.dylib */,
+				3F86712F1AD7588800826BF0 /* libz.1.2.5.dylib */,
+				3F86712D1AD7587700826BF0 /* SystemConfiguration.framework */,
+				3F86712B1AD7586E00826BF0 /* StoreKit.framework */,
+				3F8671291AD7586600826BF0 /* Security.framework */,
+				3F8671271AD7585C00826BF0 /* QuartzCore.framework */,
+				3F8671251AD7585200826BF0 /* MobileCoreServices.framework */,
+				3F8671231AD7583700826BF0 /* CoreLocation.framework */,
+				3F8671211AD7582D00826BF0 /* CoreGraphics.framework */,
+				3F86711F1AD7582400826BF0 /* CFNetwork.framework */,
+				3F86711D1AD7581200826BF0 /* AudioToolbox.framework */,
+				3F8671191AD757DA00826BF0 /* Bolts.framework */,
+				3F86711A1AD757DA00826BF0 /* Parse.framework */,
 				3FE8F5B61AD661A500033B2E /* GameKit.framework */,
 				52B47A461A53D09B004E4C60 /* Security.framework */,
 				D6B0611A1803AB670077942B /* CoreMotion.framework */,
@@ -614,6 +666,7 @@
 					"$(inherited)",
 					/Users/cjh/svn/root/trunk/cocos2dx_version/cocos2d/plugin/plugins/facebook/proj.ios/sdk,
 					/Users/cjh/svn/root/trunk/cocos2dx_version/cocos2d/plugin/plugins/facebookads/proj.ios,
+					"$(PROJECT_DIR)",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
@@ -803,6 +856,7 @@
 					"$(inherited)",
 					/Users/cjh/svn/root/trunk/cocos2dx_version/cocos2d/plugin/plugins/facebook/proj.ios/sdk,
 					/Users/cjh/svn/root/trunk/cocos2dx_version/cocos2d/plugin/plugins/facebookads/proj.ios,
+					"$(PROJECT_DIR)",
 				);
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

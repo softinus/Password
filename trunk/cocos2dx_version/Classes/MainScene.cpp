@@ -114,22 +114,22 @@ bool MainScene::init()
 	
 
 	{	// 배경연출
-		Size s = Director::sharedDirector()->getWinSize();
+		//Size s = Director::sharedDirector()->getWinSize();
 
-		Sprite *sprite = Sprite::create("scene1-1/sprite2_title.png");
-		sprite->setPosition(Vec2(360, 990));
+		Sprite *sprite_logo = Sprite::create("scene1-1/s1_title_2.png");
+		sprite_logo->setPosition(Vec2(360, 990));
 
-		Texture2D * texture = TextureCache::sharedTextureCache()->addImage("scene1-1/sprite2_title.png");
+		//Texture2D * texture = TextureCache::sharedTextureCache()->addImage("scene1-1/sprite2_title.png");
 
 		vector<SpriteFrame*> animFrames;
 		for (int i = 0; i < 8; ++i)
 		{
-			auto frame = SpriteFrame::create("scene1-1/sprite2_title.png", Rect(0, 180 * i, 720, 180));
+			auto frame = SpriteFrame::create("scene1-1/s1_title_2.png", Rect(0, 180 * i, 720, 180));
 			animFrames.push_back(frame);
 		}
 		for (int i = 7; i > 0; --i)
 		{
-			auto frame = SpriteFrame::create("scene1-1/sprite2_title.png", Rect(0, 180 * i, 720, 180));
+			auto frame = SpriteFrame::create("scene1-1/s1_title_2.png", Rect(0, 180 * i, 720, 180));
 			animFrames.push_back(frame);
 		}
 
@@ -141,8 +141,8 @@ bool MainScene::init()
 		}
 
 
-		sprite->runAction(RepeatForever::create(Animate::create(animation)));
-		this->addChild(sprite);
+		sprite_logo->runAction(RepeatForever::create(Animate::create(animation)));
+		this->addChild(sprite_logo);
 	}
 
 
